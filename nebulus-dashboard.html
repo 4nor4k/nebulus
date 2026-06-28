@@ -10,7 +10,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--asphalt:#0E0E10;--concrete:#1C1C20;--steel:#2E2E34;--racing:#C8F04D;--racing-dim:rgba(200,240,77,0.10);--racing-border:rgba(200,240,77,0.28);--titanium:#8E8E98;--ghost:#F0ECE4;--danger:#EB4C3C;--danger-dim:rgba(235,76,60,0.12);--warn:#F0A030;--warn-dim:rgba(240,160,48,0.12);--green:#3DEB7A;--green-dim:rgba(61,235,122,0.12);--success:#5BDB8A;}
 body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden}
-header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;flex-wrap:wrap;gap:8px}
+header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
 .logo-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--titanium);text-transform:uppercase;margin-left:10px}
 .header-actions{display:flex;gap:10px;align-items:center}
 nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32px;display:flex;gap:0;overflow-x:auto}
@@ -216,9 +216,6 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
   .hist-val{font-size:11px}
   .hist-item{min-width:0}
   .grid-3 .panel,.grid-2 .panel{width:100%;box-sizing:border-box}
-  .header-actions{width:100%;justify-content:stretch}
-  .header-actions .btn-ghost{flex:1;text-align:center}
-  header{padding-bottom:10px}
 }
 </style>
 </head>
@@ -239,6 +236,7 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
   <a class="nav-link" href="nebulus-clientes.html">Clientes</a>
   <a class="nav-link" href="nebulus-historico.html">Histórico</a>
   <a class="nav-link" href="nebulus-relatorio.html">Relatório PDF</a>
+  <a class="nav-link" href="nebulus-catalogo.html" style="color:var(--racing);border-bottom:2px solid var(--racing)">⬇ Gerar Catálogo</a>
   <button class="nav-tab-btn active" onclick="switchTab('dashboard')" style="margin-left:auto">Estoque</button>
   <button class="nav-tab-btn" onclick="switchTab('calculadora')">Calculadora</button>
 </nav>
@@ -381,6 +379,8 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
       <div class="field"><label>Preço sugerido de venda (R$)</label><input id="ePrecoSugerido" type="number" min="0" step="0.01" placeholder="0,00"></div>
     </div>
     <div class="field"><label>Notas internas</label><textarea id="eNotas" placeholder="Fornecedor, link de compra, observações..."></textarea></div>
+    <div class="field"><label>URL da imagem</label><input id="eImagem" placeholder="https://seuservidor.com/imagens/perfume.jpg"></div>
+    <div class="field"><label>Família olfativa</label><input id="eFamilia" placeholder="Ex: Oud · Oriental · Amadeirado"></div>
     <div class="field">
       <label>Cor de identificação (HEX)</label>
       <div class="color-preview">
@@ -569,8 +569,8 @@ async function initSheets(){
   if(!names.includes(ABA_M))toCreate.push({addSheet:{properties:{title:ABA_M}}});
   if(!names.includes(ABA_C))toCreate.push({addSheet:{properties:{title:ABA_C}}});
   if(toCreate.length){await sheetsBatch(toCreate);metaSheets=null;}
-  const hdE=await sheetsGet(`${ABA_E}!A1:K1`);
-  if(!hdE.values)await sheetsUpdate(`${ABA_E}!A1:K1`,[['ID','Nome','Marca','Ml Total','Ml Disponível','Preço Compra','Data Compra','Cor HEX','Custo/ml','Seq','Preço Sugerido','Notas']]);
+  const hdE=await sheetsGet(`${ABA_E}!A1:N1`);
+  if(!hdE.values)await sheetsUpdate(`${ABA_E}!A1:K1`,[['ID','Nome','Marca','Ml Total','Ml Disponível','Preço Compra','Data Compra','Cor HEX','Custo/ml','Seq','Preço Sugerido','Notas','Imagem URL','Família Olfativa']]);
   const hdM=await sheetsGet(`${ABA_M}!A1:N1`);
   if(!hdM.values)await sheetsUpdate(`${ABA_M}!A1:N1`,[['Data/Hora','Tipo','ID Perfume','Nome','Ml','Preço','Custo Proporcional','Lucro','Nº Pedido','Cliente','Telefone','Email','Canal','Descrição']]);
   const hdC=await sheetsGet(`${ABA_C}!A1:F1`);
@@ -585,8 +585,8 @@ function parseSheetsNum(v){
 }
 async function loadData(){
   try{
-    const re=await sheetsGet(`${ABA_E}!A2:L1000`);
-    estoque=(re.values||[]).map((r,i)=>({rowIndex:i+2,id:r[0]||'',nome:r[1]||'',marca:r[2]||'',mlTotal:parseSheetsNum(r[3]),mlDisp:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),dataCompra:r[6]||'',cor:r[7]||'#C8F04D',custoMl:parseSheetsNum(r[8]),seq:parseInt(r[9])||0,precoSugerido:parseSheetsNum(r[10]),notas:r[11]||''})).filter(r=>r.nome);
+    const re=await sheetsGet(`${ABA_E}!A2:N1000`);
+    estoque=(re.values||[]).map((r,i)=>({rowIndex:i+2,id:r[0]||'',nome:r[1]||'',marca:r[2]||'',mlTotal:parseSheetsNum(r[3]),mlDisp:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),dataCompra:r[6]||'',cor:r[7]||'#C8F04D',custoMl:parseSheetsNum(r[8]),seq:parseInt(r[9])||0,precoSugerido:parseSheetsNum(r[10]),notas:r[11]||'',imagem:r[12]||'',familia:r[13]||''})).filter(r=>r.nome);
     const rm=await sheetsGet(`${ABA_M}!A2:N1000`);
     movs=(rm.values||[]).map((r,i)=>({rowIndex:i+2,dataHora:r[0]||'',tipo:r[1]||'',idPerfume:r[2]||'',nome:r[3]||'',ml:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),custoProp:parseSheetsNum(r[6]),lucro:parseSheetsNum(r[7]),pedido:r[8]||'',cliente:r[9]||'',telefone:r[10]||'',email:r[11]||'',canal:r[12]||'',descricao:r[13]||''}));
     renderKPIs();renderEstoque();renderCharts();renderHistorico();renderAlertas();atualizarMeta();
@@ -719,7 +719,7 @@ function openEntrada(){
   document.getElementById('entradaTitle').textContent='Adicionar Perfume';
   document.getElementById('entradaSub').textContent='CADASTRAR NO ESTOQUE';
   document.getElementById('btnSalvarEntrada').textContent='Registrar entrada';
-  ['eNome','eMarca','eMl','ePreco','ePrecoSugerido','eNotas'].forEach(id=>document.getElementById(id).value='');
+  ['eNome','eMarca','eMl','ePreco','ePrecoSugerido','eNotas','eImagem','eFamilia'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('eData').value=today();
   document.getElementById('eCorHex').value='#C8F04D';
   document.getElementById('eCorPicker').value='#C8F04D';
@@ -734,6 +734,8 @@ function openEditar(id){
   document.getElementById('eMl').value=p.mlTotal;document.getElementById('ePreco').value=p.preco;
   document.getElementById('ePrecoSugerido').value=p.precoSugerido||'';
   document.getElementById('eNotas').value=p.notas||'';
+  document.getElementById('eImagem').value=p.imagem||'';
+  document.getElementById('eFamilia').value=p.familia||'';
   const parts=p.dataCompra.split('/');
   document.getElementById('eData').value=parts.length===3?`${parts[2]}-${parts[1]}-${parts[0]}`:today();
   document.getElementById('eCorHex').value=p.cor;document.getElementById('eCorPicker').value=p.cor;
@@ -745,15 +747,17 @@ async function salvarEntrada(){
   const data=document.getElementById('eData').value;const cor=document.getElementById('eCorHex').value.trim()||'#C8F04D';
   const precoSug=parseFloat(document.getElementById('ePrecoSugerido').value)||0;
   const notas=document.getElementById('eNotas').value.trim();
+  const imagem=document.getElementById('eImagem').value.trim();
+  const familia=document.getElementById('eFamilia').value.trim();
   if(!nome||!marca||!ml||!preco||!data){showToast('Preencha todos os campos',true);return;}
   if(editando){
     const custoMl=Math.round((preco/ml)*10000)/10000;const diffMl=ml-editando.mlTotal;
     const novoDisp=Math.max(0,editando.mlDisp+diffMl);
-    await sheetsUpdate(`${ABA_E}!A${editando.rowIndex}:L${editando.rowIndex}`,[[editando.id,nome,marca,ml,novoDisp,preco,formatDate(data),cor,custoMl,editando.seq,precoSug,notas]]);
+    await sheetsUpdate(`${ABA_E}!A${editando.rowIndex}:N${editando.rowIndex}`,[[editando.id,nome,marca,ml,novoDisp,preco,formatDate(data),cor,custoMl,editando.seq,precoSug,notas,imagem,familia]]);
     closeModal('overlayEntrada');showToast('✓ '+nome+' atualizado');
   }else{
     const seq=nextSeq();const id=fmtId(seq);const custoMl=Math.round((preco/ml)*10000)/10000;
-    await sheetsAppend(`${ABA_E}!A:L`,[[id,nome,marca,ml,ml,preco,formatDate(data),cor,custoMl,seq,precoSug,notas]]);
+    await sheetsAppend(`${ABA_E}!A:N`,[[id,nome,marca,ml,ml,preco,formatDate(data),cor,custoMl,seq,precoSug,notas,imagem,familia]]);
     await sheetsAppend(`${ABA_M}!A:N`,[[now(),'Entrada',id,nome,ml,preco,'','','','','','','','']]);
     closeModal('overlayEntrada');showToast('✓ '+nome+' adicionado');
   }

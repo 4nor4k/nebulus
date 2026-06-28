@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBULUS. — Gerar Catálogo</title>
+<link rel="icon" href="https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--asphalt:#0E0E10;--concrete:#1C1C20;--steel:#2E2E34;--racing:#C8F04D;--racing-dim:rgba(200,240,77,0.10);--racing-border:rgba(200,240,77,0.28);--titanium:#8E8E98;--ghost:#F0ECE4;}
+body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--titanium);text-transform:uppercase;margin-left:10px}
+nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32px;display:flex;overflow-x:auto}
+.nav-link{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--titanium);padding:13px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-decoration:none;white-space:nowrap}
+.nav-link:hover{color:var(--ghost)}.nav-link.active{color:var(--racing);border-bottom-color:var(--racing)}
+.btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:7px;padding:10px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;cursor:pointer;transition:opacity .15s;text-transform:uppercase;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{opacity:.85}.btn:disabled{opacity:.4;cursor:default}
+.btn-ghost{background:transparent;color:var(--racing);border:1px solid var(--racing-border);border-radius:7px;padding:8px 16px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;text-transform:uppercase;text-decoration:none}
+.btn-ghost:hover{background:var(--racing-dim)}
+#loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:22px;text-align:center;padding:32px}
+.login-desc{font-size:14px;color:var(--titanium);max-width:320px;line-height:1.7}
+#app{display:none}.page{padding:24px 32px 64px}
+.info-box{background:var(--concrete);border:1px solid var(--steel);border-left:3px solid var(--racing);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium);line-height:1.8}
+.info-box strong{color:var(--ghost);display:block;margin-bottom:4px;font-size:12px}
+.action-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.action-bar-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.action-bar-title::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--racing)}
+/* PREVIEW CARDS */
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:32px}
+.preview-card{background:var(--concrete);border:.5px solid var(--steel);border-radius:10px;overflow:hidden;position:relative;transition:border-color .18s}
+.preview-card:hover{border-color:var(--racing)}
+.preview-card-img{width:100%;aspect-ratio:1/1;background:#141416;display:flex;align-items:center;justify-content:center;border-bottom:.5px solid var(--steel);overflow:hidden;position:relative}
+.preview-card-img img{width:100%;height:100%;object-fit:cover}
+.preview-card-img .no-img{font-family:'Space Mono',monospace;font-size:10px;color:var(--steel);text-align:center;padding:20px}
+.esgotado-overlay{position:absolute;inset:0;background:rgba(14,14,16,.7);display:flex;align-items:center;justify-content:center}
+.esgotado-tag{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--titanium);border:1px solid var(--steel);border-radius:4px;padding:4px 10px}
+.preview-card-body{padding:12px 14px}
+.preview-card-brand{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;color:var(--racing);text-transform:uppercase;margin-bottom:3px}
+.preview-card-name{font-weight:700;font-size:14px;color:var(--ghost);line-height:1.3;margin-bottom:3px}
+.preview-card-family{font-family:'Space Mono',monospace;font-size:9px;color:var(--titanium);letter-spacing:.06em;margin-bottom:10px}
+.preview-card-prices{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:10px}
+.price-btn-preview{background:var(--asphalt);border:.5px solid var(--steel);border-radius:6px;padding:6px 8px;text-align:center}
+.price-btn-ml{font-family:'Space Mono',monospace;font-size:9px;color:var(--titanium);text-transform:uppercase;letter-spacing:.08em}
+.price-btn-val{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--racing);margin-top:2px}
+.preview-card-esgotado{background:rgba(100,100,110,.1);border-radius:6px;padding:8px;text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);letter-spacing:.08em;text-transform:uppercase}
+.empty{text-align:center;padding:48px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.loading{text-align:center;padding:48px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;margin-right:7px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--steel);border:1px solid var(--racing-border);border-radius:8px;padding:11px 18px;font-family:'Space Mono',monospace;font-size:12px;color:var(--ghost);z-index:999;transform:translateY(80px);opacity:0;transition:all .3s ease}
+.toast.show{transform:translateY(0);opacity:1}
+@media(max-width:600px){header,nav,.page{padding-left:16px;padding-right:16px}header img{height:24px!important}.preview-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center">
+    <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:30px;width:auto;object-fit:contain">
+    <span class="logo-sub">Gerar Catálogo</span>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="btn-ghost" id="btnLogin" onclick="handleLogin()">Entrar com Google</button>
+    <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
+  </div>
+</header>
+<nav>
+  <a class="nav-link" href="nebulus-dashboard.html">Dashboard</a>
+  <a class="nav-link" href="nebulus-clientes.html">Clientes</a>
+  <a class="nav-link" href="nebulus-historico.html">Histórico</a>
+  <a class="nav-link" href="nebulus-relatorio.html">Relatório PDF</a>
+  <a class="nav-link active" href="nebulus-catalogo.html">⬇ Gerar Catálogo</a>
+</nav>
+<div id="loginScreen">
+  <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:34px;width:auto">
+  <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
+  <p class="login-desc">Entre com sua conta Google para carregar o estoque e gerar o catálogo.</p>
+  <button class="btn" onclick="handleLogin()">Entrar com Google</button>
+</div>
+<div id="app">
+  <div class="page">
+    <div class="info-box">
+      <strong>Como funciona</strong>
+      1. Os produtos abaixo são carregados automaticamente do seu estoque · 2. Confira o preview · 3. Clique em "Baixar Site" · 4. Faça upload do arquivo na Hostinger
+    </div>
+    <div class="action-bar">
+      <div class="action-bar-title">Preview do catálogo</div>
+      <button class="btn" id="btnBaixar" onclick="baixarSite()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Baixar Site
+      </button>
+    </div>
+    <div id="previewGrid" class="preview-grid"><div class="loading"><span class="spinner"></span>Carregando estoque...</div></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const CLIENT_ID='822341292552-9uont9j3sik7dqafjergu0sc4e3d4v9m.apps.googleusercontent.com';
+const SHEET_ID='1TaJk_4tSKXKXZnyG1lDTOif0ZauahG6rZnXibwyMqqE';
+const SCOPES='https://www.googleapis.com/auth/spreadsheets';
+const ABA_E='Estoque';
+const WA_NUMBER='5531991777681';
+let accessToken=null,estoque=[];
+
+// Calculadora settings (defaults — mesmos da calculadora)
+const CALC={embalagem:8,margem:50,taxa:0.99};
+
+function handleLogin(){
+  const c=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async(r)=>{
+    if(r.error){showToast('Erro: '+r.error);return;}
+    accessToken=r.access_token;
+    sessionStorage.setItem('nb_token',accessToken);sessionStorage.setItem('nb_token_exp',Date.now()+3500000);
+    showApp();await loadData();
+  }});c.requestAccessToken();
+}
+function handleLogout(){accessToken=null;sessionStorage.removeItem('nb_token');sessionStorage.removeItem('nb_token_exp');document.getElementById('app').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('btnLogin').style.display='';document.getElementById('btnLogout').style.display='none';}
+function showApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('btnLogin').style.display='none';document.getElementById('btnLogout').style.display='';}
+window.addEventListener('load',()=>{const t=sessionStorage.getItem('nb_token'),exp=parseInt(sessionStorage.getItem('nb_token_exp')||'0');if(t&&Date.now()<exp){accessToken=t;showApp();loadData();}});
+
+function parseSheetsNum(v){if(v==null||v==='')return 0;const s=v.toString().trim();if(s.includes(',')&&s.includes('.'))return parseFloat(s.replace(/\./g,'').replace(',','.'))||0;if(s.includes(','))return parseFloat(s.replace(',','.'))||0;return parseFloat(s)||0;}
+
+async function loadData(){
+  try{
+    const r=await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(ABA_E+'!A2:N1000')}`,{headers:{Authorization:'Bearer '+accessToken}});
+    const d=await r.json();
+    estoque=(d.values||[]).map((r,i)=>({
+      id:r[0]||'',nome:r[1]||'',marca:r[2]||'',
+      mlTotal:parseSheetsNum(r[3]),mlDisp:parseSheetsNum(r[4]),
+      preco:parseSheetsNum(r[5]),cor:r[7]||'#C8F04D',
+      seq:parseInt(r[9])||0,precoSugerido:parseSheetsNum(r[10]),
+      imagem:r[12]||'',familia:r[13]||''
+    })).filter(r=>r.nome);
+    renderPreview();
+  }catch(e){showToast('Erro ao carregar: '+e.message);}
+}
+
+function calcPrecos(p){
+  const sizes=[3,5,8,10];
+  return sizes.map(ml=>{
+    if(ml>p.mlTotal)return null;
+    const custoMl=p.preco/p.mlTotal;
+    const custoPerfume=custoMl*ml;
+    const custoTotal=custoPerfume+CALC.embalagem;
+    const precoComMargem=custoTotal/(1-CALC.margem/100);
+    const precoFinal=precoComMargem/(1-CALC.taxa/100);
+    const i=Math.floor(precoFinal);
+    const sug=(i+0.90)>=precoFinal?i+0.90:i+1.90;
+    return{ml,preco:sug};
+  }).filter(Boolean);
+}
+
+function fmtBRL(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
+
+function renderPreview(){
+  const grid=document.getElementById('previewGrid');
+  if(!estoque.length){grid.innerHTML='<div class="empty">Nenhum perfume no estoque.</div>';return;}
+  grid.innerHTML=estoque.map(p=>{
+    const precos=calcPrecos(p);
+    const esgotado=p.mlDisp<=0;
+    return`<div class="preview-card">
+      <div class="preview-card-img">
+        ${p.imagem?`<img src="${p.imagem}" alt="${p.nome}" onerror="this.parentElement.innerHTML='<div class=\\'no-img\\'>Sem imagem</div>'">`:'<div class="no-img">Sem URL<br>de imagem</div>'}
+        ${esgotado?'<div class="esgotado-overlay"><span class="esgotado-tag">Esgotado</span></div>':''}
+      </div>
+      <div class="preview-card-body">
+        <div class="preview-card-brand">${p.marca}</div>
+        <div class="preview-card-name">${p.nome}</div>
+        ${p.familia?`<div class="preview-card-family">${p.familia}</div>`:''}
+        ${esgotado
+          ?'<div class="preview-card-esgotado">Produto esgotado</div>'
+          :`<div class="preview-card-prices">${precos.map(pc=>`<div class="price-btn-preview"><div class="price-btn-ml">${pc.ml}ml</div><div class="price-btn-val">${fmtBRL(pc.preco)}</div></div>`).join('')}</div>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function gerarHTMLEstatico(){
+  const cards=estoque.map(p=>{
+    const precos=calcPrecos(p);
+    const esgotado=p.mlDisp<=0;
+    const pricesHTML=esgotado
+      ?`<div class="card-esgotado">Produto esgotado</div>`
+      :precos.map(pc=>{
+          const txt=encodeURIComponent(`Olá, vim pelo Instagram e quero o decant ${p.nome} - ${pc.ml}ml`);
+          return`<a class="price-btn" href="https://wa.me/${WA_NUMBER}?text=${txt}" target="_blank"><span class="price-ml">${pc.ml}ml</span><span class="price-val">${fmtBRL(pc.preco)}</span></a>`;
+        }).join('');
+    return`
+    <div class="card${esgotado?' card-out':''}">
+      <div class="card-img">
+        ${p.imagem?`<img src="${p.imagem}" alt="${p.nome}" loading="lazy">`:'<div class="no-img-placeholder"></div>'}
+        ${esgotado?'<div class="out-overlay"><span>Esgotado</span></div>':''}
+      </div>
+      <div class="card-body">
+        <div class="card-brand">${p.marca}</div>
+        <div class="card-name">${p.nome}</div>
+        ${p.familia?`<div class="card-family">${p.familia}</div>`:''}
+        <div class="card-prices">${pricesHTML}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  return`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>NEBULUS.CLUB — Decants · Alta Perfumaria</title>
+<link rel="icon" href="https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0E0E10;min-height:100%;-webkit-font-smoothing:antialiased}
+body{font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;align-items:center;padding:0 0 3rem}
+/* FAIXA FRETE */
+.frete-banner{width:100%;background:#C8F04D;overflow:hidden;padding:8px 0;margin-bottom:0}
+.frete-track{display:flex;white-space:nowrap;animation:marquee 18s linear infinite}
+.frete-track span{display:inline-block;padding:0 40px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#0E0E10;font-weight:700}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+/* HEADER */
+.site-header{display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 1rem}
+.logo img{height:36px;width:auto;display:block;margin-bottom:.75rem}
+.sub{font-family:'Space Mono',monospace;font-size:clamp(9px,2.5vw,11px);letter-spacing:.2em;color:#8E8E98;text-transform:uppercase;margin-bottom:1.25rem}
+.tagline{font-size:clamp(13px,3.5vw,15px);color:#8E8E98;text-align:center;max-width:280px;line-height:1.65;margin-bottom:1.5rem}
+.tagline em{color:#F0ECE4;font-style:normal}
+.divider{width:32px;height:1.5px;background:#C8F04D;margin-bottom:1.25rem}
+.section-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;color:#8E8E98;text-transform:uppercase;margin-bottom:1rem}
+/* GRID */
+.grid{display:flex;flex-direction:column;gap:8px;width:100%;max-width:480px;padding:0 1rem;margin-bottom:1.5rem}
+@media(min-width:640px){.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:720px;padding:0 1rem}}
+/* CARD */
+.card{background:#1C1C20;border:.5px solid #2E2E34;border-radius:10px;overflow:hidden;transition:border-color .18s;display:flex;flex-direction:row}
+@media(min-width:640px){.card{flex-direction:column}}
+.card:hover{border-color:#C8F04D}
+.card-out{opacity:.6}
+.card-img{width:88px;min-width:88px;background:#141416;border-right:.5px solid #2E2E34;flex-shrink:0;overflow:hidden;position:relative}
+@media(min-width:640px){.card-img{width:100%;min-width:unset;aspect-ratio:1/1;border-right:none;border-bottom:.5px solid #2E2E34}}
+.card-img img{width:100%;height:100%;object-fit:cover}
+.no-img-placeholder{width:100%;height:100%;background:#141416;min-height:88px}
+.out-overlay{position:absolute;inset:0;background:rgba(14,14,16,.65);display:flex;align-items:center;justify-content:center}
+.out-overlay span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8E8E98;border:1px solid #2E2E34;border-radius:4px;padding:3px 8px}
+.card-body{padding:12px 14px;display:flex;flex-direction:column;gap:3px;flex:1;justify-content:center}
+@media(min-width:640px){.card-body{justify-content:flex-start}}
+.card-brand{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;color:#C8F04D;text-transform:uppercase}
+.card-name{font-weight:700;font-size:14px;color:#F0ECE4;line-height:1.3}
+.card-family{font-family:'Space Mono',monospace;font-size:8px;color:#8E8E98;letter-spacing:.06em}
+.card-prices{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-top:8px}
+.price-btn{background:#0E0E10;border:.5px solid #2E2E34;border-radius:6px;padding:6px 8px;text-align:center;text-decoration:none;display:flex;flex-direction:column;gap:2px;transition:border-color .15s}
+.price-btn:hover{border-color:#C8F04D}
+.price-ml{font-family:'Space Mono',monospace;font-size:8px;color:#8E8E98;text-transform:uppercase;letter-spacing:.08em}
+.price-val{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#C8F04D}
+.card-esgotado{background:rgba(100,100,110,.1);border-radius:6px;padding:7px;text-align:center;font-family:'Space Mono',monospace;font-size:9px;color:#8E8E98;letter-spacing:.08em;text-transform:uppercase;margin-top:8px}
+/* WA BTN */
+.btn-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;background:#1C1C20;border:.5px solid #2E2E34;border-radius:10px;padding:17px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;color:#8E8E98;text-transform:uppercase;text-decoration:none;transition:border-color .18s,color .18s;margin:0 1rem 2rem}
+.btn-whatsapp:hover{border-color:#C8F04D;color:#F0ECE4}
+@media(min-width:640px){.btn-whatsapp{max-width:720px}}
+.page-footer{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.16em;color:#2E2E34;text-transform:uppercase;text-align:center}
+</style>
+</head>
+<body>
+<!-- FAIXA FRETE ANIMADA -->
+<div class="frete-banner">
+  <div class="frete-track">
+    <span>🚚 Frete grátis em pedidos acima de R$ 250,00</span>
+    <span>✦</span>
+    <span>🚚 Frete grátis em pedidos acima de R$ 250,00</span>
+    <span>✦</span>
+    <span>🚚 Frete grátis em pedidos acima de R$ 250,00</span>
+    <span>✦</span>
+    <span>🚚 Frete grátis em pedidos acima de R$ 250,00</span>
+    <span>✦</span>
+  </div>
+</div>
+<div class="site-header">
+  <div class="logo"><img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="NEBULUS.CLUB"></div>
+  <div class="sub">Decants · Alta Perfumaria</div>
+  <p class="tagline">Gostei e trouxe pra você experimentar também.</p>
+  <div class="divider"></div>
+  <div class="section-label">Catálogo · Decants</div>
+</div>
+<div class="grid">${cards}</div>
+<a class="btn-whatsapp" href="https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Olá, vim pelo Instagram e quero saber mais sobre os decants')}" target="_blank">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
+  Procurando outra fragrância? Chama aqui!
+</a>
+<div class="page-footer">nebulusclub.com.br · BH → Brasil</div>
+</body>
+</html>`;
+}
+
+function baixarSite(){
+  if(!estoque.length){showToast('Carregue o estoque primeiro');return;}
+  const html=gerarHTMLEstatico();
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='nebulus-site.html';
+  document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.revokeObjectURL(url);
+  showToast('✓ Site gerado! Faça upload na Hostinger.');
+}
+
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3500);}
+</script>
+</body>
+</html>
