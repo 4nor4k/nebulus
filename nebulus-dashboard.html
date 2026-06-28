@@ -18,6 +18,7 @@
   --danger:#EB4C3C;--danger-dim:rgba(235,76,60,0.12);
   --warn:#F0A030;--warn-dim:rgba(240,160,48,0.12);
   --green:#3DEB7A;--green-dim:rgba(61,235,122,0.12);
+  --success:#5BDB8A;
 }
 body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden}
 
@@ -28,16 +29,22 @@ header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:1
 .logo-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--titanium);text-transform:uppercase;margin-top:2px}
 .header-actions{display:flex;gap:10px;align-items:center}
 
+/* NAV TABS */
+.nav-tabs{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32px;display:flex;gap:0}
+.nav-tab{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--titanium);padding:14px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;background:transparent;border-top:none;border-left:none;border-right:none;white-space:nowrap}
+.nav-tab:hover{color:var(--ghost)}
+.nav-tab.active{color:var(--racing);border-bottom-color:var(--racing)}
+
 /* SEARCH BAR */
 .search-bar{padding:14px 32px;background:var(--concrete);border-bottom:1px solid var(--steel)}
 .search-wrap{display:flex;align-items:center;gap:12px;background:var(--asphalt);border:1px solid var(--steel);border-radius:9px;padding:10px 16px;transition:border-color .2s}
 .search-wrap:focus-within{border-color:var(--racing)}
-.search-icon{color:var(--titanium);font-size:15px;flex-shrink:0}
+.search-icon{color:var(--racing);font-size:15px;flex-shrink:0;display:flex;align-items:center}
 .search-input{flex:1;background:transparent;border:none;outline:none;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px}
 .search-input::placeholder{color:var(--titanium)}
-.search-clear{background:transparent;border:none;color:var(--titanium);cursor:pointer;font-size:16px;padding:0 2px;transition:color .15s;display:none}
+.search-clear{background:transparent;border:none;color:var(--titanium);cursor:pointer;font-size:18px;padding:0 2px;transition:color .15s;display:none;line-height:1}
 .search-clear:hover{color:var(--ghost)}
-.search-results{margin-top:12px;display:none}
+.search-results{margin-top:10px;display:none}
 .search-results.open{display:block}
 .search-result-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--steel);margin-bottom:6px;font-size:13px}
 .sr-type{font-family:'Space Mono',monospace;font-size:9px;padding:2px 7px;border-radius:4px;text-transform:uppercase;flex-shrink:0}
@@ -55,12 +62,13 @@ header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:1
 .btn:disabled{opacity:.4;cursor:default}
 .btn-ghost{background:transparent;color:var(--racing);border:1px solid var(--racing-border);border-radius:7px;padding:8px 18px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;transition:all .15s;text-transform:uppercase}
 .btn-ghost:hover{background:var(--racing-dim)}
-.btn-green{background:var(--green);color:var(--asphalt);border:none;border-radius:5px;padding:5px 12px;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:opacity .15s;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.btn-green{background:var(--green);color:var(--asphalt);border:none;border-radius:5px;padding:5px 12px;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:opacity .15s;text-transform:uppercase;letter-spacing:.06em;font-weight:700;white-space:nowrap}
 .btn-green:hover{opacity:.85}
 .btn-green:disabled{opacity:.3;cursor:default}
-.btn-icon{background:transparent;border:1px solid var(--steel);border-radius:5px;color:var(--titanium);font-size:13px;width:28px;height:28px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center}
+.btn-icon{background:transparent;border:1px solid var(--steel);border-radius:5px;color:var(--titanium);width:28px;height:28px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0}
 .btn-icon:hover{border-color:var(--racing);color:var(--racing)}
 .btn-icon.del:hover{border-color:var(--danger);color:var(--danger)}
+.btn-icon svg{width:13px;height:13px}
 
 /* LOGIN */
 #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:24px;text-align:center;padding:32px}
@@ -71,13 +79,15 @@ header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:1
 .login-accent{width:40px;height:2px;background:var(--racing);margin:0 auto}
 
 /* APP */
-#app{display:none;padding:28px 32px 64px}
+#app{display:none}
+.tab-content{display:none;padding:28px 32px 64px}
+.tab-content.active{display:block}
 
 /* KPI */
-.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:28px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:28px}
 .kpi{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:18px 20px}
 .kpi-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin-bottom:8px}
-.kpi-value{font-weight:700;font-size:24px;color:var(--ghost);line-height:1}
+.kpi-value{font-weight:700;font-size:22px;color:var(--ghost);line-height:1}
 .kpi-value.green{color:var(--racing)}
 .kpi-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--titanium);margin-top:5px}
 
@@ -93,8 +103,8 @@ header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:1
 .panel-title::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--racing)}
 
 /* CHART */
-.chart-wrap{position:relative;height:220px;display:flex;align-items:center;justify-content:center}
-.chart-legend{margin-top:14px;display:flex;flex-direction:column;gap:5px;max-height:130px;overflow-y:auto}
+.chart-wrap{position:relative;height:200px;display:flex;align-items:center;justify-content:center}
+.chart-legend{margin-top:12px;display:flex;flex-direction:column;gap:5px;max-height:120px;overflow-y:auto}
 .legend-item{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium)}
 .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .legend-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -108,9 +118,10 @@ tbody tr{border-bottom:1px solid rgba(46,46,52,.8);transition:background .12s}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:rgba(255,255,255,.025)}
 tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
-.td-name{font-weight:500;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.td-name{font-weight:500;max-width:140px;overflow:hidden;text-overflow:ellipsis}
 .td-brand{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);text-transform:uppercase;letter-spacing:.06em}
 .td-mono{font-family:'Space Mono',monospace;font-size:12px}
+.td-id{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium)}
 .td-price-g{color:var(--racing);font-family:'Space Mono',monospace;font-size:12px;font-weight:700}
 .td-price-r{color:var(--danger);font-family:'Space Mono',monospace;font-size:12px}
 .td-date{font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
@@ -119,9 +130,9 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 .ml-ok{background:var(--racing-dim);color:var(--racing)}
 .ml-low{background:var(--warn-dim);color:var(--warn)}
 .ml-zero{background:rgba(100,100,110,.12);color:var(--titanium)}
-.alert-row td{background:rgba(240,160,48,0.05)!important}
-.alert-badge{display:inline-flex;align-items:center;gap:4px;font-family:'Space Mono',monospace;font-size:9px;color:var(--warn);background:var(--warn-dim);border:1px solid rgba(240,160,48,.25);border-radius:4px;padding:2px 7px;margin-left:6px}
-.td-actions{display:flex;gap:6px;align-items:center}
+.alert-row td{background:rgba(240,160,48,0.04)!important}
+.alert-badge{display:inline-flex;align-items:center;gap:4px;font-family:'Space Mono',monospace;font-size:9px;color:var(--warn);background:var(--warn-dim);border:1px solid rgba(240,160,48,.25);border-radius:4px;padding:2px 6px;margin-left:6px}
+.td-actions{display:flex;gap:6px;align-items:center;justify-content:flex-end}
 
 /* HISTORICO */
 .hist-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(46,46,52,.8)}
@@ -144,7 +155,7 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 /* MODAL */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:400;display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
-.modal{background:var(--concrete);border:1px solid var(--steel);border-radius:14px;width:100%;max-width:480px;padding:28px;position:relative;max-height:92vh;overflow-y:auto}
+.modal{background:var(--concrete);border:1px solid var(--steel);border-radius:14px;width:100%;max-width:500px;padding:28px;position:relative;max-height:92vh;overflow-y:auto}
 .modal-title{font-weight:700;font-size:16px;letter-spacing:.06em;margin-bottom:4px;text-transform:uppercase}
 .modal-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);letter-spacing:.1em;margin-bottom:22px}
 .modal-close{position:absolute;top:18px;right:18px;background:transparent;border:none;color:var(--titanium);font-size:22px;cursor:pointer;line-height:1;transition:color .15s}
@@ -163,15 +174,17 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 .color-preview input[type="color"]{width:44px;height:44px;border:1px solid var(--steel);border-radius:7px;background:var(--asphalt);cursor:pointer;padding:2px}
 .color-preview input[type="text"]{flex:1}
 .modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;padding-top:16px;border-top:1px solid var(--steel)}
+.modal-divider{border:none;border-top:1px solid var(--steel);margin:16px 0}
+.modal-section-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin-bottom:12px}
 
-/* VENDA MODAL */
+/* VENDA */
 .perfume-preview{background:var(--asphalt);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
 .perfume-preview-dot{width:26px;height:26px;border-radius:50%;flex-shrink:0;border:2px solid rgba(255,255,255,.15)}
 .perfume-preview-name{font-weight:700;font-size:15px}
 .perfume-preview-info{font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium);margin-top:2px}
 .ml-disponivel{background:var(--racing-dim);border:1px solid var(--racing-border);border-radius:7px;padding:9px 14px;margin-bottom:14px;font-family:'Space Mono',monospace;font-size:12px;color:var(--racing)}
 
-/* CONFIRM MODAL */
+/* CONFIRM */
 .confirm-msg{font-size:14px;color:var(--titanium);line-height:1.7;margin-bottom:6px}
 .confirm-item{font-weight:700;color:var(--ghost);font-size:15px}
 
@@ -182,12 +195,59 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 
 /* MISC */
 .empty{text-align:center;padding:40px 20px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium);letter-spacing:.08em}
-.loading{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium);letter-spacing:.1em}
+.loading{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
 .spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── CALCULADORA ── */
+.calc-wrap{max-width:700px}
+.calc-section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--titanium);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.calc-section-label::before{content:'';display:block;width:16px;height:1px;background:var(--racing);opacity:.5;flex-shrink:0}
+.calc-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.calc-field{display:flex;flex-direction:column;gap:7px}
+.calc-field label{font-size:12px;font-weight:500;color:var(--titanium);letter-spacing:.03em}
+.calc-input-wrap{position:relative}
+.calc-input-wrap input{width:100%;background:var(--concrete);border:1px solid var(--steel);border-radius:6px;color:var(--ghost);font-family:'Space Mono',monospace;font-size:14px;padding:10px 34px 10px 30px;outline:none;transition:border-color .15s;-moz-appearance:textfield}
+.calc-input-wrap input::-webkit-outer-spin-button,.calc-input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none}
+.calc-input-wrap input:focus{border-color:var(--racing)}
+.calc-pfx,.calc-sfx{position:absolute;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-size:11px;color:var(--steel);pointer-events:none}
+.calc-pfx{left:10px}
+.calc-sfx{right:10px}
+.calc-divider{border:none;border-top:1px solid var(--steel);margin:24px 0}
+.calc-tabs{display:flex;gap:3px;background:var(--concrete);border:1px solid var(--steel);border-radius:6px;padding:3px;margin-bottom:20px;width:fit-content}
+.calc-tab{padding:7px 20px;font-family:'Space Mono',monospace;font-size:11px;border-radius:4px;border:none;background:transparent;color:var(--titanium);cursor:pointer;transition:background .15s,color .15s;letter-spacing:.06em;text-transform:uppercase}
+.calc-tab.active{background:var(--racing);color:var(--asphalt);font-weight:700}
+.calc-results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.calc-result-card{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:14px;cursor:pointer;transition:border-color .18s,background .18s;position:relative;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.calc-result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--racing);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
+.calc-result-card:hover{border-color:rgba(200,240,77,.25)}
+.calc-result-card.selected{border-color:var(--racing);background:rgba(200,240,77,.05)}
+.calc-result-card.selected::before{transform:scaleX(1)}
+.calc-result-card.selected::after{content:'';position:absolute;top:10px;right:10px;width:6px;height:6px;border-radius:50%;background:var(--racing)}
+.calc-result-ml{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);letter-spacing:.1em;text-transform:uppercase}
+.calc-result-card.selected .calc-result-ml{color:rgba(200,240,77,.6)}
+.calc-result-price{font-family:'Space Mono',monospace;font-size:17px;font-weight:700;color:var(--ghost);line-height:1.15}
+.calc-result-card.selected .calc-result-price{color:var(--racing)}
+.calc-result-lucro{font-family:'Space Mono',monospace;font-size:10px;color:var(--success)}
+.calc-breakdown{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:20px;position:relative;overflow:hidden;margin-bottom:20px}
+.calc-breakdown::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--racing),transparent 70%)}
+.calc-breakdown-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,240,77,.5);margin-bottom:14px}
+.calc-breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:13px;color:var(--titanium);border-bottom:1px solid rgba(255,255,255,.06)}
+.calc-breakdown-row:last-child{border-bottom:none}
+.calc-breakdown-row .bval{font-family:'Space Mono',monospace;font-size:13px;color:var(--ghost)}
+.calc-breakdown-row.btotal{margin-top:8px;padding-top:12px;border-top:1px solid rgba(255,255,255,.11);border-bottom:none}
+.calc-breakdown-row.btotal .blbl{color:var(--ghost);font-weight:600}
+.calc-breakdown-row.btotal .bval{color:var(--racing);font-size:17px;font-weight:700}
+.bval-tax{color:rgba(200,240,77,.55)}
+.bval-suggested{color:var(--racing);font-weight:700}
+.badge-indicativo{font-family:'Space Mono',monospace;font-size:9px;background:var(--steel);border-radius:3px;padding:1px 6px;color:var(--titanium);letter-spacing:.06em;margin-left:6px;vertical-align:middle}
+.calc-usar-btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:7px;padding:10px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;cursor:pointer;transition:opacity .15s;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.calc-usar-btn:hover{opacity:.85}
+.calc-usar-hint{font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium);margin-top:8px}
 @media(max-width:600px){
-  header,.search-bar,#app{padding-left:16px;padding-right:16px}
+  .calc-grid-2{grid-template-columns:1fr}
+  .calc-results-grid{grid-template-columns:repeat(2,1fr)}
+  header,.nav-tabs,.search-bar,.tab-content{padding-left:16px;padding-right:16px}
   .modal{padding:20px}
   .field-row,.field-row-3{grid-template-columns:1fr}
 }
@@ -207,10 +267,18 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
   </div>
 </header>
 
-<!-- SEARCH BAR -->
+<!-- NAV -->
+<div class="nav-tabs" id="navTabs" style="display:none">
+  <button class="nav-tab active" onclick="switchTab('dashboard')">Dashboard</button>
+  <button class="nav-tab" onclick="switchTab('calculadora')">Calculadora</button>
+</div>
+
+<!-- SEARCH -->
 <div class="search-bar" id="searchBar" style="display:none">
   <div class="search-wrap">
-    <span class="search-icon">🔍</span>
+    <span class="search-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M22 22h-2v-2h2zm-2-2h-2v-2h2zm-6-2H6v-2h8zm4 0h-2v-2h2zM6 16H4v-2h2zm10 0h-2v-2h2zM4 14H2V6h2zm14 0h-2V6h2zM6 6H4V4h2zm10 0h-2V4h2zm-2-2H6V2h8z"/></svg>
+    </span>
     <input class="search-input" id="globalSearch" placeholder="Buscar por pedido, cliente, perfume ou data..." oninput="handleSearch(this.value)">
     <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
   </div>
@@ -220,7 +288,7 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 <!-- LOGIN -->
 <div id="loginScreen">
   <div>
-    <div class="login-logo">NEBULUS<span>.</span></div>
+    <div class="login-logo">NEBULUS<span style="color:var(--racing)">.</span></div>
     <div class="login-sub">Decants · Alta Perfumaria</div>
   </div>
   <div class="login-accent" style="width:40px;height:2px;background:var(--racing);margin:0 auto"></div>
@@ -231,54 +299,88 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 <!-- APP -->
 <div id="app">
 
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-label">Perfumes cadastrados</div><div class="kpi-value" id="kTotal">—</div><div class="kpi-sub">SKUs no estoque</div></div>
-    <div class="kpi"><div class="kpi-label">Total investido</div><div class="kpi-value" id="kInvest">—</div><div class="kpi-sub">custo de aquisição</div></div>
-    <div class="kpi"><div class="kpi-label">Total vendido</div><div class="kpi-value green" id="kVendas">—</div><div class="kpi-sub">receita acumulada</div></div>
-    <div class="kpi"><div class="kpi-label">Lucro bruto</div><div class="kpi-value green" id="kLucro">—</div><div class="kpi-sub">vendas − custo proporcional</div></div>
-    <div class="kpi"><div class="kpi-label">Ml em estoque</div><div class="kpi-value" id="kMl">—</div><div class="kpi-sub">volume disponível total</div></div>
+  <!-- DASHBOARD TAB -->
+  <div class="tab-content active" id="tab-dashboard">
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-label">Perfumes cadastrados</div><div class="kpi-value" id="kTotal">—</div><div class="kpi-sub">SKUs no estoque</div></div>
+      <div class="kpi"><div class="kpi-label">Total investido</div><div class="kpi-value" id="kInvest">—</div><div class="kpi-sub">custo de aquisição</div></div>
+      <div class="kpi"><div class="kpi-label">Total vendido</div><div class="kpi-value green" id="kVendas">—</div><div class="kpi-sub">receita acumulada</div></div>
+      <div class="kpi"><div class="kpi-label">Lucro bruto</div><div class="kpi-value green" id="kLucro">—</div><div class="kpi-sub">vendas − custo proporcional</div></div>
+      <div class="kpi"><div class="kpi-label">Ml em estoque</div><div class="kpi-value" id="kMl">—</div><div class="kpi-sub">volume disponível total</div></div>
+    </div>
+
+    <div class="grid-3">
+      <div class="panel">
+        <div class="panel-title">Vendas por perfume</div>
+        <div class="chart-wrap"><canvas id="donutPerfume"></canvas></div>
+        <div class="chart-legend" id="legendPerfume"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Canais de venda</div>
+        <div class="chart-wrap"><canvas id="donutCanal"></canvas></div>
+        <div class="chart-legend" id="legendCanal"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Últimas movimentações</div>
+        <div id="histList"><div class="empty">Nenhuma movimentação ainda.</div></div>
+      </div>
+    </div>
+
+    <div class="section-hd">
+      <div class="section-title">Estoque</div>
+      <button class="btn" onclick="openEntrada()">+ Adicionar Perfume</button>
+    </div>
+    <div class="panel" style="padding:0;margin-bottom:0">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>ID</th>
+              <th>Perfume</th>
+              <th>Marca</th>
+              <th>Ml disp.</th>
+              <th>Ml total</th>
+              <th>Custo</th>
+              <th>Data compra</th>
+              <th style="text-align:right">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="estoqueBody"><tr><td colspan="9"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <!-- CHARTS + HISTORICO -->
-  <div class="grid-3">
-    <div class="panel">
-      <div class="panel-title">Vendas por perfume</div>
-      <div class="chart-wrap"><canvas id="donutPerfume"></canvas></div>
-      <div class="chart-legend" id="legendPerfume"></div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">Canais de venda</div>
-      <div class="chart-wrap"><canvas id="donutCanal"></canvas></div>
-      <div class="chart-legend" id="legendCanal"></div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">Últimas movimentações</div>
-      <div id="histList"><div class="empty">Nenhuma movimentação ainda.</div></div>
-    </div>
-  </div>
-
-  <!-- ESTOQUE -->
-  <div class="section-hd">
-    <div class="section-title">Estoque</div>
-    <button class="btn" onclick="openEntrada()">+ Adicionar Perfume</button>
-  </div>
-  <div class="panel" style="padding:0;margin-bottom:28px">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Perfume</th>
-            <th>Marca</th>
-            <th>Ml disponível</th>
-            <th>Ml total</th>
-            <th>Custo</th>
-            <th>Data compra</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="estoqueBody"><tr><td colspan="8"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
-      </table>
+  <!-- CALCULADORA TAB -->
+  <div class="tab-content" id="tab-calculadora">
+    <div class="calc-wrap">
+      <p class="calc-section-label">Perfume &amp; Embalagem</p>
+      <div class="calc-grid-2">
+        <div class="calc-field"><label>Preço do frasco</label><div class="calc-input-wrap"><span class="calc-pfx">R$</span><input type="number" id="cPreco" value="350" min="0" step="1" oninput="calcPreco()"></div></div>
+        <div class="calc-field"><label>Volume total</label><div class="calc-input-wrap"><input type="number" id="cVolume" value="100" min="1" step="1" style="padding-left:12px" oninput="calcPreco()"><span class="calc-sfx">ml</span></div></div>
+        <div class="calc-field"><label>Custo da embalagem</label><div class="calc-input-wrap"><span class="calc-pfx">R$</span><input type="number" id="cEmbalagem" value="8" min="0" step="0.10" oninput="calcPreco()"></div></div>
+        <div class="calc-field"><label>Margem de lucro</label><div class="calc-input-wrap"><input type="number" id="cMargem" value="50" min="0" max="99" step="1" style="padding-left:12px" oninput="calcPreco()"><span class="calc-sfx">%</span></div></div>
+      </div>
+      <p class="calc-section-label">Taxas de Pagamento</p>
+      <div class="calc-grid-2">
+        <div class="calc-field"><label>À vista / Pix</label><div class="calc-input-wrap"><input type="number" id="cTaxaAvista" value="0.99" min="0" max="20" step="0.01" style="padding-left:12px" oninput="calcPreco()"><span class="calc-sfx">%</span></div></div>
+        <div class="calc-field"><label>Parcelado / Cartão</label><div class="calc-input-wrap"><input type="number" id="cTaxaCartao" value="11.3" min="0" max="20" step="0.01" style="padding-left:12px" oninput="calcPreco()"><span class="calc-sfx">%</span></div></div>
+      </div>
+      <hr class="calc-divider">
+      <p class="calc-section-label">Modo de Pagamento</p>
+      <div class="calc-tabs">
+        <button class="calc-tab active" id="ctab-avista" onclick="setCalcTab('avista')">À vista / Pix</button>
+        <button class="calc-tab" id="ctab-cartao" onclick="setCalcTab('cartao')">Parcelado / Cartão</button>
+      </div>
+      <p class="calc-section-label">Preço por Volume</p>
+      <div class="calc-results-grid" id="calcResultsGrid"></div>
+      <div class="calc-breakdown" id="calcBreakdown"></div>
+      <button class="calc-usar-btn" onclick="usarPrecoNaVenda()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Usar este preço na próxima venda
+      </button>
+      <p class="calc-usar-hint">O preço sugerido do volume selecionado será pré-preenchido no formulário de venda.</p>
     </div>
   </div>
 
@@ -290,13 +392,13 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
     <button class="modal-close" onclick="closeModal('overlayEntrada')">×</button>
     <div class="modal-title" id="entradaTitle">Adicionar Perfume</div>
     <div class="modal-sub" id="entradaSub">CADASTRAR NO ESTOQUE</div>
-    <div class="field"><label>Nome do perfume</label><input id="eNome" placeholder="Ex: Oud Wood" /></div>
-    <div class="field"><label>Marca / Casa</label><input id="eMarca" placeholder="Ex: Tom Ford" /></div>
+    <div class="field"><label>Nome do perfume</label><input id="eNome" placeholder="Ex: Oud Wood"></div>
+    <div class="field"><label>Marca / Casa</label><input id="eMarca" placeholder="Ex: Tom Ford"></div>
     <div class="field-row">
-      <div class="field"><label>Volume total (ml)</label><input id="eMl" type="number" min="1" placeholder="50" /></div>
-      <div class="field"><label>Preço de compra (R$)</label><input id="ePreco" type="number" min="0" step="0.01" placeholder="0,00" /></div>
+      <div class="field"><label>Volume total (ml)</label><input id="eMl" type="number" min="1" placeholder="50"></div>
+      <div class="field"><label>Preço de compra (R$)</label><input id="ePreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
     </div>
-    <div class="field"><label>Data de compra</label><input id="eData" type="date" /></div>
+    <div class="field"><label>Data de compra</label><input id="eData" type="date"></div>
     <div class="field">
       <label>Cor de identificação (HEX)</label>
       <div class="color-preview">
@@ -320,25 +422,28 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
     <div class="perfume-preview" id="vendaPreview"></div>
     <div class="ml-disponivel" id="vendaMlInfo"></div>
     <div class="field-row">
-      <div class="field"><label>Nº do pedido</label><input id="vPedido" placeholder="Ex: 0042" /></div>
-      <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva" /></div>
+      <div class="field"><label>Nº do pedido</label><input id="vPedido" placeholder="Ex: 0042"></div>
+      <div class="field"><label>Canal de venda</label>
+        <select id="vCanal">
+          <option value="">Selecione...</option>
+          <option>Instagram</option>
+          <option>WhatsApp</option>
+          <option>Site</option>
+        </select>
+      </div>
     </div>
-    <div class="field">
-      <label>Canal de venda</label>
-      <select id="vCanal">
-        <option value="">Selecione...</option>
-        <option>Instagram</option>
-        <option>WhatsApp</option>
-        <option>Shopee</option>
-        <option>Mercado Livre</option>
-        <option>Site próprio</option>
-        <option>Presencial</option>
-        <option>Outro</option>
-      </select>
-    </div>
+    <hr class="modal-divider">
+    <div class="modal-section-label">Dados do cliente</div>
+    <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
     <div class="field-row">
-      <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5" /></div>
-      <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00" /></div>
+      <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
+      <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-section-label">Valores</div>
+    <div class="field-row">
+      <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5"></div>
+      <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
     </div>
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal('overlayVenda')">Cancelar</button>
@@ -351,13 +456,13 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 <div class="overlay" id="overlayConfirm">
   <div class="modal" style="max-width:380px">
     <button class="modal-close" onclick="closeModal('overlayConfirm')">×</button>
-    <div class="modal-title">Apagar registro</div>
-    <div class="modal-sub">ESTA AÇÃO NÃO PODE SER DESFEITA</div>
-    <p class="confirm-msg">Tem certeza que deseja apagar a movimentação:</p>
+    <div class="modal-title" id="confirmTitle">Confirmar exclusão</div>
+    <div class="modal-sub" id="confirmSub">ESTA AÇÃO NÃO PODE SER DESFEITA</div>
+    <p class="confirm-msg" id="confirmMsg"></p>
     <p class="confirm-item" id="confirmItem"></p>
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal('overlayConfirm')">Cancelar</button>
-      <button class="btn" style="background:var(--danger);color:#fff" onclick="confirmarExclusao()">Apagar</button>
+      <button class="btn" id="confirmBtn" style="background:var(--danger);color:#fff">Apagar</button>
     </div>
   </div>
 </div>
@@ -377,46 +482,81 @@ let estoque = [];
 let movs = [];
 let vendaAtual = null;
 let editando = null;
-let excluindoRow = null;
+let metaSheets = null;
 let chartPerfume = null;
 let chartCanal = null;
+let calcTab = 'avista';
+let calcSelectedMl = 5;
+let precoCalculado = null;
+let confirmCallback = null;
 
 const CANAL_COLORS = {
-  'Instagram':     '#E1306C',
-  'WhatsApp':      '#25D366',
-  'Shopee':        '#EE4D2D',
-  'Mercado Livre': '#FFE600',
-  'Site próprio':  '#C8F04D',
-  'Presencial':    '#8E8E98',
-  'Outro':         '#4A90D9',
+  'Instagram':'#E1306C','WhatsApp':'#25D366','Site':'#C8F04D',
 };
+
+/* ── SVG ICONS ── */
+const SVG_PENCIL = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M23 5v2h-1v1h-1v1h-1v1h-1V9h-1V8h-1V7h-1V6h-1V5h-1V4h1V3h1V2h1V1h2v1h1v1h1v1h1v1zm-6 5V9h-1V8h-1V7h-1V6h-2v1h-1v1h-1v1H9v1H8v1H7v1H6v1H5v1H4v1H3v1H2v1H1v6h6v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-2zm-2 2v1h-1v1h-1v1h-1v1h-1v1H9v1H8v1H7v1H3v-4h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1V9h1V8h2v1h1v1h1v2z"/></svg>`;
+const SVG_TRASH  = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
 
 /* ── AUTH ── */
 function handleLogin() {
   const client = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID, scope: SCOPES,
     callback: async (resp) => {
-      if (resp.error) { showToast('Erro ao autenticar: ' + resp.error, true); return; }
+      if (resp.error) { showToast('Erro ao autenticar: '+resp.error, true); return; }
       accessToken = resp.access_token;
-      document.getElementById('btnLogin').style.display = 'none';
-      document.getElementById('btnLogout').style.display = '';
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      document.getElementById('searchBar').style.display = 'block';
+      sessionStorage.setItem('nb_token', accessToken);
+      sessionStorage.setItem('nb_token_exp', Date.now() + 3500000);
+      showApp();
       await initSheets();
       await loadData();
     }
   });
   client.requestAccessToken();
 }
+
 function handleLogout() {
   google.accounts.oauth2.revoke(accessToken, ()=>{});
   accessToken = null;
+  sessionStorage.removeItem('nb_token');
+  sessionStorage.removeItem('nb_token_exp');
   document.getElementById('app').style.display = 'none';
+  document.getElementById('navTabs').style.display = 'none';
   document.getElementById('searchBar').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('btnLogin').style.display = '';
   document.getElementById('btnLogout').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('navTabs').style.display = 'flex';
+  document.getElementById('searchBar').style.display = 'block';
+  document.getElementById('btnLogin').style.display = 'none';
+  document.getElementById('btnLogout').style.display = '';
+}
+
+// Restore session on load
+window.addEventListener('load', () => {
+  const token = sessionStorage.getItem('nb_token');
+  const exp   = parseInt(sessionStorage.getItem('nb_token_exp') || '0');
+  if (token && Date.now() < exp) {
+    accessToken = token;
+    showApp();
+    initSheets().then(() => loadData());
+  }
+  calcPreco();
+});
+
+/* ── TABS ── */
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const idx = name === 'dashboard' ? 0 : 1;
+  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  document.getElementById('searchBar').style.display = name === 'dashboard' ? 'block' : 'none';
 }
 
 /* ── SHEETS API ── */
@@ -428,67 +568,75 @@ async function sheetsGet(range) {
 async function sheetsAppend(range, values) {
   return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
     { method:'POST', headers:{ Authorization:'Bearer '+accessToken,'Content-Type':'application/json' },
-      body: JSON.stringify({ values }) }).then(r=>r.json());
+      body:JSON.stringify({ values }) }).then(r=>r.json());
 }
 async function sheetsUpdate(range, values) {
   return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?valueInputOption=USER_ENTERED`,
     { method:'PUT', headers:{ Authorization:'Bearer '+accessToken,'Content-Type':'application/json' },
-      body: JSON.stringify({ values }) }).then(r=>r.json());
+      body:JSON.stringify({ values }) }).then(r=>r.json());
 }
 async function sheetsBatchUpdate(requests) {
   return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`,
     { method:'POST', headers:{ Authorization:'Bearer '+accessToken,'Content-Type':'application/json' },
-      body: JSON.stringify({ requests }) }).then(r=>r.json());
-}
-async function sheetsDeleteRow(sheetId, rowIndex) {
-  return sheetsBatchUpdate([{ deleteDimension:{ range:{ sheetId, dimension:'ROWS', startIndex: rowIndex-1, endIndex: rowIndex } } }]);
+      body:JSON.stringify({ requests }) }).then(r=>r.json());
 }
 async function getSheetsMeta() {
+  if (metaSheets) return metaSheets;
   const r = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}`,
     { headers:{ Authorization:'Bearer '+accessToken } });
-  return r.json();
+  metaSheets = await r.json();
+  return metaSheets;
+}
+async function getSheetId(name) {
+  const meta = await getSheetsMeta();
+  const s = (meta.sheets||[]).find(s=>s.properties.title===name);
+  return s ? s.properties.sheetId : null;
 }
 
 /* ── INIT ── */
 async function initSheets() {
   const meta = await getSheetsMeta();
-  const sheets = meta.sheets || [];
-  const names = sheets.map(s => s.properties.title);
+  const names = (meta.sheets||[]).map(s=>s.properties.title);
   const toCreate = [];
   if (!names.includes(ABA_E)) toCreate.push({ addSheet:{ properties:{ title:ABA_E } } });
   if (!names.includes(ABA_M)) toCreate.push({ addSheet:{ properties:{ title:ABA_M } } });
-  if (toCreate.length) await sheetsBatchUpdate(toCreate);
-  const hdE = await sheetsGet(`${ABA_E}!A1:I1`);
-  if (!hdE.values) await sheetsUpdate(`${ABA_E}!A1:I1`,[['ID','Nome','Marca','Ml Total','Ml Disponível','Preço Compra','Data Compra','Cor HEX','Custo/ml']]);
-  const hdM = await sheetsGet(`${ABA_M}!A1:J1`);
-  if (!hdM.values) await sheetsUpdate(`${ABA_M}!A1:J1`,[['Data/Hora','Tipo','ID Perfume','Nome','Ml','Preço','Custo Proporcional','Lucro','Nº Pedido','Cliente','Canal']]);
+  if (toCreate.length) { await sheetsBatchUpdate(toCreate); metaSheets = null; }
+  const hdE = await sheetsGet(`${ABA_E}!A1:J1`);
+  if (!hdE.values) await sheetsUpdate(`${ABA_E}!A1:J1`,[['ID','Nome','Marca','Ml Total','Ml Disponível','Preço Compra','Data Compra','Cor HEX','Custo/ml','Seq']]);
+  const hdM = await sheetsGet(`${ABA_M}!A1:M1`);
+  if (!hdM.values) await sheetsUpdate(`${ABA_M}!A1:M1`,[['Data/Hora','Tipo','ID Perfume','Nome','Ml','Preço','Custo Proporcional','Lucro','Nº Pedido','Cliente','Telefone','Email','Canal']]);
 }
 
 /* ── LOAD ── */
 async function loadData() {
   try {
-    const re = await sheetsGet(`${ABA_E}!A2:I1000`);
+    const re = await sheetsGet(`${ABA_E}!A2:J1000`);
     estoque = (re.values||[]).map((r,i)=>({
-      rowIndex: i+2, id:r[0]||'', nome:r[1]||'', marca:r[2]||'',
+      rowIndex:i+2, id:r[0]||'', nome:r[1]||'', marca:r[2]||'',
       mlTotal:parseFloat(r[3])||0, mlDisp:parseFloat(r[4])||0,
       preco:parseFloat(r[5])||0, dataCompra:r[6]||'',
       cor:r[7]||'#C8F04D', custoMl:parseFloat(r[8])||0,
+      seq:parseInt(r[9])||0,
     })).filter(r=>r.nome);
 
-    const rm = await sheetsGet(`${ABA_M}!A2:K1000`);
+    const rm = await sheetsGet(`${ABA_M}!A2:M1000`);
     movs = (rm.values||[]).map((r,i)=>({
-      rowIndex: i+2, dataHora:r[0]||'', tipo:r[1]||'', idPerfume:r[2]||'',
+      rowIndex:i+2, dataHora:r[0]||'', tipo:r[1]||'', idPerfume:r[2]||'',
       nome:r[3]||'', ml:parseFloat(r[4])||0, preco:parseFloat(r[5])||0,
       custoProp:parseFloat(r[6])||0, lucro:parseFloat(r[7])||0,
-      pedido:r[8]||'', cliente:r[9]||'', canal:r[10]||'',
+      pedido:r[8]||'', cliente:r[9]||'', telefone:r[10]||'', email:r[11]||'', canal:r[12]||'',
     }));
 
-    renderKPIs();
-    renderEstoque();
-    renderCharts();
-    renderHistorico();
+    renderKPIs(); renderEstoque(); renderCharts(); renderHistorico();
   } catch(e) { showToast('Erro ao carregar: '+e.message, true); }
 }
+
+/* ── NEXT SEQ ── */
+function nextSeq() {
+  const max = estoque.reduce((m,p)=>Math.max(m,p.seq||0),0);
+  return max + 1;
+}
+function fmtId(seq) { return 'NB-' + String(seq).padStart(3,'0'); }
 
 /* ── KPIs ── */
 function renderKPIs() {
@@ -496,8 +644,7 @@ function renderKPIs() {
   document.getElementById('kTotal').textContent = estoque.length;
   document.getElementById('kInvest').textContent = fmt(estoque.reduce((s,p)=>s+p.preco,0));
   document.getElementById('kVendas').textContent = fmt(saidas.reduce((s,m)=>s+m.preco,0));
-  const lucro = saidas.reduce((s,m)=>s+m.lucro,0);
-  document.getElementById('kLucro').textContent = fmt(lucro);
+  document.getElementById('kLucro').textContent = fmt(saidas.reduce((s,m)=>s+m.lucro,0));
   document.getElementById('kMl').textContent = estoque.reduce((s,p)=>s+p.mlDisp,0).toFixed(1)+' ml';
 }
 
@@ -505,16 +652,17 @@ function renderKPIs() {
 function renderEstoque() {
   const body = document.getElementById('estoqueBody');
   if (!estoque.length) {
-    body.innerHTML='<tr><td colspan="8"><div class="empty">Nenhum perfume cadastrado. Clique em "+ Adicionar Perfume".</div></td></tr>';
+    body.innerHTML='<tr><td colspan="9"><div class="empty">Nenhum perfume cadastrado. Clique em "+ Adicionar Perfume".</div></td></tr>';
     return;
   }
   body.innerHTML = estoque.map(p=>{
-    const pct = p.mlTotal>0 ? p.mlDisp/p.mlTotal : 0;
-    const cls = p.mlDisp===0 ? 'ml-zero' : p.mlDisp<=20 ? 'ml-low' : 'ml-ok';
-    const alert = p.mlDisp>0 && p.mlDisp<=20 ? '<span class="alert-badge">⚠ Baixo</span>' : '';
-    const rowCls = p.mlDisp>0 && p.mlDisp<=20 ? 'alert-row' : '';
+    const cls = p.mlDisp===0?'ml-zero':p.mlDisp<=20?'ml-low':'ml-ok';
+    const alert = p.mlDisp>0&&p.mlDisp<=20?'<span class="alert-badge">⚠ Baixo</span>':'';
+    const rowCls = p.mlDisp>0&&p.mlDisp<=20?'alert-row':'';
+    const idLabel = p.seq ? fmtId(p.seq) : p.id.substring(0,8);
     return `<tr class="${rowCls}">
       <td><span class="color-dot" style="background:${p.cor}"></span></td>
+      <td class="td-id">${idLabel}</td>
       <td class="td-name">${p.nome}${alert}</td>
       <td class="td-brand">${p.marca}</td>
       <td><span class="ml-badge ${cls}">${p.mlDisp.toFixed(1)} ml</span></td>
@@ -524,7 +672,8 @@ function renderEstoque() {
       <td>
         <div class="td-actions">
           <button class="btn-green" onclick="openVenda('${p.id}')" ${p.mlDisp<=0?'disabled':''}>Vender</button>
-          <button class="btn-icon" title="Editar" onclick="openEditar('${p.id}')">✏️</button>
+          <button class="btn-icon" title="Editar perfume" onclick="openEditar('${p.id}')">${SVG_PENCIL}</button>
+          <button class="btn-icon del" title="Excluir perfume" onclick="pedirExclusaoPerfume('${p.id}')">${SVG_TRASH}</button>
         </div>
       </td>
     </tr>`;
@@ -534,65 +683,42 @@ function renderEstoque() {
 /* ── CHARTS ── */
 function renderCharts() {
   const saidas = movs.filter(m=>m.tipo==='Saída');
-
-  // Gráfico por perfume
   const byPerf = {};
-  saidas.forEach(m=>{
-    if (!byPerf[m.idPerfume]) byPerf[m.idPerfume]={nome:m.nome,ml:0};
-    byPerf[m.idPerfume].ml += m.ml;
-  });
-  const perfItems = Object.entries(byPerf).map(([id,v])=>{
-    const p = estoque.find(e=>e.id===id);
-    return { nome:v.nome, ml:v.ml, cor:p?p.cor:'#8E8E98' };
-  }).sort((a,b)=>b.ml-a.ml);
+  saidas.forEach(m=>{ if(!byPerf[m.idPerfume])byPerf[m.idPerfume]={nome:m.nome,ml:0}; byPerf[m.idPerfume].ml+=m.ml; });
+  const perfItems = Object.entries(byPerf).map(([id,v])=>{ const p=estoque.find(e=>e.id===id); return{nome:v.nome,ml:v.ml,cor:p?p.cor:'#8E8E98'}; }).sort((a,b)=>b.ml-a.ml);
+  renderDonut('donutPerfume',()=>chartPerfume,c=>{chartPerfume=c},perfItems.map(i=>i.nome),perfItems.map(i=>i.ml),perfItems.map(i=>i.cor),'legendPerfume',v=>v.toFixed(1)+' ml');
 
-  renderDonut('donutPerfume', chartPerfume, perfItems.map(i=>i.nome), perfItems.map(i=>i.ml), perfItems.map(i=>i.cor), 'legendPerfume', v=>v.toFixed(1)+' ml', c=>{chartPerfume=c});
-
-  // Gráfico por canal
   const byCanal = {};
-  saidas.forEach(m=>{
-    const c = m.canal||'Outro';
-    if (!byCanal[c]) byCanal[c]=0;
-    byCanal[c] += m.preco;
-  });
-  const canalItems = Object.entries(byCanal).map(([nome,val])=>({
-    nome, val, cor: CANAL_COLORS[nome]||'#8E8E98'
-  })).sort((a,b)=>b.val-a.val);
-
-  renderDonut('donutCanal', chartCanal, canalItems.map(i=>i.nome), canalItems.map(i=>i.val), canalItems.map(i=>i.cor), 'legendCanal', v=>fmt(v), c=>{chartCanal=c});
+  saidas.forEach(m=>{ const c=m.canal||'Outro'; if(!byCanal[c])byCanal[c]=0; byCanal[c]+=m.preco; });
+  const canalItems = Object.entries(byCanal).map(([nome,val])=>({nome,val,cor:CANAL_COLORS[nome]||'#8E8E98'})).sort((a,b)=>b.val-a.val);
+  renderDonut('donutCanal',()=>chartCanal,c=>{chartCanal=c},canalItems.map(i=>i.nome),canalItems.map(i=>i.val),canalItems.map(i=>i.cor),'legendCanal',v=>fmt(v));
 }
 
-function renderDonut(canvasId, existingChart, labels, data, colors, legendId, fmtFn, setChart) {
-  const wrap = document.getElementById(canvasId).parentElement;
+function renderDonut(canvasId,getChart,setChart,labels,data,colors,legendId,fmtFn) {
+  const existing = getChart();
   if (!data.length) {
-    if (existingChart) { existingChart.destroy(); setChart(null); }
-    wrap.innerHTML = '<div class="empty" style="padding:40px 10px">Sem dados ainda.</div>';
-    document.getElementById(legendId).innerHTML = '';
-    return;
+    if(existing){existing.destroy();setChart(null);}
+    const wrap = document.getElementById(canvasId).parentElement;
+    wrap.innerHTML='<div class="empty" style="padding:40px 10px">Sem dados ainda.</div>';
+    document.getElementById(legendId).innerHTML=''; return;
   }
-  if (existingChart) existingChart.destroy();
+  if(existing) existing.destroy();
   const ctx = document.getElementById(canvasId);
-  const chart = new Chart(ctx, {
+  setChart(new Chart(ctx,{
     type:'doughnut',
-    data:{ labels, datasets:[{ data, backgroundColor:colors, borderColor:'#1C1C20', borderWidth:3, hoverOffset:6 }] },
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'68%',
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c=>` ${fmtFn(c.parsed)}` },
-        backgroundColor:'#2E2E34', titleColor:'#F0ECE4', bodyColor:'#8E8E98' } } }
-  });
-  setChart(chart);
-  document.getElementById(legendId).innerHTML = labels.map((l,i)=>`
-    <div class="legend-item">
-      <span class="legend-dot" style="background:${colors[i]}"></span>
-      <span class="legend-name">${l}</span>
-      <span class="legend-val">${fmtFn(data[i])}</span>
-    </div>`).join('');
+    data:{labels,datasets:[{data,backgroundColor:colors,borderColor:'#1C1C20',borderWidth:3,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'68%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${fmtFn(c.parsed)}`},backgroundColor:'#2E2E34',titleColor:'#F0ECE4',bodyColor:'#8E8E98'}}}
+  }));
+  document.getElementById(legendId).innerHTML=labels.map((l,i)=>`
+    <div class="legend-item"><span class="legend-dot" style="background:${colors[i]}"></span><span class="legend-name">${l}</span><span class="legend-val">${fmtFn(data[i])}</span></div>`).join('');
 }
 
 /* ── HISTORICO ── */
 function renderHistorico() {
   const list = document.getElementById('histList');
   const ultimos = [...movs].reverse().slice(0,12);
-  if (!ultimos.length) { list.innerHTML='<div class="empty">Nenhuma movimentação ainda.</div>'; return; }
+  if(!ultimos.length){list.innerHTML='<div class="empty">Nenhuma movimentação ainda.</div>';return;}
   list.innerHTML = ultimos.map(m=>`
     <div class="hist-item">
       <span class="hist-type ${m.tipo==='Entrada'?'hist-entrada':'hist-saida'}">${m.tipo}</span>
@@ -602,57 +728,44 @@ function renderHistorico() {
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <div class="hist-val ${m.tipo==='Entrada'?'neg':'pos'}">${fmt(m.preco)}</div>
-        <button class="btn-icon del" title="Apagar movimentação" onclick="pedirExclusao(${m.rowIndex},'${m.nome}','${m.dataHora}')">🗑</button>
+        <button class="btn-icon del" title="Apagar movimentação" onclick="pedirExclusaoMov(${m.rowIndex},'${m.nome.replace(/'/g,"\\'")}','${m.dataHora}')">${SVG_TRASH}</button>
       </div>
     </div>`).join('');
 }
 
-/* ── BUSCA GLOBAL ── */
+/* ── BUSCA ── */
 function handleSearch(q) {
-  const clear = document.getElementById('searchClear');
+  document.getElementById('searchClear').style.display = q?'block':'none';
   const results = document.getElementById('searchResults');
-  clear.style.display = q ? 'block' : 'none';
-  if (!q.trim()) { results.classList.remove('open'); results.innerHTML=''; return; }
+  if(!q.trim()){results.classList.remove('open');results.innerHTML='';return;}
   const nq = normalize(q);
-  const found = movs.filter(m=>{
-    return normalize(m.nome).includes(nq) ||
-           normalize(m.pedido).includes(nq) ||
-           normalize(m.cliente).includes(nq) ||
-           normalize(m.dataHora).includes(nq) ||
-           normalize(m.canal).includes(nq);
-  }).reverse().slice(0,20);
-  if (!found.length) {
-    results.innerHTML='<div class="sr-empty">Nenhum resultado encontrado.</div>';
-  } else {
-    results.innerHTML = found.map(m=>`
+  const found = movs.filter(m=>
+    normalize(m.nome).includes(nq)||normalize(m.pedido).includes(nq)||
+    normalize(m.cliente).includes(nq)||normalize(m.dataHora).includes(nq)||
+    normalize(m.canal).includes(nq)||normalize(m.telefone).includes(nq)||normalize(m.email).includes(nq)
+  ).reverse().slice(0,20);
+  results.innerHTML = !found.length
+    ? '<div class="sr-empty">Nenhum resultado encontrado.</div>'
+    : found.map(m=>`
       <div class="search-result-item">
         <span class="sr-type ${m.tipo==='Entrada'?'sr-entrada':'sr-saida'}">${m.tipo}</span>
         <div class="sr-info">
           <div class="sr-name">${m.nome}${m.pedido?' · Pedido #'+m.pedido:''}${m.cliente?' · '+m.cliente:''}</div>
-          <div class="sr-detail">${m.ml} ml${m.canal?' · '+m.canal:''} · ${m.dataHora}</div>
+          <div class="sr-detail">${m.ml} ml${m.canal?' · '+m.canal:''}${m.telefone?' · '+m.telefone:''} · ${m.dataHora}</div>
         </div>
         <div class="sr-val">${fmt(m.preco)}</div>
       </div>`).join('');
-  }
   results.classList.add('open');
 }
-function clearSearch() {
-  document.getElementById('globalSearch').value='';
-  document.getElementById('searchClear').style.display='none';
-  document.getElementById('searchResults').classList.remove('open');
-  document.getElementById('searchResults').innerHTML='';
-}
+function clearSearch(){document.getElementById('globalSearch').value='';document.getElementById('searchClear').style.display='none';document.getElementById('searchResults').classList.remove('open');document.getElementById('searchResults').innerHTML='';}
 
-/* ── MODAL ENTRADA ── */
+/* ── ENTRADA ── */
 function openEntrada() {
-  editando = null;
-  document.getElementById('entradaTitle').textContent = 'Adicionar Perfume';
-  document.getElementById('entradaSub').textContent = 'CADASTRAR NO ESTOQUE';
-  document.getElementById('btnSalvarEntrada').textContent = 'Registrar entrada';
-  document.getElementById('eNome').value='';
-  document.getElementById('eMarca').value='';
-  document.getElementById('eMl').value='';
-  document.getElementById('ePreco').value='';
+  editando=null;
+  document.getElementById('entradaTitle').textContent='Adicionar Perfume';
+  document.getElementById('entradaSub').textContent='CADASTRAR NO ESTOQUE';
+  document.getElementById('btnSalvarEntrada').textContent='Registrar entrada';
+  ['eNome','eMarca','eMl','ePreco'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('eData').value=today();
   document.getElementById('eCorHex').value='#C8F04D';
   document.getElementById('eCorPicker').value='#C8F04D';
@@ -660,134 +773,220 @@ function openEntrada() {
 }
 
 function openEditar(id) {
-  const p = estoque.find(e=>e.id===id);
-  if (!p) return;
-  editando = p;
-  document.getElementById('entradaTitle').textContent = 'Editar Perfume';
-  document.getElementById('entradaSub').textContent = 'ATUALIZAR CADASTRO';
-  document.getElementById('btnSalvarEntrada').textContent = 'Salvar alterações';
-  document.getElementById('eNome').value = p.nome;
-  document.getElementById('eMarca').value = p.marca;
-  document.getElementById('eMl').value = p.mlTotal;
-  document.getElementById('ePreco').value = p.preco;
-  // Convert dd/mm/yyyy to yyyy-mm-dd for date input
-  const parts = p.dataCompra.split('/');
-  document.getElementById('eData').value = parts.length===3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : today();
-  document.getElementById('eCorHex').value = p.cor;
-  document.getElementById('eCorPicker').value = p.cor;
+  const p=estoque.find(e=>e.id===id); if(!p)return;
+  editando=p;
+  document.getElementById('entradaTitle').textContent='Editar Perfume';
+  document.getElementById('entradaSub').textContent='ATUALIZAR CADASTRO';
+  document.getElementById('btnSalvarEntrada').textContent='Salvar alterações';
+  document.getElementById('eNome').value=p.nome;
+  document.getElementById('eMarca').value=p.marca;
+  document.getElementById('eMl').value=p.mlTotal;
+  document.getElementById('ePreco').value=p.preco;
+  const parts=p.dataCompra.split('/');
+  document.getElementById('eData').value=parts.length===3?`${parts[2]}-${parts[1]}-${parts[0]}`:today();
+  document.getElementById('eCorHex').value=p.cor;
+  document.getElementById('eCorPicker').value=p.cor;
   openModal('overlayEntrada');
 }
 
 async function salvarEntrada() {
-  const nome  = document.getElementById('eNome').value.trim();
-  const marca = document.getElementById('eMarca').value.trim();
-  const ml    = parseFloat(document.getElementById('eMl').value);
-  const preco = parseFloat(document.getElementById('ePreco').value);
-  const data  = document.getElementById('eData').value;
-  const cor   = document.getElementById('eCorHex').value.trim()||'#C8F04D';
-  if (!nome||!marca||!ml||!preco||!data){showToast('Preencha todos os campos',true);return;}
+  const nome=document.getElementById('eNome').value.trim();
+  const marca=document.getElementById('eMarca').value.trim();
+  const ml=parseFloat(document.getElementById('eMl').value);
+  const preco=parseFloat(document.getElementById('ePreco').value);
+  const data=document.getElementById('eData').value;
+  const cor=document.getElementById('eCorHex').value.trim()||'#C8F04D';
+  if(!nome||!marca||!ml||!preco||!data){showToast('Preencha todos os campos',true);return;}
 
-  if (editando) {
-    const custoMl = preco/ml;
-    const diffMl = ml - editando.mlTotal;
-    const novoDisp = Math.max(0, editando.mlDisp + diffMl);
-    await sheetsUpdate(`${ABA_E}!A${editando.rowIndex}:I${editando.rowIndex}`,
-      [[editando.id, nome, marca, ml, novoDisp, preco, formatDate(data), cor, custoMl.toFixed(4)]]);
-    closeModal('overlayEntrada');
-    showToast('✓ '+nome+' atualizado');
+  if(editando) {
+    const custoMl=preco/ml;
+    const diffMl=ml-editando.mlTotal;
+    const novoDisp=Math.max(0,editando.mlDisp+diffMl);
+    await sheetsUpdate(`${ABA_E}!A${editando.rowIndex}:J${editando.rowIndex}`,
+      [[editando.id,nome,marca,ml,novoDisp,preco,formatDate(data),cor,custoMl.toFixed(4),editando.seq]]);
+    closeModal('overlayEntrada'); showToast('✓ '+nome+' atualizado');
   } else {
-    const id = 'P'+Date.now();
-    const custoMl = preco/ml;
-    await sheetsAppend(`${ABA_E}!A:I`,[[id,nome,marca,ml,ml,preco,formatDate(data),cor,custoMl.toFixed(4)]]);
-    await sheetsAppend(`${ABA_M}!A:K`,[[now(),'Entrada',id,nome,ml,preco,'','','','','']]);
-    closeModal('overlayEntrada');
-    showToast('✓ '+nome+' adicionado ao estoque');
+    const seq=nextSeq();
+    const id=fmtId(seq);
+    const custoMl=preco/ml;
+    await sheetsAppend(`${ABA_E}!A:J`,[[id,nome,marca,ml,ml,preco,formatDate(data),cor,custoMl.toFixed(4),seq]]);
+    await sheetsAppend(`${ABA_M}!A:M`,[[now(),'Entrada',id,nome,ml,preco,'','','','','','','']]);
+    closeModal('overlayEntrada'); showToast('✓ '+nome+' adicionado');
   }
   await loadData();
 }
 
-/* ── MODAL VENDA ── */
+/* ── VENDA ── */
 function openVenda(id) {
-  const p = estoque.find(e=>e.id===id);
-  if (!p) return;
-  vendaAtual = p;
-  document.getElementById('vendaPreview').innerHTML=`
-    <span class="perfume-preview-dot" style="background:${p.cor}"></span>
-    <div><div class="perfume-preview-name">${p.nome}</div><div class="perfume-preview-info">${p.marca}</div></div>`;
+  const p=estoque.find(e=>e.id===id); if(!p)return;
+  vendaAtual=p;
+  document.getElementById('vendaPreview').innerHTML=`<span class="perfume-preview-dot" style="background:${p.cor}"></span><div><div class="perfume-preview-name">${p.nome}</div><div class="perfume-preview-info">${p.marca} · ${fmtId(p.seq)||p.id}</div></div>`;
   document.getElementById('vendaMlInfo').textContent=`Disponível: ${p.mlDisp.toFixed(1)} ml · Custo/ml: ${fmt(p.custoMl)}`;
-  document.getElementById('vPedido').value='';
-  document.getElementById('vCliente').value='';
+  ['vPedido','vCliente','vTelefone','vEmail','vMl'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('vCanal').value='';
-  document.getElementById('vMl').value='';
-  document.getElementById('vPreco').value='';
+  // Se tem preço da calculadora, preenche
+  if(precoCalculado) { document.getElementById('vPreco').value=precoCalculado.toFixed(2); precoCalculado=null; }
+  else document.getElementById('vPreco').value='';
   openModal('overlayVenda');
 }
 
 async function salvarVenda() {
-  const mlVend = parseFloat(document.getElementById('vMl').value);
-  const preco  = parseFloat(document.getElementById('vPreco').value);
-  const pedido = document.getElementById('vPedido').value.trim();
-  const cliente= document.getElementById('vCliente').value.trim();
-  const canal  = document.getElementById('vCanal').value;
-  if (!mlVend||!preco){showToast('Preencha ml e preço',true);return;}
-  if (mlVend>vendaAtual.mlDisp){showToast('Ml insuficiente em estoque',true);return;}
-  const novoMl    = parseFloat((vendaAtual.mlDisp-mlVend).toFixed(4));
-  const custoProp = parseFloat((vendaAtual.custoMl*mlVend).toFixed(4));
-  const lucro     = parseFloat((preco-custoProp).toFixed(4));
+  const mlVend=parseFloat(document.getElementById('vMl').value);
+  const preco=parseFloat(document.getElementById('vPreco').value);
+  const pedido=document.getElementById('vPedido').value.trim();
+  const cliente=document.getElementById('vCliente').value.trim();
+  const telefone=document.getElementById('vTelefone').value.trim();
+  const email=document.getElementById('vEmail').value.trim();
+  const canal=document.getElementById('vCanal').value;
+  if(!mlVend||!preco){showToast('Preencha ml e preço',true);return;}
+  if(mlVend>vendaAtual.mlDisp){showToast('Ml insuficiente em estoque',true);return;}
+  const novoMl=parseFloat((vendaAtual.mlDisp-mlVend).toFixed(4));
+  const custoProp=parseFloat((vendaAtual.custoMl*mlVend).toFixed(4));
+  const lucro=parseFloat((preco-custoProp).toFixed(4));
   await sheetsUpdate(`${ABA_E}!E${vendaAtual.rowIndex}`,[[novoMl]]);
-  await sheetsAppend(`${ABA_M}!A:K`,[[now(),'Saída',vendaAtual.id,vendaAtual.nome,mlVend,preco,custoProp,lucro,pedido,cliente,canal]]);
-  closeModal('overlayVenda');
-  showToast('✓ Venda de '+mlVend+' ml registrada');
+  await sheetsAppend(`${ABA_M}!A:M`,[[now(),'Saída',vendaAtual.id,vendaAtual.nome,mlVend,preco,custoProp,lucro,pedido,cliente,telefone,email,canal]]);
+  closeModal('overlayVenda'); showToast('✓ Venda de '+mlVend+' ml registrada');
   await loadData();
 }
 
-/* ── EXCLUSÃO MOVIMENTAÇÃO ── */
-let metaSheets = null;
-async function getMovSheetId() {
-  if (!metaSheets) metaSheets = await getSheetsMeta();
-  const s = (metaSheets.sheets||[]).find(s=>s.properties.title===ABA_M);
-  return s ? s.properties.sheetId : 0;
-}
-
-function pedirExclusao(rowIndex, nome, dataHora) {
-  excluindoRow = rowIndex;
+/* ── EXCLUSÃO MOVIMENTAÇÃO (com restauro de ml) ── */
+function pedirExclusaoMov(rowIndex, nome, dataHora) {
+  document.getElementById('confirmTitle').textContent = 'Apagar movimentação';
+  document.getElementById('confirmSub').textContent = 'ESTA AÇÃO NÃO PODE SER DESFEITA';
+  document.getElementById('confirmMsg').textContent = 'Tem certeza que deseja apagar a movimentação:';
   document.getElementById('confirmItem').textContent = nome+' · '+dataHora;
+  confirmCallback = async () => {
+    const mov = movs.find(m=>m.rowIndex===rowIndex);
+    if(mov && mov.tipo==='Saída') {
+      const perfume = estoque.find(p=>p.id===mov.idPerfume);
+      if(perfume) {
+        const mlRestaurado = parseFloat((perfume.mlDisp + mov.ml).toFixed(4));
+        const mlFinal = Math.min(mlRestaurado, perfume.mlTotal);
+        await sheetsUpdate(`${ABA_E}!E${perfume.rowIndex}`,[[mlFinal]]);
+      }
+    }
+    const sheetId = await getSheetId(ABA_M);
+    await sheetsBatchUpdate([{deleteDimension:{range:{sheetId,dimension:'ROWS',startIndex:rowIndex-1,endIndex:rowIndex}}}]);
+    metaSheets=null;
+    closeModal('overlayConfirm'); showToast('✓ Movimentação apagada e estoque restaurado');
+    await loadData();
+  };
+  document.getElementById('confirmBtn').onclick = confirmCallback;
   openModal('overlayConfirm');
 }
 
-async function confirmarExclusao() {
-  if (!excluindoRow) return;
-  try {
-    const sheetId = await getMovSheetId();
-    await sheetsDeleteRow(sheetId, excluindoRow);
-    closeModal('overlayConfirm');
-    showToast('✓ Registro apagado');
-    metaSheets = null;
+/* ── EXCLUSÃO PERFUME ── */
+function pedirExclusaoPerfume(id) {
+  const p = estoque.find(e=>e.id===id); if(!p)return;
+  document.getElementById('confirmTitle').textContent = 'Excluir perfume';
+  document.getElementById('confirmSub').textContent = 'ESTA AÇÃO NÃO PODE SER DESFEITA';
+  document.getElementById('confirmMsg').textContent = 'Tem certeza que deseja remover o perfume:';
+  document.getElementById('confirmItem').textContent = p.nome+' · '+p.marca;
+  confirmCallback = async () => {
+    const sheetId = await getSheetId(ABA_E);
+    await sheetsBatchUpdate([{deleteDimension:{range:{sheetId,dimension:'ROWS',startIndex:p.rowIndex-1,endIndex:p.rowIndex}}}]);
+    metaSheets=null;
+    closeModal('overlayConfirm'); showToast('✓ '+p.nome+' removido do estoque');
     await loadData();
-  } catch(e) { showToast('Erro ao apagar: '+e.message, true); }
+  };
+  document.getElementById('confirmBtn').onclick = confirmCallback;
+  openModal('overlayConfirm');
+}
+
+/* ── CALCULADORA ── */
+function setCalcTab(t) {
+  calcTab=t;
+  document.getElementById('ctab-avista').classList.toggle('active',t==='avista');
+  document.getElementById('ctab-cartao').classList.toggle('active',t==='cartao');
+  calcPreco();
+}
+
+function fmtBRL(v){ return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+function precoSugerido(val){ const i=Math.floor(val); const c=i+0.90; return c>=val?c:i+1.90; }
+
+function calcPriceDetail(preco,volume,embalagem,margem,taxa,ml) {
+  const precoMl=preco/volume;
+  const custoPerfume=precoMl*ml;
+  const custoTotal=custoPerfume+embalagem;
+  const precoComMargem=custoTotal/(1-margem/100);
+  const precoFinal=precoComMargem/(1-taxa/100);
+  const valorTaxa=precoFinal-precoComMargem;
+  const lucroLiquido=precoComMargem-custoTotal;
+  return{custoPerfume,custoTotal,precoComMargem,valorTaxa,precoFinal,lucroLiquido};
+}
+
+function calcPreco() {
+  const preco=parseFloat(document.getElementById('cPreco')?.value)||0;
+  const volume=parseFloat(document.getElementById('cVolume')?.value)||1;
+  const embalagem=parseFloat(document.getElementById('cEmbalagem')?.value)||0;
+  const margem=parseFloat(document.getElementById('cMargem')?.value)||0;
+  const taxaAvista=parseFloat(document.getElementById('cTaxaAvista')?.value)||0;
+  const taxaCartao=parseFloat(document.getElementById('cTaxaCartao')?.value)||0;
+  const taxa=calcTab==='avista'?taxaAvista:taxaCartao;
+  const sizes=[3,5,8,10];
+  const grid=document.getElementById('calcResultsGrid');
+  if(!grid)return;
+  grid.innerHTML='';
+  sizes.forEach(ml=>{
+    const{precoFinal,lucroLiquido}=calcPriceDetail(preco,volume,embalagem,margem,taxa,ml);
+    const card=document.createElement('div');
+    card.className='calc-result-card'+(ml===calcSelectedMl?' selected':'');
+    card.innerHTML=`<span class="calc-result-ml">${ml} ml</span><span class="calc-result-price">${fmtBRL(precoFinal)}</span><span class="calc-result-lucro">+${fmtBRL(lucroLiquido)}</span>`;
+    card.addEventListener('click',()=>{calcSelectedMl=ml;calcPreco();});
+    grid.appendChild(card);
+  });
+  const{custoPerfume,custoTotal,precoComMargem,valorTaxa,precoFinal,lucroLiquido}=calcPriceDetail(preco,volume,embalagem,margem,taxa,calcSelectedMl);
+  const sugerido=precoSugerido(precoFinal);
+  document.getElementById('calcBreakdown').innerHTML=`
+    <p class="calc-breakdown-title">— detalhamento · ${calcSelectedMl} ml</p>
+    <div class="calc-breakdown-row"><span>Custo do perfume</span><span class="bval">${fmtBRL(custoPerfume)}</span></div>
+    <div class="calc-breakdown-row"><span>Custo da embalagem</span><span class="bval">${fmtBRL(embalagem)}</span></div>
+    <div class="calc-breakdown-row"><span>Custo total</span><span class="bval">${fmtBRL(custoTotal)}</span></div>
+    <div class="calc-breakdown-row"><span>Sua margem (${margem.toFixed(0)}%)</span><span class="bval">${fmtBRL(lucroLiquido)}</span></div>
+    <div class="calc-breakdown-row"><span>Seu preço (sem taxa)</span><span class="bval">${fmtBRL(precoComMargem)}</span></div>
+    <div class="calc-breakdown-row"><span>Taxa repassada (${taxa.toFixed(2)}%)</span><span class="bval bval-tax">+${fmtBRL(valorTaxa)}</span></div>
+    <div class="calc-breakdown-row btotal"><span class="blbl">Preço final cobrado</span><span class="bval">${fmtBRL(precoFinal)}</span></div>
+    <div class="calc-breakdown-row" style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--steel);border-bottom:none">
+      <span style="color:var(--ghost)">Preço sugerido<span class="badge-indicativo">indicativo</span></span>
+      <span class="bval bval-suggested">${fmtBRL(sugerido)}</span>
+    </div>`;
+}
+
+function usarPrecoNaVenda() {
+  const preco=parseFloat(document.getElementById('cPreco')?.value)||0;
+  const volume=parseFloat(document.getElementById('cVolume')?.value)||1;
+  const embalagem=parseFloat(document.getElementById('cEmbalagem')?.value)||0;
+  const margem=parseFloat(document.getElementById('cMargem')?.value)||0;
+  const taxaAvista=parseFloat(document.getElementById('cTaxaAvista')?.value)||0;
+  const taxaCartao=parseFloat(document.getElementById('cTaxaCartao')?.value)||0;
+  const taxa=calcTab==='avista'?taxaAvista:taxaCartao;
+  const{precoFinal}=calcPriceDetail(preco,volume,embalagem,margem,taxa,calcSelectedMl);
+  precoCalculado=precoSugerido(precoFinal);
+  switchTab('dashboard');
+  showToast(`✓ Preço R$ ${precoCalculado.toFixed(2).replace('.',',')} pronto para a próxima venda`);
 }
 
 /* ── UTILS ── */
-function fmt(v){ if(v==null||isNaN(v))return'—'; return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function today(){ return new Date().toISOString().split('T')[0]; }
-function now(){ return new Date().toLocaleString('pt-BR'); }
-function formatDate(iso){ if(!iso)return''; const[y,m,d]=iso.split('-'); return`${d}/${m}/${y}`; }
-function normalize(s){ return(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
-function syncColor(picker,hexId){ document.getElementById(hexId).value=picker.value.toUpperCase(); }
-function syncHex(input,pickerId){ const v=input.value.trim(); if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById(pickerId).value=v; }
-function openModal(id){ document.getElementById(id).classList.add('open'); }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function fmt(v){if(v==null||isNaN(v))return'—';return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function today(){return new Date().toISOString().split('T')[0];}
+function now(){return new Date().toLocaleString('pt-BR');}
+function formatDate(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return`${d}/${m}/${y}`;}
+function normalize(s){return(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
+function syncColor(picker,hexId){document.getElementById(hexId).value=picker.value.toUpperCase();}
+function syncHex(input,pickerId){const v=input.value.trim();if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById(pickerId).value=v;}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 let toastTimer;
 function showToast(msg,isError=false){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast'+(isError?' error':'');
-  t.classList.add('show'); clearTimeout(toastTimer);
+  t.textContent=msg;t.className='toast'+(isError?' error':'');
+  t.classList.add('show');clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
 }
 
 document.querySelectorAll('.overlay').forEach(o=>{
-  o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); });
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});
 });
 </script>
 </body>
