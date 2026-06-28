@@ -557,6 +557,7 @@ function switchTab(name) {
   const idx = name === 'dashboard' ? 0 : 1;
   document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   document.getElementById('searchBar').style.display = name === 'dashboard' ? 'block' : 'none';
+  if (name === "dashboard" && estoque.length) { setTimeout(() => { renderCharts(); }, 50); }
 }
 
 /* ── SHEETS API ── */
@@ -696,14 +697,18 @@ function renderCharts() {
 
 function renderDonut(canvasId,getChart,setChart,labels,data,colors,legendId,fmtFn) {
   const existing = getChart();
+  const canvasEl = document.getElementById(canvasId);
+  if (!canvasEl) return; // canvas not in DOM yet (e.g. tab not active)
   if (!data.length) {
     if(existing){existing.destroy();setChart(null);}
-    const wrap = document.getElementById(canvasId).parentElement;
-    wrap.innerHTML='<div class="empty" style="padding:40px 10px">Sem dados ainda.</div>';
-    document.getElementById(legendId).innerHTML=''; return;
+    const wrap = canvasEl.parentElement;
+    if(wrap) wrap.innerHTML='<div class="empty" style="padding:40px 10px">Sem dados ainda.</div>';
+    const leg = document.getElementById(legendId);
+    if(leg) leg.innerHTML='';
+    return;
   }
   if(existing) existing.destroy();
-  const ctx = document.getElementById(canvasId);
+  const ctx = canvasEl;
   setChart(new Chart(ctx,{
     type:'doughnut',
     data:{labels,datasets:[{data,backgroundColor:colors,borderColor:'#1C1C20',borderWidth:3,hoverOffset:6}]},
