@@ -816,17 +816,17 @@ async function salvarEntrada() {
   if(!nome||!marca||!ml||!preco||!data){showToast('Preencha todos os campos',true);return;}
 
   if(editando) {
-    const custoMl=preco/ml;
+    const custoMl=Math.round((preco/ml)*10000)/10000;
     const diffMl=ml-editando.mlTotal;
     const novoDisp=Math.max(0,editando.mlDisp+diffMl);
     await sheetsUpdate(`${ABA_E}!A${editando.rowIndex}:J${editando.rowIndex}`,
-      [[editando.id,nome,marca,ml,novoDisp,preco,formatDate(data),cor,custoMl.toFixed(4),editando.seq]]);
+      [[editando.id,nome,marca,ml,novoDisp,preco,formatDate(data),cor,custoMl,editando.seq]]);
     closeModal('overlayEntrada'); showToast('✓ '+nome+' atualizado');
   } else {
     const seq=nextSeq();
     const id=fmtId(seq);
-    const custoMl=preco/ml;
-    await sheetsAppend(`${ABA_E}!A:J`,[[id,nome,marca,ml,ml,preco,formatDate(data),cor,custoMl.toFixed(4),seq]]);
+    const custoMl=Math.round((preco/ml)*10000)/10000;
+    await sheetsAppend(`${ABA_E}!A:J`,[[id,nome,marca,ml,ml,preco,formatDate(data),cor,custoMl,seq]]);
     await sheetsAppend(`${ABA_M}!A:M`,[[now(),'Entrada',id,nome,ml,preco,'','','','','','','']]);
     closeModal('overlayEntrada'); showToast('✓ '+nome+' adicionado');
   }
@@ -857,9 +857,9 @@ async function salvarVenda() {
   const canal=document.getElementById('vCanal').value;
   if(!mlVend||!preco){showToast('Preencha ml e preço',true);return;}
   if(mlVend>vendaAtual.mlDisp){showToast('Ml insuficiente em estoque',true);return;}
-  const novoMl=parseFloat((vendaAtual.mlDisp-mlVend).toFixed(4));
-  const custoProp=parseFloat((vendaAtual.custoMl*mlVend).toFixed(4));
-  const lucro=parseFloat((preco-custoProp).toFixed(4));
+  const novoMl=Math.round((vendaAtual.mlDisp-mlVend)*10000)/10000;
+  const custoProp=Math.round((vendaAtual.custoMl*mlVend)*100)/100;
+  const lucro=Math.round((preco-custoProp)*100)/100;
   await sheetsUpdate(`${ABA_E}!E${vendaAtual.rowIndex}`,[[novoMl]]);
   await sheetsAppend(`${ABA_M}!A:M`,[[now(),'Saída',vendaAtual.id,vendaAtual.nome,mlVend,preco,custoProp,lucro,pedido,cliente,telefone,email,canal]]);
   closeModal('overlayVenda'); showToast('✓ Venda de '+mlVend+' ml registrada');
@@ -877,7 +877,7 @@ function pedirExclusaoMov(rowIndex, nome, dataHora) {
     if(mov && mov.tipo==='Saída') {
       const perfume = estoque.find(p=>p.id===mov.idPerfume);
       if(perfume) {
-        const mlRestaurado = parseFloat((perfume.mlDisp + mov.ml).toFixed(4));
+        const mlRestaurado = Math.round((perfume.mlDisp + mov.ml)*10000)/10000;
         const mlFinal = Math.min(mlRestaurado, perfume.mlTotal);
         await sheetsUpdate(`${ABA_E}!E${perfume.rowIndex}`,[[mlFinal]]);
       }
