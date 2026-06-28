@@ -203,12 +203,6 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
 .nav-tab-btn:hover{color:var(--ghost)}.nav-tab-btn.active{color:var(--racing);border-bottom-color:var(--racing)}
 .tab-content{display:none;padding:24px 32px 64px}.tab-content.active{display:block}
 @media(max-width:900px){.grid-3{grid-template-columns:1fr 1fr}}
-@media(max-width:700px){
-  .grid-3,.grid-2{grid-template-columns:1fr}
-  .hist-item{flex-wrap:wrap;gap:6px}
-  .hist-name{font-size:11px}
-  .hist-detail{font-size:9px}
-}
 @media(max-width:600px){
   .grid-3,.grid-2{grid-template-columns:1fr}
   .calc-grid-2{grid-template-columns:1fr}
@@ -217,9 +211,6 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
   .modal{padding:18px}
   .field-row{grid-template-columns:1fr}
   header img[alt="Nebulus"]{height:24px!important}
-  .hist-val{font-size:11px}
-  .panel{overflow:hidden}
-  .grid-3 .panel,.grid-2 .panel{width:100%;max-width:100%}
 }
 </style>
 </head>
@@ -231,7 +222,6 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
   </div>
   <div class="header-actions">
     <button class="btn-ghost" id="btnLogin" onclick="handleLogin()">Entrar com Google</button>
-    <button class="btn-ghost" id="btnAtualizar" onclick="recarregarDados()" style="display:none">↻ Atualizar</button>
     <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
   </div>
 </header>
@@ -252,7 +242,7 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
   <div class="search-results" id="searchResults"></div>
 </div>
 <div id="loginScreen">
-  <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:34px;width:auto;object-fit:contain">
+  <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:40px;width:auto;object-fit:contain">
   <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
   <p class="login-desc">Conecte sua conta Google para sincronizar o estoque em tempo real.</p>
   <button class="btn" onclick="handleLogin()" style="padding:12px 32px;font-size:14px">Entrar com Google</button>
@@ -502,23 +492,15 @@ let accessToken=null,estoque=[],movs=[],vendaAtual=null,editando=null,metaSheets
 let chartPerfume=null,chartCanal=null,chartMensal=null;
 let calcTab='avista',calcSelectedMl=5,precoCalculado=null,confirmCallback=null,detalheAtual=null;
 
-flet tokenClient=null;
 function handleLogin(){
-  tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async(r)=>{
+  const c=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async(r)=>{
     if(r.error){showToast('Erro: '+r.error,true);return;}
     accessToken=r.access_token;
     sessionStorage.setItem('nb_token',accessToken);
     sessionStorage.setItem('nb_token_exp',Date.now()+3500000);
     showApp();await initSheets();await loadData();
-  }});tokenClient.requestAccessToken();
+  }});c.requestAccessToken();
 }
-function renovarToken(){
-  if(!tokenClient)return;
-  tokenClient.requestAccessToken({prompt:''});
-}
-// Renova automaticamente a cada 50 minutos
-setInterval(()=>{ if(accessToken) renovarToken(); }, 50*60*1000);
-  
 function handleLogout(){
   google.accounts.oauth2.revoke(accessToken,()=>{});
   accessToken=null;sessionStorage.removeItem('nb_token');sessionStorage.removeItem('nb_token_exp');
@@ -528,7 +510,6 @@ function handleLogout(){
   document.getElementById('loginScreen').style.display='flex';
   document.getElementById('btnLogin').style.display='';
   document.getElementById('btnLogout').style.display='none';
-  document.getElementById('btnAtualizar').style.display='none';
 }
 function showApp(){
   document.getElementById('loginScreen').style.display='none';
@@ -537,7 +518,6 @@ function showApp(){
   document.getElementById('searchBar').style.display='block';
   document.getElementById('btnLogin').style.display='none';
   document.getElementById('btnLogout').style.display='';
-  document.getElementById('btnAtualizar').style.display='';
   const meta=localStorage.getItem('nb_meta');
   if(meta)document.getElementById('metaInput').value=meta;
 }
@@ -553,15 +533,6 @@ function switchTab(n){
   document.querySelectorAll('.nav-tab-btn')[n==='dashboard'?0:1].classList.add('active');
   document.getElementById('searchBar').style.display=n==='dashboard'?'block':'none';
   if(n==='dashboard'&&estoque.length)setTimeout(()=>renderCharts(),50);
-}
-
-  async function recarregarDados(){
-  const btn=document.getElementById('btnAtualizar');
-  btn.textContent='↻ Atualizando...';
-  btn.disabled=true;
-  try{ await loadData(); showToast('✓ Dados atualizados'); }
-  catch(e){ showToast('Erro ao atualizar',true); }
-  finally{ btn.textContent='↻ Atualizar'; btn.disabled=false; }
 }
 async function api(path,opts={}){
   const r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+path,{...opts,headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json',...(opts.headers||{})}});
