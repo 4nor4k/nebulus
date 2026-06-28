@@ -10,7 +10,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--asphalt:#0E0E10;--concrete:#1C1C20;--steel:#2E2E34;--racing:#C8F04D;--racing-dim:rgba(200,240,77,0.10);--racing-border:rgba(200,240,77,0.28);--titanium:#8E8E98;--ghost:#F0ECE4;--danger:#EB4C3C;--danger-dim:rgba(235,76,60,0.12);--warn:#F0A030;--warn-dim:rgba(240,160,48,0.12);--green:#3DEB7A;--green-dim:rgba(61,235,122,0.12);--success:#5BDB8A;}
 body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden}
-header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;flex-wrap:wrap;gap:8px}
 .logo-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--titanium);text-transform:uppercase;margin-left:10px}
 .header-actions{display:flex;gap:10px;align-items:center}
 nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32px;display:flex;gap:0;overflow-x:auto}
@@ -216,6 +216,9 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
   .hist-val{font-size:11px}
   .hist-item{min-width:0}
   .grid-3 .panel,.grid-2 .panel{width:100%;box-sizing:border-box}
+  .header-actions{width:100%;justify-content:stretch}
+  .header-actions .btn-ghost{flex:1;text-align:center}
+  header{padding-bottom:10px}
 }
 </style>
 </head>
