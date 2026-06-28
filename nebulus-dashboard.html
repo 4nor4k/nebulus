@@ -608,23 +608,35 @@ async function initSheets() {
   if (!hdM.values) await sheetsUpdate(`${ABA_M}!A1:M1`,[['Data/Hora','Tipo','ID Perfume','Nome','Ml','Preço','Custo Proporcional','Lucro','Nº Pedido','Cliente','Telefone','Email','Canal']]);
 }
 
+/* Lê número do Sheets independente de vírgula ou ponto como separador */
+function parseSheetsNum(v) {
+  if (v == null || v === '') return 0;
+  const s = v.toString().trim();
+  // Se tem vírgula E ponto: formato pt-BR (1.200,50) → remove pontos, troca vírgula por ponto
+  if (s.includes(',') && s.includes('.')) return parseFloat(s.replace(/\./g,'').replace(',','.')) || 0;
+  // Só vírgula: pode ser 1200,50 → troca vírgula por ponto
+  if (s.includes(',')) return parseFloat(s.replace(',','.')) || 0;
+  // Só ponto ou número puro
+  return parseFloat(s) || 0;
+}
+
 /* ── LOAD ── */
 async function loadData() {
   try {
     const re = await sheetsGet(`${ABA_E}!A2:J1000`);
     estoque = (re.values||[]).map((r,i)=>({
       rowIndex:i+2, id:r[0]||'', nome:r[1]||'', marca:r[2]||'',
-      mlTotal:parseFloat(r[3])||0, mlDisp:parseFloat(r[4])||0,
-      preco:parseFloat(r[5])||0, dataCompra:r[6]||'',
-      cor:r[7]||'#C8F04D', custoMl:parseFloat(r[8])||0,
+      mlTotal:parseSheetsNum(r[3]), mlDisp:parseSheetsNum(r[4]),
+      preco:parseSheetsNum(r[5]), dataCompra:r[6]||'',
+      cor:r[7]||'#C8F04D', custoMl:parseSheetsNum(r[8]),
       seq:parseInt(r[9])||0,
     })).filter(r=>r.nome);
 
     const rm = await sheetsGet(`${ABA_M}!A2:M1000`);
     movs = (rm.values||[]).map((r,i)=>({
       rowIndex:i+2, dataHora:r[0]||'', tipo:r[1]||'', idPerfume:r[2]||'',
-      nome:r[3]||'', ml:parseFloat(r[4])||0, preco:parseFloat(r[5])||0,
-      custoProp:parseFloat(r[6])||0, lucro:parseFloat(r[7])||0,
+      nome:r[3]||'', ml:parseSheetsNum(r[4]), preco:parseSheetsNum(r[5]),
+      custoProp:parseSheetsNum(r[6]), lucro:parseSheetsNum(r[7]),
       pedido:r[8]||'', cliente:r[9]||'', telefone:r[10]||'', email:r[11]||'', canal:r[12]||'',
     }));
 
