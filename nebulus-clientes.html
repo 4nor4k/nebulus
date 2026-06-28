@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBULUS. — Clientes</title>
+<link rel="icon" href="https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--asphalt:#0E0E10;--concrete:#1C1C20;--steel:#2E2E34;--racing:#C8F04D;--racing-dim:rgba(200,240,77,0.10);--racing-border:rgba(200,240,77,0.28);--titanium:#8E8E98;--ghost:#F0ECE4;--danger:#EB4C3C;--danger-dim:rgba(235,76,60,0.12);--green:#3DEB7A;--green-dim:rgba(61,235,122,0.12);}
+body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--titanium);text-transform:uppercase;margin-left:10px}
+nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32px;display:flex;overflow-x:auto}
+.nav-link{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--titanium);padding:13px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-decoration:none;white-space:nowrap}
+.nav-link:hover{color:var(--ghost)}.nav-link.active{color:var(--racing);border-bottom-color:var(--racing)}
+.btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:7px;padding:9px 20px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;cursor:pointer;transition:opacity .15s;text-transform:uppercase;white-space:nowrap}
+.btn:hover{opacity:.85}
+.btn-ghost{background:transparent;color:var(--racing);border:1px solid var(--racing-border);border-radius:7px;padding:8px 16px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.btn-ghost:hover{background:var(--racing-dim)}
+.btn-icon{background:transparent;border:1px solid var(--steel);border-radius:5px;color:var(--titanium);width:26px;height:26px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0}
+.btn-icon:hover{border-color:var(--racing);color:var(--racing)}
+#loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:22px;text-align:center;padding:32px}
+.login-desc{font-size:14px;color:var(--titanium);max-width:320px;line-height:1.7}
+#app{display:none}
+.page{padding:24px 32px 64px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:24px}
+.kpi{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:16px 18px}
+.kpi-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin-bottom:7px}
+.kpi-value{font-weight:700;font-size:22px;color:var(--ghost);line-height:1}
+.kpi-value.green{color:var(--racing)}.kpi-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--titanium);margin-top:4px}
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.section-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.section-title::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--racing)}
+.search-wrap{display:flex;align-items:center;gap:10px;background:var(--asphalt);border:1px solid var(--steel);border-radius:8px;padding:9px 14px;transition:border-color .2s;margin-bottom:16px}
+.search-wrap:focus-within{border-color:var(--racing)}
+.search-input{flex:1;background:transparent;border:none;outline:none;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px}
+.search-input::placeholder{color:var(--titanium)}
+.panel{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:0;overflow:hidden}
+table{width:100%;border-collapse:collapse;min-width:600px}
+thead th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--titanium);padding:10px 14px;text-align:left;background:var(--steel);white-space:nowrap;cursor:pointer}
+thead th:hover{color:var(--racing)}
+tbody tr{border-bottom:1px solid rgba(46,46,52,.8);transition:background .12s;cursor:pointer}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+tbody td{padding:12px 14px;font-size:13px}
+.td-name{font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td-mono{font-family:'Space Mono',monospace;font-size:12px}
+.td-green{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--racing)}
+.td-ti{font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.recorrente{font-family:'Space Mono',monospace;font-size:9px;color:var(--racing);background:var(--racing-dim);border:1px solid var(--racing-border);border-radius:3px;padding:1px 5px;margin-left:6px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:400;display:none;align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+.modal{background:var(--concrete);border:1px solid var(--steel);border-radius:14px;width:100%;max-width:520px;padding:26px;position:relative;max-height:94vh;overflow-y:auto}
+.modal-title{font-weight:700;font-size:15px;letter-spacing:.06em;margin-bottom:3px;text-transform:uppercase}
+.modal-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);letter-spacing:.1em;margin-bottom:18px}
+.modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--titanium);font-size:22px;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--ghost)}
+.detalhe-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(46,46,52,.8);font-size:13px}
+.detalhe-row:last-child{border-bottom:none}
+.detalhe-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;padding-right:12px}
+.detalhe-val{font-size:13px;color:var(--ghost);font-weight:500;text-align:right;word-break:break-word}
+.detalhe-val.accent{color:var(--racing);font-family:'Space Mono',monospace;font-weight:700}
+.detalhe-section{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin:12px 0 5px;opacity:.5}
+.hist-mini{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(46,46,52,.6);font-size:12px}
+.hist-mini:last-child{border-bottom:none}
+.hist-mini-type{font-family:'Space Mono',monospace;font-size:9px;padding:2px 5px;border-radius:3px;background:var(--green-dim);color:var(--green);flex-shrink:0}
+.hist-mini-info{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--titanium);font-family:'Space Mono',monospace;font-size:10px}
+.hist-mini-val{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--racing);flex-shrink:0}
+.modal-footer{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--steel)}
+.empty{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.loading{text-align:center;padding:36px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;margin-right:7px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--steel);border:1px solid var(--racing-border);border-radius:8px;padding:11px 18px;font-family:'Space Mono',monospace;font-size:12px;color:var(--ghost);z-index:999;transform:translateY(80px);opacity:0;transition:all .3s ease}
+.toast.show{transform:translateY(0);opacity:1}
+@media(max-width:600px){header,nav,.page{padding-left:16px;padding-right:16px}.modal{padding:18px}header img{height:24px!important}}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center">
+    <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:30px;width:auto;object-fit:contain">
+    <span class="logo-sub">Clientes</span>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="btn-ghost" id="btnLogin" onclick="handleLogin()">Entrar com Google</button>
+    <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
+  </div>
+</header>
+<nav>
+  <a class="nav-link" href="nebulus-dashboard.html">Dashboard</a>
+  <a class="nav-link active" href="nebulus-clientes.html">Clientes</a>
+  <a class="nav-link" href="nebulus-historico.html">Histórico</a>
+  <a class="nav-link" href="nebulus-relatorio.html">Relatório PDF</a>
+</nav>
+<div id="loginScreen">
+  <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:40px;width:auto">
+  <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
+  <p class="login-desc">Conecte sua conta Google para acessar os dados.</p>
+  <button class="btn" onclick="handleLogin()" style="padding:12px 32px">Entrar com Google</button>
+</div>
+<div id="app">
+  <div class="page">
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-label">Total de clientes</div><div class="kpi-value" id="kClientes">—</div><div class="kpi-sub">cadastrados</div></div>
+      <div class="kpi"><div class="kpi-label">Clientes recorrentes</div><div class="kpi-value green" id="kRecorrentes">—</div><div class="kpi-sub">mais de 1 compra</div></div>
+      <div class="kpi"><div class="kpi-label">Ticket médio</div><div class="kpi-value" id="kTicket">—</div><div class="kpi-sub">por pedido</div></div>
+      <div class="kpi"><div class="kpi-label">Melhor cliente</div><div class="kpi-value" id="kMelhor" style="font-size:16px">—</div><div class="kpi-sub" id="kMelhorSub"></div></div>
+    </div>
+    <div class="section-hd">
+      <div class="section-title">Base de clientes</div>
+    </div>
+    <div class="search-wrap">
+      <span style="color:var(--racing);display:flex"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M22 22h-2v-2h2zm-2-2h-2v-2h2zm-6-2H6v-2h8zm4 0h-2v-2h2zM6 16H4v-2h2zm10 0h-2v-2h2zM4 14H2V6h2zm14 0h-2V6h2zM6 6H4V4h2zm10 0h-2V4h2zm-2-2H6V2h8z"/></svg></span>
+      <input class="search-input" id="searchCliente" placeholder="Buscar cliente por nome, telefone ou email..." oninput="renderClientes()">
+    </div>
+    <div class="panel">
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th onclick="sortBy('nome')">Cliente</th>
+            <th onclick="sortBy('totalPedidos')">Pedidos</th>
+            <th onclick="sortBy('totalGasto')">Total gasto</th>
+            <th onclick="sortBy('ultimaCompra')">Última compra</th>
+            <th>Contato</th>
+          </tr></thead>
+          <tbody id="clientesBody"><tr><td colspan="5"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CLIENTE -->
+<div class="overlay" id="overlayCliente">
+  <div class="modal" style="max-width:480px">
+    <button class="modal-close" onclick="closeModal('overlayCliente')">×</button>
+    <div class="modal-title" id="clienteModalNome"></div>
+    <div class="modal-sub" id="clienteModalSub"></div>
+    <div id="clienteModalContent"></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('overlayCliente')">Fechar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const CLIENT_ID='822341292552-9uont9j3sik7dqafjergu0sc4e3d4v9m.apps.googleusercontent.com';
+const SHEET_ID='1TaJk_4tSKXKXZnyG1lDTOif0ZauahG6rZnXibwyMqqE';
+const SCOPES='https://www.googleapis.com/auth/spreadsheets';
+const ABA_C='Clientes',ABA_M='Movimentações';
+let accessToken=null,clientes=[],movs=[],sortCol='totalGasto',sortDir=-1;
+
+function handleLogin(){
+  const c=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async(r)=>{
+    if(r.error){showToast('Erro: '+r.error);return;}
+    accessToken=r.access_token;sessionStorage.setItem('nb_token',accessToken);sessionStorage.setItem('nb_token_exp',Date.now()+3500000);
+    showApp();await loadData();
+  }});c.requestAccessToken();
+}
+function handleLogout(){accessToken=null;sessionStorage.removeItem('nb_token');sessionStorage.removeItem('nb_token_exp');document.getElementById('app').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('btnLogin').style.display='';document.getElementById('btnLogout').style.display='none';}
+function showApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('btnLogin').style.display='none';document.getElementById('btnLogout').style.display='';}
+window.addEventListener('load',()=>{const t=sessionStorage.getItem('nb_token'),exp=parseInt(sessionStorage.getItem('nb_token_exp')||'0');if(t&&Date.now()<exp){accessToken=t;showApp();loadData();}});
+async function api(path,opts={}){const r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+path,{...opts,headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json',...(opts.headers||{})}});return r.json();}
+async function sheetsGet(range){return api('/values/'+encodeURIComponent(range));}
+function parseSheetsNum(v){if(v==null||v==='')return 0;const s=v.toString().trim();if(s.includes(',')&&s.includes('.'))return parseFloat(s.replace(/\./g,'').replace(',','.'))||0;if(s.includes(','))return parseFloat(s.replace(',','.'))||0;return parseFloat(s)||0;}
+async function loadData(){
+  try{
+    const rc=await sheetsGet(`${ABA_C}!A2:F1000`);
+    clientes=(rc.values||[]).map((r,i)=>({rowIndex:i+2,nome:r[0]||'',telefone:r[1]||'',email:r[2]||'',totalPedidos:parseInt(r[3])||0,totalGasto:parseSheetsNum(r[4]),ultimaCompra:r[5]||''})).filter(r=>r.nome);
+    const rm=await sheetsGet(`${ABA_M}!A2:N1000`);
+    movs=(rm.values||[]).map((r,i)=>({rowIndex:i+2,dataHora:r[0]||'',tipo:r[1]||'',nome:r[3]||'',ml:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),pedido:r[8]||'',cliente:r[9]||'',canal:r[12]||''}));
+    renderKPIs();renderClientes();
+  }catch(e){showToast('Erro: '+e.message);}
+}
+function renderKPIs(){
+  const total=clientes.length;const rec=clientes.filter(c=>c.totalPedidos>1).length;
+  const totalPedidos=clientes.reduce((s,c)=>s+c.totalPedidos,0);
+  const totalGasto=clientes.reduce((s,c)=>s+c.totalGasto,0);
+  const ticket=totalPedidos>0?totalGasto/totalPedidos:0;
+  const melhor=clientes.sort((a,b)=>b.totalGasto-a.totalGasto)[0];
+  document.getElementById('kClientes').textContent=total;
+  document.getElementById('kRecorrentes').textContent=rec;
+  document.getElementById('kTicket').textContent=fmt(ticket);
+  document.getElementById('kMelhor').textContent=melhor?melhor.nome.split(' ')[0]:'—';
+  document.getElementById('kMelhorSub').textContent=melhor?fmt(melhor.totalGasto):'';
+}
+function sortBy(col){if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=-1;}renderClientes();}
+function renderClientes(){
+  const q=normalize(document.getElementById('searchCliente').value);
+  let list=clientes.filter(c=>!q||normalize(c.nome).includes(q)||normalize(c.telefone).includes(q)||normalize(c.email).includes(q));
+  list=[...list].sort((a,b)=>{let va=a[sortCol],vb=b[sortCol];if(typeof va==='string')va=normalize(va);if(typeof vb==='string')vb=normalize(vb);return(va<vb?-1:va>vb?1:0)*sortDir;});
+  const body=document.getElementById('clientesBody');
+  if(!list.length){body.innerHTML='<tr><td colspan="5"><div class="empty">Nenhum cliente encontrado.</div></td></tr>';return;}
+  body.innerHTML=list.map(c=>`<tr onclick="openCliente('${c.nome.replace(/'/g,"\\'")}')">
+    <td class="td-name">${c.nome}${c.totalPedidos>1?'<span class="recorrente">★ recorrente</span>':''}</td>
+    <td class="td-mono">${c.totalPedidos}</td>
+    <td class="td-green">${fmt(c.totalGasto)}</td>
+    <td class="td-ti">${c.ultimaCompra||'—'}</td>
+    <td class="td-ti">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing);text-decoration:none" onclick="event.stopPropagation()">${c.telefone}</a>`:'—'}</td>
+  </tr>`).join('');
+}
+function openCliente(nome){
+  const c=clientes.find(cl=>cl.nome===nome);if(!c)return;
+  const pedidos=movs.filter(m=>m.tipo==='Saída'&&normalize(m.cliente)===normalize(nome));
+  document.getElementById('clienteModalNome').textContent=c.nome;
+  document.getElementById('clienteModalSub').textContent=`${c.totalPedidos} PEDIDO${c.totalPedidos!==1?'S':''} · ${fmt(c.totalGasto)} TOTAL`;
+  document.getElementById('clienteModalContent').innerHTML=`
+    <div class="detalhe-section">Contato</div>
+    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing);text-decoration:none">${c.telefone}</a>`:'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${c.email?`<a href="mailto:${c.email}" style="color:var(--racing);text-decoration:none">${c.email}</a>`:'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Última compra</span><span class="detalhe-val">${c.ultimaCompra||'—'}</span></div>
+    <div class="detalhe-section">Histórico de pedidos</div>
+    ${pedidos.length?pedidos.reverse().map(m=>`<div class="hist-mini"><span class="hist-mini-type">Venda</span><span class="hist-mini-info">${m.nome} · ${m.ml}ml${m.canal?' · '+m.canal:''} · ${m.dataHora}</span><span class="hist-mini-val">${fmt(m.preco)}</span></div>`).join(''):'<div class="empty" style="padding:20px">Sem pedidos registrados.</div>'}`;
+  openModal('overlayCliente');
+}
+function fmt(v){if(v==null||isNaN(v))return'—';return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function normalize(s){return(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+</script>
+</body>
+</html>

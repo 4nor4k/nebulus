@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBULUS. — Histórico</title>
+<link rel="icon" href="https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--asphalt:#0E0E10;--concrete:#1C1C20;--steel:#2E2E34;--racing:#C8F04D;--racing-dim:rgba(200,240,77,0.10);--racing-border:rgba(200,240,77,0.28);--titanium:#8E8E98;--ghost:#F0ECE4;--danger:#EB4C3C;--danger-dim:rgba(235,76,60,0.12);--warn:#F0A030;--warn-dim:rgba(240,160,48,0.12);--green:#3DEB7A;--green-dim:rgba(61,235,122,0.12);}
+body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--titanium);text-transform:uppercase;margin-left:10px}
+nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32px;display:flex;overflow-x:auto}
+.nav-link{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--titanium);padding:13px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-decoration:none;white-space:nowrap}
+.nav-link:hover{color:var(--ghost)}.nav-link.active{color:var(--racing);border-bottom-color:var(--racing)}
+.btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:7px;padding:9px 20px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;cursor:pointer;transition:opacity .15s;text-transform:uppercase}
+.btn:hover{opacity:.85}
+.btn-ghost{background:transparent;color:var(--racing);border:1px solid var(--racing-border);border-radius:7px;padding:8px 16px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.btn-ghost:hover{background:var(--racing-dim)}
+#loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:22px;text-align:center;padding:32px}
+.login-desc{font-size:14px;color:var(--titanium);max-width:320px;line-height:1.7}
+#app{display:none}.page{padding:24px 32px 64px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.filter-input{background:var(--concrete);border:1px solid var(--steel);border-radius:7px;padding:8px 12px;color:var(--ghost);font-family:'Space Mono',monospace;font-size:12px;outline:none;transition:border-color .2s}
+.filter-input:focus{border-color:var(--racing)}
+.filter-input::placeholder{color:var(--titanium)}
+.filter-select{background:var(--concrete);border:1px solid var(--steel);border-radius:7px;padding:8px 12px;color:var(--ghost);font-family:'Space Mono',monospace;font-size:12px;outline:none;cursor:pointer}
+.filter-select option{background:var(--concrete)}
+.filter-btn{background:transparent;border:1px solid var(--steel);border-radius:20px;padding:5px 14px;font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.08em}
+.filter-btn:hover,.filter-btn.active{border-color:var(--racing);color:var(--racing);background:var(--racing-dim)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.kpi{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:14px 16px}
+.kpi-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin-bottom:6px}
+.kpi-value{font-weight:700;font-size:20px;color:var(--ghost)}.kpi-value.green{color:var(--racing)}
+.panel{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:0;overflow:hidden}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:800px}
+thead th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--titanium);padding:10px 13px;text-align:left;background:var(--steel);white-space:nowrap;cursor:pointer}
+thead th:hover{color:var(--racing)}
+tbody tr{border-bottom:1px solid rgba(46,46,52,.8);transition:background .12s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
+.td-mono{font-family:'Space Mono',monospace;font-size:11px}
+.td-ti{font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.td-green{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--racing)}
+.td-red{font-family:'Space Mono',monospace;font-size:12px;color:var(--danger)}
+.type-badge{font-family:'Space Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;text-transform:uppercase}
+.entrada-badge{background:var(--racing-dim);color:var(--racing)}.saida-badge{background:var(--green-dim);color:var(--green)}
+.btn-info{background:transparent;border:1px solid var(--steel);border-radius:5px;color:var(--titanium);font-size:11px;width:26px;height:26px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center}
+.btn-info:hover{border-color:var(--racing);color:var(--racing)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:400;display:none;align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+.modal{background:var(--concrete);border:1px solid var(--steel);border-radius:14px;width:100%;max-width:440px;padding:26px;position:relative;max-height:94vh;overflow-y:auto}
+.modal-title{font-weight:700;font-size:15px;letter-spacing:.06em;margin-bottom:3px;text-transform:uppercase}
+.modal-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);letter-spacing:.1em;margin-bottom:18px}
+.modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--titanium);font-size:22px;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--ghost)}
+.detalhe-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(46,46,52,.8);font-size:13px}
+.detalhe-row:last-child{border-bottom:none}
+.detalhe-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;padding-right:12px}
+.detalhe-val{font-size:13px;color:var(--ghost);font-weight:500;text-align:right;word-break:break-word}
+.detalhe-val.accent{color:var(--racing);font-family:'Space Mono',monospace;font-weight:700}
+.detalhe-val.green{color:var(--green);font-family:'Space Mono',monospace;font-weight:700}
+.detalhe-section{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin:12px 0 5px;opacity:.5}
+.modal-footer{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--steel)}
+.empty{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.loading{text-align:center;padding:36px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;margin-right:7px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--steel);border:1px solid var(--racing-border);border-radius:8px;padding:11px 18px;font-family:'Space Mono',monospace;font-size:12px;color:var(--ghost);z-index:999;transform:translateY(80px);opacity:0;transition:all .3s ease}
+.toast.show{transform:translateY(0);opacity:1}
+@media(max-width:600px){header,nav,.page{padding-left:16px;padding-right:16px}.modal{padding:18px}header img{height:24px!important}.filters{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center">
+    <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:30px;width:auto;object-fit:contain">
+    <span class="logo-sub">Histórico</span>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="btn-ghost" id="btnLogin" onclick="handleLogin()">Entrar com Google</button>
+    <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
+  </div>
+</header>
+<nav>
+  <a class="nav-link" href="nebulus-dashboard.html">Dashboard</a>
+  <a class="nav-link" href="nebulus-clientes.html">Clientes</a>
+  <a class="nav-link active" href="nebulus-historico.html">Histórico</a>
+  <a class="nav-link" href="nebulus-relatorio.html">Relatório PDF</a>
+</nav>
+<div id="loginScreen">
+  <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:40px;width:auto">
+  <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
+  <p class="login-desc">Conecte sua conta Google para ver o histórico.</p>
+  <button class="btn" onclick="handleLogin()" style="padding:12px 32px">Entrar com Google</button>
+</div>
+<div id="app">
+  <div class="page">
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-label">Movimentações</div><div class="kpi-value" id="kTotal">—</div></div>
+      <div class="kpi"><div class="kpi-label">Vendas filtradas</div><div class="kpi-value green" id="kVendas">—</div></div>
+      <div class="kpi"><div class="kpi-label">Receita filtrada</div><div class="kpi-value green" id="kReceita">—</div></div>
+      <div class="kpi"><div class="kpi-label">Lucro filtrado</div><div class="kpi-value green" id="kLucro">—</div></div>
+    </div>
+    <div class="filters">
+      <input class="filter-input" id="fBusca" placeholder="Buscar..." oninput="renderTabela()" style="flex:1;min-width:160px">
+      <select class="filter-select" id="fTipo" onchange="renderTabela()">
+        <option value="">Todos os tipos</option>
+        <option value="Entrada">Entradas</option>
+        <option value="Saída">Saídas</option>
+      </select>
+      <select class="filter-select" id="fCanal" onchange="renderTabela()">
+        <option value="">Todos os canais</option>
+        <option>Instagram</option><option>WhatsApp</option><option>Site</option>
+      </select>
+      <input class="filter-input" id="fDe" type="date" onchange="renderTabela()" title="De">
+      <input class="filter-input" id="fAte" type="date" onchange="renderTabela()" title="Até">
+      <button class="btn-ghost" onclick="limparFiltros()">Limpar</button>
+    </div>
+    <div class="panel">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Tipo</th><th>Data/Hora</th><th>Perfume</th><th>Cliente</th>
+            <th>Canal</th><th>Ml</th><th>Preço</th><th>Lucro</th><th>Pedido</th><th></th>
+          </tr></thead>
+          <tbody id="histBody"><tr><td colspan="10"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL DETALHE -->
+<div class="overlay" id="overlayDetalhe">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('overlayDetalhe')">×</button>
+    <div class="modal-title">Detalhes do pedido</div>
+    <div class="modal-sub" id="detalheSub"></div>
+    <div id="detalheContent"></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('overlayDetalhe')">Fechar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const CLIENT_ID='822341292552-9uont9j3sik7dqafjergu0sc4e3d4v9m.apps.googleusercontent.com';
+const SHEET_ID='1TaJk_4tSKXKXZnyG1lDTOif0ZauahG6rZnXibwyMqqE';
+const SCOPES='https://www.googleapis.com/auth/spreadsheets';
+const ABA_M='Movimentações',ABA_E='Estoque';
+let accessToken=null,movs=[],estoque=[];
+
+function handleLogin(){
+  const c=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async(r)=>{
+    if(r.error){showToast('Erro: '+r.error);return;}
+    accessToken=r.access_token;sessionStorage.setItem('nb_token',accessToken);sessionStorage.setItem('nb_token_exp',Date.now()+3500000);
+    showApp();await loadData();
+  }});c.requestAccessToken();
+}
+function handleLogout(){accessToken=null;sessionStorage.removeItem('nb_token');sessionStorage.removeItem('nb_token_exp');document.getElementById('app').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('btnLogin').style.display='';document.getElementById('btnLogout').style.display='none';}
+function showApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('btnLogin').style.display='none';document.getElementById('btnLogout').style.display='';}
+window.addEventListener('load',()=>{const t=sessionStorage.getItem('nb_token'),exp=parseInt(sessionStorage.getItem('nb_token_exp')||'0');if(t&&Date.now()<exp){accessToken=t;showApp();loadData();}});
+async function api(path,opts={}){const r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+path,{...opts,headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'}});return r.json();}
+async function sheetsGet(range){return api('/values/'+encodeURIComponent(range));}
+function parseSheetsNum(v){if(v==null||v==='')return 0;const s=v.toString().trim();if(s.includes(',')&&s.includes('.'))return parseFloat(s.replace(/\./g,'').replace(',','.'))||0;if(s.includes(','))return parseFloat(s.replace(',','.'))||0;return parseFloat(s)||0;}
+async function loadData(){
+  try{
+    const re=await sheetsGet(`${ABA_E}!A2:J1000`);
+    estoque=(re.values||[]).map(r=>({id:r[0]||'',cor:r[7]||'#C8F04D'}));
+    const rm=await sheetsGet(`${ABA_M}!A2:N1000`);
+    movs=(rm.values||[]).map((r,i)=>({rowIndex:i+2,dataHora:r[0]||'',tipo:r[1]||'',idPerfume:r[2]||'',nome:r[3]||'',ml:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),custoProp:parseSheetsNum(r[6]),lucro:parseSheetsNum(r[7]),pedido:r[8]||'',cliente:r[9]||'',telefone:r[10]||'',email:r[11]||'',canal:r[12]||'',descricao:r[13]||''})).reverse();
+    renderTabela();
+  }catch(e){showToast('Erro: '+e.message);}
+}
+function getFiltered(){
+  const q=normalize(document.getElementById('fBusca').value);
+  const tipo=document.getElementById('fTipo').value;
+  const canal=document.getElementById('fCanal').value;
+  const de=document.getElementById('fDe').value;
+  const ate=document.getElementById('fAte').value;
+  return movs.filter(m=>{
+    if(tipo&&m.tipo!==tipo)return false;
+    if(canal&&m.canal!==canal)return false;
+    if(q&&!normalize(m.nome).includes(q)&&!normalize(m.cliente).includes(q)&&!normalize(m.pedido).includes(q)&&!normalize(m.canal).includes(q))return false;
+    if(de||ate){
+      const parts=m.dataHora.split(' ')[0].split('/');
+      if(parts.length===3){
+        const dt=`${parts[2]}-${parts[1]}-${parts[0]}`;
+        if(de&&dt<de)return false;
+        if(ate&&dt>ate)return false;
+      }
+    }
+    return true;
+  });
+}
+function renderTabela(){
+  const filtered=getFiltered();
+  const saidas=filtered.filter(m=>m.tipo==='Saída');
+  document.getElementById('kTotal').textContent=filtered.length;
+  document.getElementById('kVendas').textContent=saidas.length;
+  document.getElementById('kReceita').textContent=fmt(saidas.reduce((s,m)=>s+m.preco,0));
+  document.getElementById('kLucro').textContent=fmt(saidas.reduce((s,m)=>s+m.lucro,0));
+  const body=document.getElementById('histBody');
+  if(!filtered.length){body.innerHTML='<tr><td colspan="10"><div class="empty">Nenhuma movimentação encontrada.</div></td></tr>';return;}
+  body.innerHTML=filtered.map(m=>{
+    const p=estoque.find(e=>e.id===m.idPerfume);const cor=p?p.cor:'#8E8E98';
+    return`<tr>
+      <td><span class="type-badge ${m.tipo==='Entrada'?'entrada-badge':'saida-badge'}">${m.tipo}</span></td>
+      <td class="td-ti">${m.dataHora}</td>
+      <td style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:50%;background:${cor};flex-shrink:0;display:inline-block"></span>${m.nome}</td>
+      <td class="td-mono">${m.cliente||'—'}</td>
+      <td class="td-ti">${m.canal||'—'}</td>
+      <td class="td-mono">${m.ml} ml</td>
+      <td class="td-green">${fmt(m.preco)}</td>
+      <td class="${m.lucro>=0?'td-green':'td-red'}">${m.lucro?fmt(m.lucro):'—'}</td>
+      <td class="td-ti">${m.pedido?'#'+m.pedido:'—'}</td>
+      <td>${m.tipo==='Saída'?`<button class="btn-info" onclick="openDetalhe(${m.rowIndex})">ℹ</button>`:''}</td>
+    </tr>`;
+  }).join('');
+}
+function limparFiltros(){['fBusca','fDe','fAte'].forEach(id=>document.getElementById(id).value='');['fTipo','fCanal'].forEach(id=>document.getElementById(id).value='');renderTabela();}
+function openDetalhe(rowIndex){
+  const m=movs.find(m=>m.rowIndex===rowIndex);if(!m)return;
+  document.getElementById('detalheSub').textContent=m.pedido?'PEDIDO #'+m.pedido:'SEM NÚMERO DE PEDIDO';
+  const p=estoque.find(e=>e.id===m.idPerfume);const cor=p?p.cor:'#8E8E98';
+  document.getElementById('detalheContent').innerHTML=`
+    <div style="background:var(--asphalt);border-radius:8px;padding:10px 13px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+      <span style="width:18px;height:18px;border-radius:50%;background:${cor};flex-shrink:0;display:inline-block;border:2px solid rgba(255,255,255,.15)"></span>
+      <div><div style="font-weight:700;font-size:14px">${m.nome}</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium)">${m.dataHora}</div></div>
+    </div>
+    <div class="detalhe-section">Pedido</div>
+    <div class="detalhe-row"><span class="detalhe-label">Nº Pedido</span><span class="detalhe-val">${m.pedido||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Canal</span><span class="detalhe-val">${m.canal||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Volume</span><span class="detalhe-val">${m.ml} ml</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Preço cobrado</span><span class="detalhe-val accent">${fmt(m.preco)}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Custo proporcional</span><span class="detalhe-val">${fmt(m.custoProp)}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Lucro bruto</span><span class="detalhe-val green">${fmt(m.lucro)}</span></div>
+    ${m.descricao?`<div class="detalhe-row"><span class="detalhe-label">Descrição</span><span class="detalhe-val" style="white-space:pre-wrap">${m.descricao}</span></div>`:''}
+    <div class="detalhe-section">Cliente</div>
+    <div class="detalhe-row"><span class="detalhe-label">Nome</span><span class="detalhe-val">${m.cliente||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${m.telefone?`<a href="tel:${m.telefone}" style="color:var(--racing);text-decoration:none">${m.telefone}</a>`:'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${m.email?`<a href="mailto:${m.email}" style="color:var(--racing);text-decoration:none">${m.email}</a>`:'—'}</span></div>`;
+  openModal('overlayDetalhe');
+}
+function fmt(v){if(v==null||isNaN(v))return'—';return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function normalize(s){return(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+</script>
+</body>
+</html>

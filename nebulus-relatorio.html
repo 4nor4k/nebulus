@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBULUS. — Relatório PDF</title>
+<link rel="icon" href="https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--asphalt:#0E0E10;--concrete:#1C1C20;--steel:#2E2E34;--racing:#C8F04D;--racing-dim:rgba(200,240,77,0.10);--racing-border:rgba(200,240,77,0.28);--titanium:#8E8E98;--ghost:#F0ECE4;--danger:#EB4C3C;--green:#3DEB7A;--green-dim:rgba(61,235,122,0.12);}
+body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--titanium);text-transform:uppercase;margin-left:10px}
+nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32px;display:flex;overflow-x:auto}
+.nav-link{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--titanium);padding:13px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-decoration:none;white-space:nowrap}
+.nav-link:hover{color:var(--ghost)}.nav-link.active{color:var(--racing);border-bottom-color:var(--racing)}
+.btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:7px;padding:9px 20px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;cursor:pointer;transition:opacity .15s;text-transform:uppercase}
+.btn:hover{opacity:.85}
+.btn-ghost{background:transparent;color:var(--racing);border:1px solid var(--racing-border);border-radius:7px;padding:8px 16px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.btn-ghost:hover{background:var(--racing-dim)}
+#loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:22px;text-align:center;padding:32px}
+.login-desc{font-size:14px;color:var(--titanium);max-width:320px;line-height:1.7}
+#app{display:none}.page{padding:24px 32px 64px}
+.config-panel{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:22px;margin-bottom:20px}
+.panel-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:7px}
+.panel-title::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--racing)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{margin-bottom:0}
+.field label{display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--titanium);text-transform:uppercase;margin-bottom:6px}
+.field input,.field select{width:100%;background:var(--asphalt);border:1px solid var(--steel);border-radius:7px;padding:10px 13px;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus{border-color:var(--racing)}
+.field select option{background:var(--concrete)}
+.preview-panel{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:22px;margin-bottom:20px}
+.preview-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px}
+.preview-kpi{background:var(--asphalt);border-radius:8px;padding:13px 15px}
+.preview-kpi-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--titanium);text-transform:uppercase;margin-bottom:5px}
+.preview-kpi-value{font-weight:700;font-size:18px;color:var(--ghost)}.preview-kpi-value.green{color:var(--racing)}
+.preview-table{width:100%;border-collapse:collapse;margin-bottom:16px}
+.preview-table th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--titanium);padding:8px 10px;text-align:left;border-bottom:1px solid var(--steel)}
+.preview-table td{padding:9px 10px;font-size:12px;border-bottom:1px solid rgba(46,46,52,.5)}
+.preview-table tr:last-child td{border-bottom:none}
+.td-green{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--racing)}
+.td-ti{font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.empty{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.loading{text-align:center;padding:36px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;margin-right:7px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--steel);border:1px solid var(--racing-border);border-radius:8px;padding:11px 18px;font-family:'Space Mono',monospace;font-size:12px;color:var(--ghost);z-index:999;transform:translateY(80px);opacity:0;transition:all .3s ease}
+.toast.show{transform:translateY(0);opacity:1}
+/* PDF PRINT */
+@media print{
+  body{background:#fff;color:#000;font-family:'Space Grotesk',sans-serif}
+  header,nav,.config-panel,.btn,.btn-ghost,.toast{display:none!important}
+  .preview-panel{border:none;padding:0;margin:0}
+  .panel-title{color:#333}
+  .preview-kpi{background:#f5f5f5;border-radius:6px}
+  .preview-kpi-label{color:#666}
+  .preview-kpi-value{color:#000}.preview-kpi-value.green{color:#4a8c00}
+  .preview-table th{color:#666;border-bottom:1px solid #ccc}
+  .preview-table td{border-bottom:1px solid #eee;color:#000}
+  .td-green{color:#4a8c00}.td-ti{color:#666}
+  .pdf-header{display:flex!important}
+}
+.pdf-header{display:none;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #000}
+.pdf-header-title{font-size:22px;font-weight:700;letter-spacing:.08em}
+.pdf-header-period{font-size:12px;color:#666;font-family:'Space Mono',monospace}
+@media(max-width:600px){header,nav,.page{padding-left:16px;padding-right:16px}.field-row{grid-template-columns:1fr}header img{height:24px!important}}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center">
+    <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:30px;width:auto;object-fit:contain">
+    <span class="logo-sub">Relatório PDF</span>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="btn-ghost" id="btnLogin" onclick="handleLogin()">Entrar com Google</button>
+    <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
+  </div>
+</header>
+<nav>
+  <a class="nav-link" href="nebulus-dashboard.html">Dashboard</a>
+  <a class="nav-link" href="nebulus-clientes.html">Clientes</a>
+  <a class="nav-link" href="nebulus-historico.html">Histórico</a>
+  <a class="nav-link active" href="nebulus-relatorio.html">Relatório PDF</a>
+</nav>
+<div id="loginScreen">
+  <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:40px;width:auto">
+  <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
+  <p class="login-desc">Conecte sua conta Google para gerar relatórios.</p>
+  <button class="btn" onclick="handleLogin()" style="padding:12px 32px">Entrar com Google</button>
+</div>
+<div id="app">
+  <div class="page">
+    <div class="config-panel">
+      <div class="panel-title">Configurar relatório</div>
+      <div class="field-row">
+        <div class="field"><label>Data inicial</label><input type="date" id="rDe" onchange="gerarPreview()"></div>
+        <div class="field"><label>Data final</label><input type="date" id="rAte" onchange="gerarPreview()"></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn-ghost" onclick="setPeriodo('mes')">Este mês</button>
+        <button class="btn-ghost" onclick="setPeriodo('trimestre')">Últimos 3 meses</button>
+        <button class="btn-ghost" onclick="setPeriodo('ano')">Este ano</button>
+        <button class="btn-ghost" onclick="setPeriodo('tudo')">Tudo</button>
+        <button class="btn" onclick="imprimirPDF()" style="margin-left:auto">⬇ Gerar PDF</button>
+      </div>
+    </div>
+    <div class="preview-panel" id="previewPanel">
+      <!-- PDF HEADER (only visible in print) -->
+      <div class="pdf-header">
+        <div><div class="pdf-header-title">NEBULUS. — Relatório de Vendas</div><div class="pdf-header-period" id="pdfPeriodo"></div></div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:#666">Gerado em: <span id="pdfGerado"></span></div>
+      </div>
+      <div class="panel-title">Preview do relatório</div>
+      <div id="previewContent"><div class="empty">Selecione um período para gerar o relatório.</div></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const CLIENT_ID='822341292552-9uont9j3sik7dqafjergu0sc4e3d4v9m.apps.googleusercontent.com';
+const SHEET_ID='1TaJk_4tSKXKXZnyG1lDTOif0ZauahG6rZnXibwyMqqE';
+const SCOPES='https://www.googleapis.com/auth/spreadsheets';
+const ABA_M='Movimentações',ABA_E='Estoque';
+let accessToken=null,movs=[],estoque=[];
+
+function handleLogin(){
+  const c=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async(r)=>{
+    if(r.error){showToast('Erro: '+r.error);return;}
+    accessToken=r.access_token;sessionStorage.setItem('nb_token',accessToken);sessionStorage.setItem('nb_token_exp',Date.now()+3500000);
+    showApp();await loadData();
+  }});c.requestAccessToken();
+}
+function handleLogout(){accessToken=null;sessionStorage.removeItem('nb_token');sessionStorage.removeItem('nb_token_exp');document.getElementById('app').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('btnLogin').style.display='';document.getElementById('btnLogout').style.display='none';}
+function showApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('btnLogin').style.display='none';document.getElementById('btnLogout').style.display='';}
+window.addEventListener('load',()=>{const t=sessionStorage.getItem('nb_token'),exp=parseInt(sessionStorage.getItem('nb_token_exp')||'0');if(t&&Date.now()<exp){accessToken=t;showApp();loadData();}});
+async function api(path){const r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+path,{headers:{Authorization:'Bearer '+accessToken}});return r.json();}
+async function sheetsGet(range){return api('/values/'+encodeURIComponent(range));}
+function parseSheetsNum(v){if(v==null||v==='')return 0;const s=v.toString().trim();if(s.includes(',')&&s.includes('.'))return parseFloat(s.replace(/\./g,'').replace(',','.'))||0;if(s.includes(','))return parseFloat(s.replace(',','.'))||0;return parseFloat(s)||0;}
+async function loadData(){
+  try{
+    const re=await sheetsGet(`${ABA_E}!A2:J1000`);
+    estoque=(re.values||[]).map(r=>({id:r[0]||'',nome:r[1]||'',marca:r[2]||'',mlDisp:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),cor:r[7]||'#C8F04D'})).filter(r=>r.nome);
+    const rm=await sheetsGet(`${ABA_M}!A2:N1000`);
+    movs=(rm.values||[]).map((r,i)=>({rowIndex:i+2,dataHora:r[0]||'',tipo:r[1]||'',idPerfume:r[2]||'',nome:r[3]||'',ml:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),custoProp:parseSheetsNum(r[6]),lucro:parseSheetsNum(r[7]),pedido:r[8]||'',cliente:r[9]||'',canal:r[12]||''}));
+  }catch(e){showToast('Erro: '+e.message);}
+}
+function setPeriodo(tipo){
+  const hoje=new Date();const ano=hoje.getFullYear();const mes=hoje.getMonth();
+  let de,ate;
+  if(tipo==='mes'){de=new Date(ano,mes,1);ate=new Date(ano,mes+1,0);}
+  else if(tipo==='trimestre'){de=new Date(ano,mes-2,1);ate=new Date(ano,mes+1,0);}
+  else if(tipo==='ano'){de=new Date(ano,0,1);ate=new Date(ano,11,31);}
+  else{de=new Date(2020,0,1);ate=hoje;}
+  document.getElementById('rDe').value=de.toISOString().split('T')[0];
+  document.getElementById('rAte').value=ate.toISOString().split('T')[0];
+  gerarPreview();
+}
+function getFiltered(){
+  const de=document.getElementById('rDe').value;const ate=document.getElementById('rAte').value;
+  if(!de&&!ate)return movs;
+  return movs.filter(m=>{
+    const parts=m.dataHora.split(' ')[0].split('/');
+    if(parts.length!==3)return true;
+    const dt=`${parts[2]}-${parts[1]}-${parts[0]}`;
+    if(de&&dt<de)return false;if(ate&&dt>ate)return false;return true;
+  });
+}
+function gerarPreview(){
+  const de=document.getElementById('rDe').value;const ate=document.getElementById('rAte').value;
+  if(!de&&!ate){document.getElementById('previewContent').innerHTML='<div class="empty">Selecione um período.</div>';return;}
+  const filtered=getFiltered();
+  const saidas=filtered.filter(m=>m.tipo==='Saída');
+  const entradas=filtered.filter(m=>m.tipo==='Entrada');
+  const receita=saidas.reduce((s,m)=>s+m.preco,0);
+  const lucro=saidas.reduce((s,m)=>s+m.lucro,0);
+  const custoEntradas=entradas.reduce((s,m)=>s+m.preco,0);
+  // Por perfume
+  const byPerf={};
+  saidas.forEach(m=>{if(!byPerf[m.nome])byPerf[m.nome]={ml:0,receita:0,lucro:0,qtd:0};byPerf[m.nome].ml+=m.ml;byPerf[m.nome].receita+=m.preco;byPerf[m.nome].lucro+=m.lucro;byPerf[m.nome].qtd++;});
+  const perfList=Object.entries(byPerf).sort((a,b)=>b[1].receita-a[1].receita);
+  // Por canal
+  const byCanal={};
+  saidas.forEach(m=>{const c=m.canal||'Outros';if(!byCanal[c])byCanal[c]=0;byCanal[c]+=m.preco;});
+  const canalList=Object.entries(byCanal).sort((a,b)=>b[1]-a[1]);
+  // Top clientes
+  const byCli={};
+  saidas.filter(m=>m.cliente).forEach(m=>{if(!byCli[m.cliente])byCli[m.cliente]={qtd:0,total:0};byCli[m.cliente].qtd++;byCli[m.cliente].total+=m.preco;});
+  const cliList=Object.entries(byCli).sort((a,b)=>b[1].total-a[1].total).slice(0,5);
+  const periodoStr=de&&ate?`${fmtDate(de)} a ${fmtDate(ate)}`:de?`A partir de ${fmtDate(de)}`:`Até ${fmtDate(ate)}`;
+  document.getElementById('pdfPeriodo').textContent=periodoStr;
+  document.getElementById('pdfGerado').textContent=new Date().toLocaleDateString('pt-BR');
+  document.getElementById('previewContent').innerHTML=`
+    <p style="font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px">${periodoStr}</p>
+    <div class="preview-kpi-row">
+      <div class="preview-kpi"><div class="preview-kpi-label">Receita total</div><div class="preview-kpi-value green">${fmt(receita)}</div></div>
+      <div class="preview-kpi"><div class="preview-kpi-label">Lucro bruto</div><div class="preview-kpi-value green">${fmt(lucro)}</div></div>
+      <div class="preview-kpi"><div class="preview-kpi-label">Total de vendas</div><div class="preview-kpi-value">${saidas.length}</div></div>
+      <div class="preview-kpi"><div class="preview-kpi-label">Investimento</div><div class="preview-kpi-value">${fmt(custoEntradas)}</div></div>
+    </div>
+    <p class="panel-title" style="margin-top:18px">Vendas por perfume</p>
+    ${perfList.length?`<table class="preview-table"><thead><tr><th>Perfume</th><th>Vendas</th><th>Ml vendidos</th><th>Receita</th><th>Lucro</th></tr></thead><tbody>
+    ${perfList.map(([nome,d])=>`<tr><td>${nome}</td><td class="td-ti">${d.qtd}</td><td class="td-ti">${d.ml.toFixed(1)} ml</td><td class="td-green">${fmt(d.receita)}</td><td class="td-green">${fmt(d.lucro)}</td></tr>`).join('')}
+    </tbody></table>`:'<div class="empty">Sem vendas no período.</div>'}
+    ${canalList.length?`<p class="panel-title" style="margin-top:18px">Vendas por canal</p>
+    <table class="preview-table"><thead><tr><th>Canal</th><th>Receita</th><th>% do total</th></tr></thead><tbody>
+    ${canalList.map(([canal,val])=>`<tr><td>${canal}</td><td class="td-green">${fmt(val)}</td><td class="td-ti">${receita>0?(val/receita*100).toFixed(1):0}%</td></tr>`).join('')}
+    </tbody></table>`:''}
+    ${cliList.length?`<p class="panel-title" style="margin-top:18px">Top 5 clientes</p>
+    <table class="preview-table"><thead><tr><th>Cliente</th><th>Pedidos</th><th>Total gasto</th></tr></thead><tbody>
+    ${cliList.map(([nome,d])=>`<tr><td>${nome}</td><td class="td-ti">${d.qtd}</td><td class="td-green">${fmt(d.total)}</td></tr>`).join('')}
+    </tbody></table>`:''}
+    <p style="font-family:'Space Mono',monospace;font-size:9px;color:var(--titanium);text-align:right;margin-top:20px">Relatório gerado por NEBULUS.CLUB · ${new Date().toLocaleDateString('pt-BR')}</p>`;
+}
+function imprimirPDF(){
+  const de=document.getElementById('rDe').value;const ate=document.getElementById('rAte').value;
+  if(!de&&!ate){showToast('Selecione um período primeiro');return;}
+  gerarPreview();setTimeout(()=>window.print(),300);
+}
+function fmtDate(iso){const[y,m,d]=iso.split('-');return`${d}/${m}/${y}`;}
+function fmt(v){if(v==null||isNaN(v))return'—';return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>
