@@ -251,14 +251,28 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
   .modal{padding:20px}
   .field-row,.field-row-3{grid-template-columns:1fr}
 }
+.preco-rapido-btn{background:var(--asphalt);border:1px solid var(--steel);border-radius:8px;padding:8px 6px;cursor:pointer;transition:all .15s;text-align:center;display:flex;flex-direction:column;gap:3px}
+.preco-rapido-btn:hover,.preco-rapido-btn.active{border-color:var(--racing);background:var(--racing-dim)}
+.preco-rapido-ml{font-family:'Space Mono',monospace;font-size:9px;color:var(--titanium);text-transform:uppercase;letter-spacing:.1em}
+.preco-rapido-val{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--racing)}
+.preco-rapido-lucro{font-family:'Space Mono',monospace;font-size:9px;color:var(--success)}
+.detalhe-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(46,46,52,.8);font-size:13px}
+.detalhe-row:last-child{border-bottom:none}
+.detalhe-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);text-transform:uppercase;letter-spacing:.08em}
+.detalhe-val{font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--ghost);font-weight:500;text-align:right;max-width:220px;word-break:break-word}
+.detalhe-val.accent{color:var(--racing);font-family:'Space Mono',monospace;font-weight:700}
+.detalhe-val.green{color:var(--green);font-family:'Space Mono',monospace;font-weight:700}
+.detalhe-section{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin:14px 0 6px;opacity:.6}
+.btn-info{background:transparent;border:1px solid var(--steel);border-radius:5px;color:var(--titanium);font-size:12px;width:28px;height:28px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0}
+.btn-info:hover{border-color:var(--racing);color:var(--racing)}
 </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <div class="logo">NEBULUS<span>.</span></div>
-    <div class="logo-sub">Decants · Alta Perfumaria</div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:32px;width:auto;object-fit:contain">
+    <div class="logo-sub" style="margin-top:0">Decants · Alta Perfumaria</div>
   </div>
   <div class="header-actions">
     <span id="userInfo" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)"></span>
@@ -441,6 +455,7 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
     </div>
     <hr class="modal-divider">
     <div class="modal-section-label">Valores</div>
+    <div id="precosRapidos" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
     <div class="field-row">
       <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5"></div>
       <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
@@ -468,6 +483,19 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- MODAL DETALHE PEDIDO -->
+<div class="overlay" id="overlayDetalhe">
+  <div class="modal" style="max-width:440px">
+    <button class="modal-close" onclick="closeModal('overlayDetalhe')">×</button>
+    <div class="modal-title">Detalhes do pedido</div>
+    <div class="modal-sub" id="detalheSub"></div>
+    <div id="detalheContent"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('overlayDetalhe')">Fechar</button>
+    </div>
+  </div>
+</div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
@@ -731,6 +759,35 @@ function renderDonut(canvasId,getChart,setChart,labels,data,colors,legendId,fmtF
     <div class="legend-item"><span class="legend-dot" style="background:${colors[i]}"></span><span class="legend-name">${l}</span><span class="legend-val">${fmtFn(data[i])}</span></div>`).join('');
 }
 
+/* ── DETALHE PEDIDO ── */
+function openDetalhe(rowIndex) {
+  const m = movs.find(m=>m.rowIndex===rowIndex); if(!m)return;
+  document.getElementById('detalheSub').textContent = m.pedido ? 'PEDIDO #'+m.pedido : 'SEM NÚMERO DE PEDIDO';
+  const perfume = estoque.find(p=>p.id===m.idPerfume);
+  const cor = perfume ? perfume.cor : '#8E8E98';
+  document.getElementById('detalheContent').innerHTML = `
+    <div style="background:var(--asphalt);border-radius:8px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      <span style="width:22px;height:22px;border-radius:50%;background:${cor};flex-shrink:0;border:2px solid rgba(255,255,255,.15);display:inline-block"></span>
+      <div>
+        <div style="font-weight:700;font-size:14px">${m.nome}</div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);margin-top:2px">${m.dataHora}</div>
+      </div>
+    </div>
+    <div class="detalhe-section">Pedido</div>
+    <div class="detalhe-row"><span class="detalhe-label">Nº Pedido</span><span class="detalhe-val">${m.pedido||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Canal</span><span class="detalhe-val">${m.canal||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Volume</span><span class="detalhe-val">${m.ml} ml</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Preço cobrado</span><span class="detalhe-val accent">${fmt(m.preco)}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Custo proporcional</span><span class="detalhe-val">${fmt(m.custoProp)}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Lucro bruto</span><span class="detalhe-val green">${fmt(m.lucro)}</span></div>
+    <div class="detalhe-section">Cliente</div>
+    <div class="detalhe-row"><span class="detalhe-label">Nome</span><span class="detalhe-val">${m.cliente||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${m.telefone ? '<a href="tel:'+m.telefone+'" style="color:var(--racing);text-decoration:none">'+m.telefone+'</a>' : '—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${m.email ? '<a href="mailto:'+m.email+'" style="color:var(--racing);text-decoration:none">'+m.email+'</a>' : '—'}</span></div>
+  `;
+  openModal('overlayDetalhe');
+}
+
 /* ── HISTORICO ── */
 function renderHistorico() {
   const list = document.getElementById('histList');
@@ -743,8 +800,9 @@ function renderHistorico() {
         <div class="hist-name">${m.nome}${m.pedido?' · #'+m.pedido:''}${m.cliente?' · '+m.cliente:''}</div>
         <div class="hist-detail">${m.ml} ml${m.canal?' · '+m.canal:''} · ${m.dataHora}</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px">
+      <div style="display:flex;align-items:center;gap:6px">
         <div class="hist-val ${m.tipo==='Entrada'?'neg':'pos'}">${fmt(m.preco)}</div>
+        ${m.tipo==='Saída'?`<button class="btn-info" title="Ver detalhes do pedido" onclick="openDetalhe(${m.rowIndex})">ℹ</button>`:''}
         <button class="btn-icon del" title="Apagar movimentação" onclick="pedirExclusaoMov(${m.rowIndex},'${m.nome.replace(/'/g,"\\'")}','${m.dataHora}')">${SVG_TRASH}</button>
       </div>
     </div>`).join('');
@@ -841,10 +899,36 @@ function openVenda(id) {
   document.getElementById('vendaMlInfo').textContent=`Disponível: ${p.mlDisp.toFixed(1)} ml · Custo/ml: ${fmt(p.custoMl)}`;
   ['vPedido','vCliente','vTelefone','vEmail','vMl'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('vCanal').value='';
-  // Se tem preço da calculadora, preenche
+  document.getElementById('vPreco').value='';
+
+  // Botões de preço rápido baseados na calculadora
+  const embalagem = parseFloat(document.getElementById('cEmbalagem')?.value)||0;
+  const margem    = parseFloat(document.getElementById('cMargem')?.value)||50;
+  const taxaAvista= parseFloat(document.getElementById('cTaxaAvista')?.value)||0;
+  const taxaCartao= parseFloat(document.getElementById('cTaxaCartao')?.value)||0;
+  const taxa      = calcTab==='avista'?taxaAvista:taxaCartao;
+  const container = document.getElementById('precosRapidos');
+  const sizes     = [3,5,8,10];
+  container.innerHTML = sizes.map(ml=>{
+    if(ml > p.mlDisp) return `<div class="preco-rapido-btn" style="opacity:.3;cursor:default"><span class="preco-rapido-ml">${ml} ml</span><span class="preco-rapido-val">—</span><span class="preco-rapido-lucro">sem estoque</span></div>`;
+    const{precoFinal,lucroLiquido}=calcPriceDetail(p.preco,p.mlTotal,embalagem,margem,taxa,ml);
+    const sugerido=precoSugerido(precoFinal);
+    return `<div class="preco-rapido-btn" onclick="selecionarPrecoRapido(this,${ml},${sugerido})">
+      <span class="preco-rapido-ml">${ml} ml</span>
+      <span class="preco-rapido-val">${fmtBRL(sugerido)}</span>
+      <span class="preco-rapido-lucro">+${fmtBRL(lucroLiquido)}</span>
+    </div>`;
+  }).join('');
+
   if(precoCalculado) { document.getElementById('vPreco').value=precoCalculado.toFixed(2); precoCalculado=null; }
-  else document.getElementById('vPreco').value='';
   openModal('overlayVenda');
+}
+
+function selecionarPrecoRapido(el, ml, preco) {
+  document.querySelectorAll('.preco-rapido-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('vMl').value = ml;
+  document.getElementById('vPreco').value = preco.toFixed(2);
 }
 
 async function salvarVenda() {
