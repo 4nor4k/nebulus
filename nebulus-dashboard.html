@@ -250,7 +250,11 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
   header,.nav-tabs,.search-bar,.tab-content{padding-left:16px;padding-right:16px}
   .modal{padding:20px}
   .field-row,.field-row-3{grid-template-columns:1fr}
+  header img[alt="Nebulus"]{height:27px!important}
 }
+.field textarea{width:100%;background:var(--asphalt);border:1px solid var(--steel);border-radius:7px;padding:10px 14px;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;transition:border-color .2s;resize:vertical;min-height:72px}
+.field textarea:focus{border-color:var(--racing)}
+.field textarea::placeholder{color:var(--titanium)}
 .preco-rapido-btn{background:var(--asphalt);border:1px solid var(--steel);border-radius:8px;padding:8px 6px;cursor:pointer;transition:all .15s;text-align:center;display:flex;flex-direction:column;gap:3px}
 .preco-rapido-btn:hover,.preco-rapido-btn.active{border-color:var(--racing);background:var(--racing-dim)}
 .preco-rapido-ml{font-family:'Space Mono',monospace;font-size:9px;color:var(--titanium);text-transform:uppercase;letter-spacing:.1em}
@@ -301,8 +305,8 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
 
 <!-- LOGIN -->
 <div id="loginScreen">
-  <div>
-    <div class="login-logo">NEBULUS<span style="color:var(--racing)">.</span></div>
+  <div style="text-align:center">
+    <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:56px;width:auto;object-fit:contain;margin-bottom:10px">
     <div class="login-sub">Decants · Alta Perfumaria</div>
   </div>
   <div class="login-accent" style="width:40px;height:2px;background:var(--racing);margin:0 auto"></div>
@@ -460,6 +464,7 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
       <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5"></div>
       <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
     </div>
+    <div class="field"><label>Descrição / Observações</label><textarea id="vDescricao" placeholder="Ex: Envio via Correios, embalagem presente, fragil..."></textarea></div>
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal('overlayVenda')">Cancelar</button>
       <button class="btn" onclick="salvarVenda()">Confirmar venda</button>
@@ -492,7 +497,46 @@ tbody td{padding:12px 14px;font-size:13px;white-space:nowrap}
     <div class="modal-sub" id="detalheSub"></div>
     <div id="detalheContent"></div>
     <div class="modal-footer">
+      <button class="btn-ghost" onclick="abrirEditarMov()">✏ Editar</button>
       <button class="btn" onclick="closeModal('overlayDetalhe')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR MOVIMENTAÇÃO -->
+<div class="overlay" id="overlayEditarMov">
+  <div class="modal" style="max-width:500px">
+    <button class="modal-close" onclick="closeModal('overlayEditarMov')">×</button>
+    <div class="modal-title">Editar movimentação</div>
+    <div class="modal-sub">ATUALIZAR DADOS DO PEDIDO</div>
+    <div class="field-row">
+      <div class="field"><label>Nº do pedido</label><input id="emPedido" placeholder="Ex: 0042"></div>
+      <div class="field"><label>Canal de venda</label>
+        <select id="emCanal">
+          <option value="">Selecione...</option>
+          <option>Instagram</option>
+          <option>WhatsApp</option>
+          <option>Site</option>
+        </select>
+      </div>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-section-label">Dados do cliente</div>
+    <div class="field"><label>Nome do cliente</label><input id="emCliente" placeholder="Ex: João Silva"></div>
+    <div class="field-row">
+      <div class="field"><label>Telefone</label><input id="emTelefone" placeholder="(31) 99999-9999"></div>
+      <div class="field"><label>E-mail</label><input id="emEmail" placeholder="cliente@email.com"></div>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-section-label">Valores</div>
+    <div class="field-row">
+      <div class="field"><label>Ml vendidos</label><input id="emMl" type="number" min="1"></div>
+      <div class="field"><label>Preço de venda (R$)</label><input id="emPreco" type="number" min="0" step="0.01"></div>
+    </div>
+    <div class="field"><label>Descrição / Observações</label><textarea id="emDescricao" placeholder="Detalhes do pedido..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('overlayEditarMov')">Cancelar</button>
+      <button class="btn" onclick="salvarEdicaoMov()">Salvar alterações</button>
     </div>
   </div>
 </div>
@@ -632,8 +676,8 @@ async function initSheets() {
   if (toCreate.length) { await sheetsBatchUpdate(toCreate); metaSheets = null; }
   const hdE = await sheetsGet(`${ABA_E}!A1:J1`);
   if (!hdE.values) await sheetsUpdate(`${ABA_E}!A1:J1`,[['ID','Nome','Marca','Ml Total','Ml Disponível','Preço Compra','Data Compra','Cor HEX','Custo/ml','Seq']]);
-  const hdM = await sheetsGet(`${ABA_M}!A1:M1`);
-  if (!hdM.values) await sheetsUpdate(`${ABA_M}!A1:M1`,[['Data/Hora','Tipo','ID Perfume','Nome','Ml','Preço','Custo Proporcional','Lucro','Nº Pedido','Cliente','Telefone','Email','Canal']]);
+  const hdM = await sheetsGet(`${ABA_M}!A1:N1`);
+  if (!hdM.values) await sheetsUpdate(`${ABA_M}!A1:N1`,[['Data/Hora','Tipo','ID Perfume','Nome','Ml','Preço','Custo Proporcional','Lucro','Nº Pedido','Cliente','Telefone','Email','Canal','Descrição']]);
 }
 
 /* Lê número do Sheets independente de vírgula ou ponto como separador */
@@ -660,12 +704,12 @@ async function loadData() {
       seq:parseInt(r[9])||0,
     })).filter(r=>r.nome);
 
-    const rm = await sheetsGet(`${ABA_M}!A2:M1000`);
+    const rm = await sheetsGet(`${ABA_M}!A2:N1000`);
     movs = (rm.values||[]).map((r,i)=>({
       rowIndex:i+2, dataHora:r[0]||'', tipo:r[1]||'', idPerfume:r[2]||'',
       nome:r[3]||'', ml:parseSheetsNum(r[4]), preco:parseSheetsNum(r[5]),
       custoProp:parseSheetsNum(r[6]), lucro:parseSheetsNum(r[7]),
-      pedido:r[8]||'', cliente:r[9]||'', telefone:r[10]||'', email:r[11]||'', canal:r[12]||'',
+      pedido:r[8]||'', cliente:r[9]||'', telefone:r[10]||'', email:r[11]||'', canal:r[12]||'', descricao:r[13]||'',
     }));
 
     renderKPIs(); renderEstoque(); renderCharts(); renderHistorico();
@@ -760,8 +804,11 @@ function renderDonut(canvasId,getChart,setChart,labels,data,colors,legendId,fmtF
 }
 
 /* ── DETALHE PEDIDO ── */
+let detalheAtual = null;
+
 function openDetalhe(rowIndex) {
   const m = movs.find(m=>m.rowIndex===rowIndex); if(!m)return;
+  detalheAtual = m;
   document.getElementById('detalheSub').textContent = m.pedido ? 'PEDIDO #'+m.pedido : 'SEM NÚMERO DE PEDIDO';
   const perfume = estoque.find(p=>p.id===m.idPerfume);
   const cor = perfume ? perfume.cor : '#8E8E98';
@@ -780,12 +827,61 @@ function openDetalhe(rowIndex) {
     <div class="detalhe-row"><span class="detalhe-label">Preço cobrado</span><span class="detalhe-val accent">${fmt(m.preco)}</span></div>
     <div class="detalhe-row"><span class="detalhe-label">Custo proporcional</span><span class="detalhe-val">${fmt(m.custoProp)}</span></div>
     <div class="detalhe-row"><span class="detalhe-label">Lucro bruto</span><span class="detalhe-val green">${fmt(m.lucro)}</span></div>
+    ${m.descricao?`<div class="detalhe-row"><span class="detalhe-label">Descrição</span><span class="detalhe-val" style="white-space:pre-wrap;text-align:right">${m.descricao}</span></div>`:''}
     <div class="detalhe-section">Cliente</div>
     <div class="detalhe-row"><span class="detalhe-label">Nome</span><span class="detalhe-val">${m.cliente||'—'}</span></div>
-    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${m.telefone ? '<a href="tel:'+m.telefone+'" style="color:var(--racing);text-decoration:none">'+m.telefone+'</a>' : '—'}</span></div>
-    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${m.email ? '<a href="mailto:'+m.email+'" style="color:var(--racing);text-decoration:none">'+m.email+'</a>' : '—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${m.telefone?`<a href="tel:${m.telefone}" style="color:var(--racing);text-decoration:none">${m.telefone}</a>`:'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${m.email?`<a href="mailto:${m.email}" style="color:var(--racing);text-decoration:none">${m.email}</a>`:'—'}</span></div>
   `;
   openModal('overlayDetalhe');
+}
+
+function abrirEditarMov() {
+  if(!detalheAtual) return;
+  const m = detalheAtual;
+  document.getElementById('emPedido').value   = m.pedido||'';
+  document.getElementById('emCanal').value    = m.canal||'';
+  document.getElementById('emCliente').value  = m.cliente||'';
+  document.getElementById('emTelefone').value = m.telefone||'';
+  document.getElementById('emEmail').value    = m.email||'';
+  document.getElementById('emMl').value       = m.ml||'';
+  document.getElementById('emPreco').value    = m.preco||'';
+  document.getElementById('emDescricao').value= m.descricao||'';
+  closeModal('overlayDetalhe');
+  openModal('overlayEditarMov');
+}
+
+async function salvarEdicaoMov() {
+  if(!detalheAtual) return;
+  const m = detalheAtual;
+  const novoMl    = parseFloat(document.getElementById('emMl').value)||m.ml;
+  const novoPreco = parseFloat(document.getElementById('emPreco').value)||m.preco;
+  const pedido    = document.getElementById('emPedido').value.trim();
+  const canal     = document.getElementById('emCanal').value;
+  const cliente   = document.getElementById('emCliente').value.trim();
+  const telefone  = document.getElementById('emTelefone').value.trim();
+  const email     = document.getElementById('emEmail').value.trim();
+  const descricao = document.getElementById('emDescricao').value.trim();
+
+  // Recalcular lucro se ml ou preço mudou
+  const perfume   = estoque.find(p=>p.id===m.idPerfume);
+  const custoMl   = perfume ? perfume.custoMl : m.custoProp/m.ml;
+  const custoProp = Math.round((custoMl*novoMl)*100)/100;
+  const lucro     = Math.round((novoPreco-custoProp)*100)/100;
+
+  // Se ml mudou, ajusta o estoque do perfume
+  if(novoMl !== m.ml && perfume) {
+    const diffMl = m.ml - novoMl; // positivo = devolveu ml, negativo = debitou mais
+    const novoDisp = Math.min(Math.max(0, perfume.mlDisp + diffMl), perfume.mlTotal);
+    await sheetsUpdate(`${ABA_E}!E${perfume.rowIndex}`,[[novoDisp]]);
+  }
+
+  await sheetsUpdate(`${ABA_M}!A${m.rowIndex}:N${m.rowIndex}`,
+    [[m.dataHora, m.tipo, m.idPerfume, m.nome, novoMl, novoPreco, custoProp, lucro, pedido, cliente, telefone, email, canal, descricao]]);
+
+  closeModal('overlayEditarMov');
+  showToast('✓ Movimentação atualizada');
+  await loadData();
 }
 
 /* ── HISTORICO ── */
@@ -828,7 +924,10 @@ function handleSearch(q) {
           <div class="sr-name">${m.nome}${m.pedido?' · Pedido #'+m.pedido:''}${m.cliente?' · '+m.cliente:''}</div>
           <div class="sr-detail">${m.ml} ml${m.canal?' · '+m.canal:''}${m.telefone?' · '+m.telefone:''} · ${m.dataHora}</div>
         </div>
-        <div class="sr-val">${fmt(m.preco)}</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <div class="sr-val">${fmt(m.preco)}</div>
+          ${m.tipo==='Saída'?`<button class="btn-info" title="Ver detalhes do pedido" onclick="openDetalhe(${m.rowIndex})">ℹ</button>`:''}
+        </div>
       </div>`).join('');
   results.classList.add('open');
 }
@@ -897,7 +996,7 @@ function openVenda(id) {
   vendaAtual=p;
   document.getElementById('vendaPreview').innerHTML=`<span class="perfume-preview-dot" style="background:${p.cor}"></span><div><div class="perfume-preview-name">${p.nome}</div><div class="perfume-preview-info">${p.marca} · ${fmtId(p.seq)||p.id}</div></div>`;
   document.getElementById('vendaMlInfo').textContent=`Disponível: ${p.mlDisp.toFixed(1)} ml · Custo/ml: ${fmt(p.custoMl)}`;
-  ['vPedido','vCliente','vTelefone','vEmail','vMl'].forEach(id=>document.getElementById(id).value='');
+  ['vPedido','vCliente','vTelefone','vEmail','vMl','vDescricao'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('vCanal').value='';
   document.getElementById('vPreco').value='';
 
@@ -939,13 +1038,14 @@ async function salvarVenda() {
   const telefone=document.getElementById('vTelefone').value.trim();
   const email=document.getElementById('vEmail').value.trim();
   const canal=document.getElementById('vCanal').value;
+  const descricao=document.getElementById('vDescricao').value.trim();
   if(!mlVend||!preco){showToast('Preencha ml e preço',true);return;}
   if(mlVend>vendaAtual.mlDisp){showToast('Ml insuficiente em estoque',true);return;}
   const novoMl=Math.round((vendaAtual.mlDisp-mlVend)*10000)/10000;
   const custoProp=Math.round((vendaAtual.custoMl*mlVend)*100)/100;
   const lucro=Math.round((preco-custoProp)*100)/100;
   await sheetsUpdate(`${ABA_E}!E${vendaAtual.rowIndex}`,[[novoMl]]);
-  await sheetsAppend(`${ABA_M}!A:M`,[[now(),'Saída',vendaAtual.id,vendaAtual.nome,mlVend,preco,custoProp,lucro,pedido,cliente,telefone,email,canal]]);
+  await sheetsAppend(`${ABA_M}!A:N`,[[now(),'Saída',vendaAtual.id,vendaAtual.nome,mlVend,preco,custoProp,lucro,pedido,cliente,telefone,email,canal,descricao]]);
   closeModal('overlayVenda'); showToast('✓ Venda de '+mlVend+' ml registrada');
   await loadData();
 }
