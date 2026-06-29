@@ -20,6 +20,8 @@ nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32
 .btn-ghost:hover{background:var(--racing-dim)}
 .btn-icon{background:transparent;border:1px solid var(--steel);border-radius:5px;color:var(--titanium);width:26px;height:26px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0}
 .btn-icon:hover{border-color:var(--racing);color:var(--racing)}
+.btn-sm{background:var(--racing);color:var(--asphalt);border:none;border-radius:5px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:opacity .15s;text-transform:uppercase;letter-spacing:.06em;font-weight:700;white-space:nowrap}
+.btn-sm:hover{opacity:.85}
 #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:22px;text-align:center;padding:32px}
 .login-desc{font-size:14px;color:var(--titanium);max-width:320px;line-height:1.7}
 #app{display:none}
@@ -40,7 +42,7 @@ nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32
 table{width:100%;border-collapse:collapse;min-width:600px}
 thead th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--titanium);padding:10px 14px;text-align:left;background:var(--steel);white-space:nowrap;cursor:pointer}
 thead th:hover{color:var(--racing)}
-tbody tr{border-bottom:1px solid rgba(46,46,52,.8);transition:background .12s;cursor:pointer}
+tbody tr{border-bottom:1px solid rgba(46,46,52,.8);transition:background .12s}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:rgba(255,255,255,.03)}
 tbody td{padding:12px 14px;font-size:13px}
@@ -48,14 +50,33 @@ tbody td{padding:12px 14px;font-size:13px}
 .td-mono{font-family:'Space Mono',monospace;font-size:12px}
 .td-green{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--racing)}
 .td-ti{font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
+.td-actions{display:flex;gap:5px;align-items:center}
 .recorrente{font-family:'Space Mono',monospace;font-size:9px;color:var(--racing);background:var(--racing-dim);border:1px solid var(--racing-border);border-radius:3px;padding:1px 5px;margin-left:6px}
+.aniversario{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);background:var(--green-dim);border:1px solid rgba(61,235,122,.3);border-radius:3px;padding:1px 5px;margin-left:6px}
+/* MODAL */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:400;display:none;align-items:center;justify-content:center;padding:16px}
 .overlay.open{display:flex}
-.modal{background:var(--concrete);border:1px solid var(--steel);border-radius:14px;width:100%;max-width:520px;padding:26px;position:relative;max-height:94vh;overflow-y:auto}
+.modal{background:var(--concrete);border:1px solid var(--steel);border-radius:14px;width:100%;max-width:560px;padding:26px;position:relative;max-height:94vh;overflow-y:auto}
 .modal-title{font-weight:700;font-size:15px;letter-spacing:.06em;margin-bottom:3px;text-transform:uppercase}
 .modal-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);letter-spacing:.1em;margin-bottom:18px}
 .modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--titanium);font-size:22px;cursor:pointer;line-height:1}
 .modal-close:hover{color:var(--ghost)}
+.modal-divider{border:none;border-top:1px solid var(--steel);margin:14px 0}
+.modal-section-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin-bottom:10px;opacity:.7}
+.modal-footer{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--steel)}
+/* CAMPOS */
+.field{margin-bottom:13px}
+.field label{display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--titanium);text-transform:uppercase;margin-bottom:5px}
+.field input,.field select{width:100%;background:var(--asphalt);border:1px solid var(--steel);border-radius:7px;padding:10px 13px;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus{border-color:var(--racing)}
+.field input::placeholder{color:var(--titanium)}
+.field input:disabled{opacity:.5;cursor:default}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+.cep-wrap{position:relative}
+.cep-loading{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;display:none}
+.cep-loading.show{display:block}
+/* DETALHE */
 .detalhe-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(46,46,52,.8);font-size:13px}
 .detalhe-row:last-child{border-bottom:none}
 .detalhe-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;padding-right:12px}
@@ -67,14 +88,24 @@ tbody td{padding:12px 14px;font-size:13px}
 .hist-mini-type{font-family:'Space Mono',monospace;font-size:9px;padding:2px 5px;border-radius:3px;background:var(--green-dim);color:var(--green);flex-shrink:0}
 .hist-mini-info{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--titanium);font-family:'Space Mono',monospace;font-size:10px}
 .hist-mini-val{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--racing);flex-shrink:0}
-.modal-footer{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--steel)}
+/* UTILS */
 .empty{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
 .loading{text-align:center;padding:36px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;margin-right:7px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--steel);border:1px solid var(--racing-border);border-radius:8px;padding:11px 18px;font-family:'Space Mono',monospace;font-size:12px;color:var(--ghost);z-index:999;transform:translateY(80px);opacity:0;transition:all .3s ease}
 .toast.show{transform:translateY(0);opacity:1}
-@media(max-width:600px){header,nav,.page{padding-left:16px;padding-right:16px}.modal{padding:18px}header img{height:24px!important}}
+/* BUSCA AUTOCOMPLETE */
+.cliente-search-wrap{position:relative;margin-bottom:0}
+.cliente-suggestions{position:absolute;top:100%;left:0;right:0;background:var(--concrete);border:1px solid var(--racing-border);border-radius:0 0 8px 8px;z-index:50;max-height:200px;overflow-y:auto;display:none}
+.cliente-suggestions.open{display:block}
+.suggestion-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(46,46,52,.6);font-size:13px;display:flex;align-items:center;gap:10px}
+.suggestion-item:last-child{border-bottom:none}
+.suggestion-item:hover{background:var(--racing-dim)}
+.suggestion-nome{font-weight:600}
+.suggestion-detalhe{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium)}
+.suggestion-novo{color:var(--racing);font-family:'Space Mono',monospace;font-size:11px;font-weight:700}
+@media(max-width:600px){header,nav,.page{padding-left:16px;padding-right:16px}.modal{padding:18px}header img{height:24px!important}.field-row,.field-row-3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -106,14 +137,15 @@ tbody td{padding:12px 14px;font-size:13px}
       <div class="kpi"><div class="kpi-label">Total de clientes</div><div class="kpi-value" id="kClientes">—</div><div class="kpi-sub">cadastrados</div></div>
       <div class="kpi"><div class="kpi-label">Clientes recorrentes</div><div class="kpi-value green" id="kRecorrentes">—</div><div class="kpi-sub">mais de 1 compra</div></div>
       <div class="kpi"><div class="kpi-label">Ticket médio</div><div class="kpi-value" id="kTicket">—</div><div class="kpi-sub">por pedido</div></div>
-      <div class="kpi"><div class="kpi-label">Melhor cliente</div><div class="kpi-value" id="kMelhor" style="font-size:16px">—</div><div class="kpi-sub" id="kMelhorSub"></div></div>
+      <div class="kpi"><div class="kpi-label">Aniversariantes</div><div class="kpi-value green" id="kAniversario">—</div><div class="kpi-sub">este mês</div></div>
     </div>
     <div class="section-hd">
       <div class="section-title">Base de clientes</div>
+      <button class="btn" onclick="abrirCadastroNovo()">+ Cadastrar Cliente</button>
     </div>
     <div class="search-wrap">
-      <span style="color:var(--racing);display:flex"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M22 22h-2v-2h2zm-2-2h-2v-2h2zm-6-2H6v-2h8zm4 0h-2v-2h2zM6 16H4v-2h2zm10 0h-2v-2h2zM4 14H2V6h2zm14 0h-2V6h2zM6 6H4V4h2zm10 0h-2V4h2zm-2-2H6V2h8z"/></svg></span>
-      <input class="search-input" id="searchCliente" placeholder="Buscar cliente por nome, telefone ou email..." oninput="renderClientes()">
+      <span style="color:var(--racing);display:flex"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
+      <input class="search-input" id="searchCliente" placeholder="Buscar por nome, telefone, CPF ou email..." oninput="renderClientes()">
     </div>
     <div class="panel">
       <div style="overflow-x:auto">
@@ -124,24 +156,77 @@ tbody td{padding:12px 14px;font-size:13px}
             <th onclick="sortBy('totalGasto')">Total gasto</th>
             <th onclick="sortBy('ultimaCompra')">Última compra</th>
             <th>Contato</th>
+            <th>Ações</th>
           </tr></thead>
-          <tbody id="clientesBody"><tr><td colspan="5"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
+          <tbody id="clientesBody"><tr><td colspan="6"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL CLIENTE -->
+<!-- MODAL DETALHE CLIENTE -->
 <div class="overlay" id="overlayCliente">
-  <div class="modal" style="max-width:480px">
+  <div class="modal" style="max-width:520px">
     <button class="modal-close" onclick="closeModal('overlayCliente')">×</button>
     <div class="modal-title" id="clienteModalNome"></div>
     <div class="modal-sub" id="clienteModalSub"></div>
     <div id="clienteModalContent"></div>
-    <div class="modal-footer"><button class="btn" onclick="closeModal('overlayCliente')">Fechar</button></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="abrirEdicaoCliente()">✏ Editar</button>
+      <button class="btn" onclick="closeModal('overlayCliente')">Fechar</button>
+    </div>
   </div>
 </div>
+
+<!-- MODAL CADASTRO / EDIÇÃO CLIENTE -->
+<div class="overlay" id="overlayCadastro">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('overlayCadastro')">×</button>
+    <div class="modal-title" id="cadastroTitle">Cadastrar Cliente</div>
+    <div class="modal-sub" id="cadastroSub">DADOS COMPLETOS</div>
+
+    <div class="modal-section-label">Dados pessoais</div>
+    <div class="field"><label>Nome completo *</label><input id="cNome" placeholder="Ex: João Silva"></div>
+    <div class="field-row">
+      <div class="field"><label>CPF</label><input id="cCPF" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)"></div>
+      <div class="field"><label>Data de nascimento</label><input id="cNasc" type="date"></div>
+    </div>
+
+    <div class="modal-divider"></div>
+    <div class="modal-section-label">Contato</div>
+    <div class="field-row">
+      <div class="field"><label>Telefone / WhatsApp</label><input id="cTelefone" placeholder="(31) 99999-9999" oninput="maskTelefone(this)"></div>
+      <div class="field"><label>E-mail</label><input id="cEmail" placeholder="cliente@email.com"></div>
+    </div>
+
+    <div class="modal-divider"></div>
+    <div class="modal-section-label">Endereço</div>
+    <div class="field">
+      <label>CEP</label>
+      <div class="cep-wrap">
+        <input id="cCEP" placeholder="00000-000" maxlength="9" oninput="maskCEP(this)" onblur="buscarCEP()">
+        <div class="cep-loading" id="cepLoading"></div>
+      </div>
+    </div>
+    <div class="field"><label>Logradouro</label><input id="cLogradouro" placeholder="Rua, Avenida..."></div>
+    <div class="field-row">
+      <div class="field"><label>Número</label><input id="cNumero" placeholder="123"></div>
+      <div class="field"><label>Complemento</label><input id="cComplemento" placeholder="Apto, Bloco..."></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Bairro</label><input id="cBairro" placeholder="Bairro"></div>
+      <div class="field"><label>Cidade</label><input id="cCidade" placeholder="Cidade"></div>
+    </div>
+    <div class="field" style="max-width:120px"><label>UF</label><input id="cUF" placeholder="MG" maxlength="2" style="text-transform:uppercase"></div>
+
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('overlayCadastro')">Cancelar</button>
+      <button class="btn" id="btnSalvarCadastro" onclick="salvarCadastro()">Salvar cliente</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
@@ -149,70 +234,244 @@ const CLIENT_ID='822341292552-9uont9j3sik7dqafjergu0sc4e3d4v9m.apps.googleuserco
 const SHEET_ID='1TaJk_4tSKXKXZnyG1lDTOif0ZauahG6rZnXibwyMqqE';
 const SCOPES='https://www.googleapis.com/auth/spreadsheets';
 const ABA_C='Clientes',ABA_M='Movimentações';
-let accessToken=null,clientes=[],movs=[],sortCol='totalGasto',sortDir=-1;
+let accessToken=null,clientes=[],movs=[],sortCol='totalGasto',sortDir=-1,clienteEditando=null;
+
+// Mapeamento de colunas da aba Clientes:
+// A=Nome B=Telefone C=Email D=Total Pedidos E=Total Gasto F=Última Compra
+// G=CPF H=Data Nasc I=CEP J=Logradouro K=Número L=Complemento M=Bairro N=Cidade O=UF
 
 function handleLogin(){
   const c=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async(r)=>{
     if(r.error){showToast('Erro: '+r.error);return;}
     accessToken=r.access_token;sessionStorage.setItem('nb_token',accessToken);sessionStorage.setItem('nb_token_exp',Date.now()+3500000);
-    showApp();await loadData();
+    showApp();await initClientesSheet();await loadData();
   }});c.requestAccessToken();
 }
 function handleLogout(){accessToken=null;sessionStorage.removeItem('nb_token');sessionStorage.removeItem('nb_token_exp');document.getElementById('app').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('btnLogin').style.display='';document.getElementById('btnLogout').style.display='none';}
 function showApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('btnLogin').style.display='none';document.getElementById('btnLogout').style.display='';}
-window.addEventListener('load',()=>{const t=sessionStorage.getItem('nb_token'),exp=parseInt(sessionStorage.getItem('nb_token_exp')||'0');if(t&&Date.now()<exp){accessToken=t;showApp();loadData();}});
+window.addEventListener('load',()=>{const t=sessionStorage.getItem('nb_token'),exp=parseInt(sessionStorage.getItem('nb_token_exp')||'0');if(t&&Date.now()<exp){accessToken=t;showApp();initClientesSheet().then(()=>loadData());}});
+
 async function api(path,opts={}){const r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+path,{...opts,headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json',...(opts.headers||{})}});return r.json();}
 async function sheetsGet(range){return api('/values/'+encodeURIComponent(range));}
+async function sheetsUpdate(range,values){return api('/values/'+encodeURIComponent(range)+'?valueInputOption=USER_ENTERED',{method:'PUT',body:JSON.stringify({values})});}
+async function sheetsAppend(range,values){return api('/values/'+encodeURIComponent(range)+':append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS',{method:'POST',body:JSON.stringify({values})});}
+async function sheetsBatch(requests){return api(':batchUpdate',{method:'POST',body:JSON.stringify({requests})});}
+
+async function initClientesSheet(){
+  // Garante que o cabeçalho da aba Clientes tem todas as colunas novas
+  try{
+    const hd=await sheetsGet(`${ABA_C}!A1:O1`);
+    const vals=hd.values?hd.values[0]:[];
+    if(vals.length<15){
+      await sheetsUpdate(`${ABA_C}!A1:O1`,[['Nome','Telefone','Email','Total Pedidos','Total Gasto','Última Compra','CPF','Data Nasc.','CEP','Logradouro','Número','Complemento','Bairro','Cidade','UF']]);
+    }
+  }catch(e){console.warn('initClientesSheet:',e);}
+}
+
 function parseSheetsNum(v){if(v==null||v==='')return 0;const s=v.toString().trim();if(s.includes(',')&&s.includes('.'))return parseFloat(s.replace(/\./g,'').replace(',','.'))||0;if(s.includes(','))return parseFloat(s.replace(',','.'))||0;return parseFloat(s)||0;}
+
 async function loadData(){
   try{
-    const rc=await sheetsGet(`${ABA_C}!A2:F1000`);
-    clientes=(rc.values||[]).map((r,i)=>({rowIndex:i+2,nome:r[0]||'',telefone:r[1]||'',email:r[2]||'',totalPedidos:parseInt(r[3])||0,totalGasto:parseSheetsNum(r[4]),ultimaCompra:r[5]||''})).filter(r=>r.nome);
+    const rc=await sheetsGet(`${ABA_C}!A2:O1000`);
+    clientes=(rc.values||[]).map((r,i)=>({
+      rowIndex:i+2,
+      nome:r[0]||'',telefone:r[1]||'',email:r[2]||'',
+      totalPedidos:parseInt(r[3])||0,totalGasto:parseSheetsNum(r[4]),ultimaCompra:r[5]||'',
+      cpf:r[6]||'',dataNasc:r[7]||'',cep:r[8]||'',
+      logradouro:r[9]||'',numero:r[10]||'',complemento:r[11]||'',
+      bairro:r[12]||'',cidade:r[13]||'',uf:r[14]||''
+    })).filter(r=>r.nome);
     const rm=await sheetsGet(`${ABA_M}!A2:N1000`);
     movs=(rm.values||[]).map((r,i)=>({rowIndex:i+2,dataHora:r[0]||'',tipo:r[1]||'',nome:r[3]||'',ml:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),pedido:r[8]||'',cliente:r[9]||'',canal:r[12]||''}));
     renderKPIs();renderClientes();
   }catch(e){showToast('Erro: '+e.message);}
 }
+
 function renderKPIs(){
-  const total=clientes.length;const rec=clientes.filter(c=>c.totalPedidos>1).length;
+  const total=clientes.length;
+  const rec=clientes.filter(c=>c.totalPedidos>1).length;
   const totalPedidos=clientes.reduce((s,c)=>s+c.totalPedidos,0);
   const totalGasto=clientes.reduce((s,c)=>s+c.totalGasto,0);
   const ticket=totalPedidos>0?totalGasto/totalPedidos:0;
-  const melhor=clientes.sort((a,b)=>b.totalGasto-a.totalGasto)[0];
+  const mesAtual=new Date().getMonth()+1;
+  const aniv=clientes.filter(c=>{
+    if(!c.dataNasc)return false;
+    const parts=c.dataNasc.split('-');
+    return parts.length>=2&&parseInt(parts[1])===mesAtual;
+  }).length;
   document.getElementById('kClientes').textContent=total;
   document.getElementById('kRecorrentes').textContent=rec;
   document.getElementById('kTicket').textContent=fmt(ticket);
-  document.getElementById('kMelhor').textContent=melhor?melhor.nome.split(' ')[0]:'—';
-  document.getElementById('kMelhorSub').textContent=melhor?fmt(melhor.totalGasto):'';
+  document.getElementById('kAniversario').textContent=aniv;
 }
+
 function sortBy(col){if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=-1;}renderClientes();}
+
 function renderClientes(){
   const q=normalize(document.getElementById('searchCliente').value);
-  let list=clientes.filter(c=>!q||normalize(c.nome).includes(q)||normalize(c.telefone).includes(q)||normalize(c.email).includes(q));
+  const mesAtual=new Date().getMonth()+1;
+  let list=clientes.filter(c=>!q||normalize(c.nome).includes(q)||normalize(c.telefone).includes(q)||normalize(c.email).includes(q)||normalize(c.cpf).includes(q)||normalize(c.cidade).includes(q));
   list=[...list].sort((a,b)=>{let va=a[sortCol],vb=b[sortCol];if(typeof va==='string')va=normalize(va);if(typeof vb==='string')vb=normalize(vb);return(va<vb?-1:va>vb?1:0)*sortDir;});
   const body=document.getElementById('clientesBody');
-  if(!list.length){body.innerHTML='<tr><td colspan="5"><div class="empty">Nenhum cliente encontrado.</div></td></tr>';return;}
-  body.innerHTML=list.map(c=>`<tr onclick="openCliente('${c.nome.replace(/'/g,"\\'")}')">
-    <td class="td-name">${c.nome}${c.totalPedidos>1?'<span class="recorrente">★ recorrente</span>':''}</td>
-    <td class="td-mono">${c.totalPedidos}</td>
-    <td class="td-green">${fmt(c.totalGasto)}</td>
-    <td class="td-ti">${c.ultimaCompra||'—'}</td>
-    <td class="td-ti">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing);text-decoration:none" onclick="event.stopPropagation()">${c.telefone}</a>`:'—'}</td>
-  </tr>`).join('');
+  if(!list.length){body.innerHTML='<tr><td colspan="6"><div class="empty">Nenhum cliente encontrado.</div></td></tr>';return;}
+  body.innerHTML=list.map(c=>{
+    const isAniv=c.dataNasc&&(()=>{const p=c.dataNasc.split('-');return p.length>=2&&parseInt(p[1])===mesAtual;})();
+    const wa=c.telefone?c.telefone.replace(/\D/g,''):'';
+    return`<tr onclick="openCliente('${c.nome.replace(/'/g,"\\'")}')">
+      <td class="td-name">${c.nome}${c.totalPedidos>1?'<span class="recorrente">★ recorrente</span>':''}${isAniv?'<span class="aniversario">🎂 aniv.</span>':''}</td>
+      <td class="td-mono">${c.totalPedidos}</td>
+      <td class="td-green">${fmt(c.totalGasto)}</td>
+      <td class="td-ti">${c.ultimaCompra||'—'}</td>
+      <td class="td-ti">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing);text-decoration:none" onclick="event.stopPropagation()">${c.telefone}</a>`:'—'}</td>
+      <td><div class="td-actions" onclick="event.stopPropagation()">
+        ${wa?`<a href="https://wa.me/55${wa}" target="_blank" class="btn-sm" style="background:transparent;border:1px solid rgba(37,211,102,.4);color:#25D366">WA</a>`:''}
+        <button class="btn-icon" title="Editar" onclick="abrirEdicaoClienteNome('${c.nome.replace(/'/g,"\\'")}')">✏</button>
+      </div></td>
+    </tr>`;
+  }).join('');
 }
+
 function openCliente(nome){
   const c=clientes.find(cl=>cl.nome===nome);if(!c)return;
+  clienteEditando=c;
   const pedidos=movs.filter(m=>m.tipo==='Saída'&&normalize(m.cliente)===normalize(nome));
   document.getElementById('clienteModalNome').textContent=c.nome;
   document.getElementById('clienteModalSub').textContent=`${c.totalPedidos} PEDIDO${c.totalPedidos!==1?'S':''} · ${fmt(c.totalGasto)} TOTAL`;
+  const wa=c.telefone?c.telefone.replace(/\D/g,''):'';
+  const endParts=[c.logradouro,c.numero,c.complemento,c.bairro,c.cidade,c.uf].filter(Boolean);
+  const endereco=endParts.length?endParts.join(', '):'—';
+  const nascFormatado=c.dataNasc?formatDateDisplay(c.dataNasc):'—';
   document.getElementById('clienteModalContent').innerHTML=`
+    <div class="detalhe-section">Pessoal</div>
+    <div class="detalhe-row"><span class="detalhe-label">CPF</span><span class="detalhe-val">${c.cpf||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Nascimento</span><span class="detalhe-val">${nascFormatado}</span></div>
     <div class="detalhe-section">Contato</div>
-    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing);text-decoration:none">${c.telefone}</a>`:'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing);text-decoration:none">${c.telefone}</a>`:'—'}${wa?` <a href="https://wa.me/55${wa}" target="_blank" style="color:#25D366;font-size:11px;margin-left:8px;font-family:monospace">→ WhatsApp</a>`:''}</span></div>
     <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${c.email?`<a href="mailto:${c.email}" style="color:var(--racing);text-decoration:none">${c.email}</a>`:'—'}</span></div>
-    <div class="detalhe-row"><span class="detalhe-label">Última compra</span><span class="detalhe-val">${c.ultimaCompra||'—'}</span></div>
+    <div class="detalhe-section">Endereço</div>
+    <div class="detalhe-row"><span class="detalhe-label">CEP</span><span class="detalhe-val">${c.cep||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Endereço</span><span class="detalhe-val" style="text-align:right">${endereco}</span></div>
+    <div class="detalhe-section">Última compra</div>
+    <div class="detalhe-row"><span class="detalhe-label">Data</span><span class="detalhe-val">${c.ultimaCompra||'—'}</span></div>
     <div class="detalhe-section">Histórico de pedidos</div>
-    ${pedidos.length?pedidos.reverse().map(m=>`<div class="hist-mini"><span class="hist-mini-type">Venda</span><span class="hist-mini-info">${m.nome} · ${m.ml}ml${m.canal?' · '+m.canal:''} · ${m.dataHora}</span><span class="hist-mini-val">${fmt(m.preco)}</span></div>`).join(''):'<div class="empty" style="padding:20px">Sem pedidos registrados.</div>'}`;
+    ${pedidos.length?pedidos.slice().reverse().map(m=>`<div class="hist-mini"><span class="hist-mini-type">Venda</span><span class="hist-mini-info">${m.nome} · ${m.ml}ml${m.canal?' · '+m.canal:''} · ${m.dataHora}</span><span class="hist-mini-val">${fmt(m.preco)}</span></div>`).join(''):'<div class="empty" style="padding:20px">Sem pedidos registrados.</div>'}`;
   openModal('overlayCliente');
+}
+
+function abrirCadastroNovo(){
+  clienteEditando=null;
+  document.getElementById('cadastroTitle').textContent='Cadastrar Cliente';
+  document.getElementById('cadastroSub').textContent='DADOS COMPLETOS';
+  document.getElementById('btnSalvarCadastro').textContent='Salvar cliente';
+  ['cNome','cCPF','cTelefone','cEmail','cCEP','cLogradouro','cNumero','cComplemento','cBairro','cCidade','cUF'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('cNasc').value='';
+  openModal('overlayCadastro');
+}
+
+function abrirEdicaoCliente(){
+  closeModal('overlayCliente');
+  abrirEdicaoClienteNome(clienteEditando.nome);
+}
+
+function abrirEdicaoClienteNome(nome){
+  const c=clientes.find(cl=>cl.nome===nome);if(!c)return;
+  clienteEditando=c;
+  document.getElementById('cadastroTitle').textContent='Editar Cliente';
+  document.getElementById('cadastroSub').textContent='ATUALIZAR CADASTRO';
+  document.getElementById('btnSalvarCadastro').textContent='Salvar alterações';
+  document.getElementById('cNome').value=c.nome;
+  document.getElementById('cCPF').value=c.cpf||'';
+  document.getElementById('cNasc').value=c.dataNasc||'';
+  document.getElementById('cTelefone').value=c.telefone||'';
+  document.getElementById('cEmail').value=c.email||'';
+  document.getElementById('cCEP').value=c.cep||'';
+  document.getElementById('cLogradouro').value=c.logradouro||'';
+  document.getElementById('cNumero').value=c.numero||'';
+  document.getElementById('cComplemento').value=c.complemento||'';
+  document.getElementById('cBairro').value=c.bairro||'';
+  document.getElementById('cCidade').value=c.cidade||'';
+  document.getElementById('cUF').value=c.uf||'';
+  openModal('overlayCadastro');
+}
+
+async function salvarCadastro(){
+  const nome=document.getElementById('cNome').value.trim();
+  if(!nome){showToast('Nome é obrigatório');return;}
+  const cpf=document.getElementById('cCPF').value.trim();
+  const dataNasc=document.getElementById('cNasc').value;
+  const telefone=document.getElementById('cTelefone').value.trim();
+  const email=document.getElementById('cEmail').value.trim();
+  const cep=document.getElementById('cCEP').value.trim();
+  const logradouro=document.getElementById('cLogradouro').value.trim();
+  const numero=document.getElementById('cNumero').value.trim();
+  const complemento=document.getElementById('cComplemento').value.trim();
+  const bairro=document.getElementById('cBairro').value.trim();
+  const cidade=document.getElementById('cCidade').value.trim();
+  const uf=document.getElementById('cUF').value.trim().toUpperCase();
+
+  try{
+    if(clienteEditando){
+      // Edição: preserva totalPedidos, totalGasto, ultimaCompra
+      await sheetsUpdate(`${ABA_C}!A${clienteEditando.rowIndex}:O${clienteEditando.rowIndex}`,[[
+        nome,telefone,email,
+        clienteEditando.totalPedidos,clienteEditando.totalGasto,clienteEditando.ultimaCompra,
+        cpf,dataNasc,cep,logradouro,numero,complemento,bairro,cidade,uf
+      ]]);
+      showToast('✓ Cliente atualizado');
+    }else{
+      // Novo cadastro — verifica se já existe pelo nome
+      const existe=clientes.find(c=>normalize(c.nome)===normalize(nome));
+      if(existe){showToast('Cliente já cadastrado com este nome');return;}
+      await sheetsAppend(`${ABA_C}!A:O`,[[
+        nome,telefone,email,0,0,'',
+        cpf,dataNasc,cep,logradouro,numero,complemento,bairro,cidade,uf
+      ]]);
+      showToast('✓ Cliente cadastrado');
+    }
+    closeModal('overlayCadastro');await loadData();
+  }catch(e){showToast('Erro: '+e.message);}
+}
+
+// CEP via ViaCEP
+async function buscarCEP(){
+  const cep=document.getElementById('cCEP').value.replace(/\D/g,'');
+  if(cep.length!==8)return;
+  const loading=document.getElementById('cepLoading');
+  loading.classList.add('show');
+  try{
+    const r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const d=await r.json();
+    if(d.erro){showToast('CEP não encontrado');return;}
+    document.getElementById('cLogradouro').value=d.logradouro||'';
+    document.getElementById('cBairro').value=d.bairro||'';
+    document.getElementById('cCidade').value=d.localidade||'';
+    document.getElementById('cUF').value=d.uf||'';
+    document.getElementById('cNumero').focus();
+  }catch(e){showToast('Erro ao buscar CEP');}
+  finally{loading.classList.remove('show');}
+}
+
+// Máscaras
+function maskCPF(el){
+  let v=el.value.replace(/\D/g,'').substring(0,11);
+  v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  el.value=v;
+}
+function maskTelefone(el){
+  let v=el.value.replace(/\D/g,'').substring(0,11);
+  if(v.length>10)v=v.replace(/^(\d{2})(\d{5})(\d{4}).*/,'($1) $2-$3');
+  else if(v.length>6)v=v.replace(/^(\d{2})(\d{4})(\d*)/,'($1) $2-$3');
+  else if(v.length>2)v=v.replace(/^(\d{2})(\d*)/,'($1) $2');
+  el.value=v;
+}
+function maskCEP(el){
+  let v=el.value.replace(/\D/g,'').substring(0,8);
+  if(v.length>5)v=v.replace(/^(\d{5})(\d*)/,'$1-$2');
+  el.value=v;
+}
+
+function formatDateDisplay(iso){
+  if(!iso)return'—';const[y,m,d]=iso.split('-');return`${d}/${m}/${y}`;
 }
 function fmt(v){if(v==null||isNaN(v))return'—';return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function normalize(s){return(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}

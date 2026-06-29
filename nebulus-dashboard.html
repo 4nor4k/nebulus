@@ -414,11 +414,30 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
       </div>
     </div>
     <hr class="modal-divider">
-    <div class="modal-section-label">Dados do cliente</div>
-    <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
-    <div class="field-row">
-      <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
-      <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
+    <div class="modal-section-label">Cliente</div>
+    <!-- Busca de cliente existente -->
+    <div class="field" style="margin-bottom:8px">
+      <label>Buscar cliente cadastrado</label>
+      <div style="position:relative">
+        <input id="vClienteBusca" placeholder="Digite nome ou telefone..." oninput="filtrarClientesVenda(this.value)" autocomplete="off" style="width:100%;background:var(--asphalt);border:1px solid var(--steel);border-radius:7px;padding:10px 13px;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;transition:border-color .2s">
+        <div id="vClienteSugestoes" style="position:absolute;top:100%;left:0;right:0;background:var(--concrete);border:1px solid var(--racing-border);border-radius:0 0 8px 8px;z-index:50;max-height:180px;overflow-y:auto;display:none"></div>
+      </div>
+    </div>
+    <!-- Card do cliente selecionado -->
+    <div id="vClienteCard" style="display:none;background:var(--asphalt);border:1px solid var(--racing-border);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:none;align-items:center;justify-content:space-between">
+      <div>
+        <div id="vClienteCardNome" style="font-weight:700;font-size:14px"></div>
+        <div id="vClienteCardDetalhe" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);margin-top:2px"></div>
+      </div>
+      <button onclick="limparClienteVenda()" style="background:transparent;border:none;color:var(--titanium);cursor:pointer;font-size:18px;line-height:1">×</button>
+    </div>
+    <!-- Campos manuais (sempre visíveis para edição/preenchimento) -->
+    <div id="vClienteCampos">
+      <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
+      <div class="field-row">
+        <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
+        <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
+      </div>
     </div>
     <hr class="modal-divider">
     <div class="modal-section-label">Valores</div>
@@ -578,8 +597,9 @@ async function initSheets(){
   if(!hdE.values)await sheetsUpdate(`${ABA_E}!A1:K1`,[['ID','Nome','Marca','Ml Total','Ml Disponível','Preço Compra','Data Compra','Cor HEX','Custo/ml','Seq','Preço Sugerido','Notas','Imagem URL','Família Olfativa']]);
   const hdM=await sheetsGet(`${ABA_M}!A1:N1`);
   if(!hdM.values)await sheetsUpdate(`${ABA_M}!A1:N1`,[['Data/Hora','Tipo','ID Perfume','Nome','Ml','Preço','Custo Proporcional','Lucro','Nº Pedido','Cliente','Telefone','Email','Canal','Descrição']]);
-  const hdC=await sheetsGet(`${ABA_C}!A1:F1`);
-  if(!hdC.values)await sheetsUpdate(`${ABA_C}!A1:F1`,[['Nome','Telefone','Email','Total Pedidos','Total Gasto','Última Compra']]);
+  const hdC=await sheetsGet(`${ABA_C}!A1:O1`);
+  const hdCVals=hdC.values?hdC.values[0]:[];
+  if(hdCVals.length<15)await sheetsUpdate(`${ABA_C}!A1:O1`,[['Nome','Telefone','Email','Total Pedidos','Total Gasto','Última Compra','CPF','Data Nasc.','CEP','Logradouro','Número','Complemento','Bairro','Cidade','UF']]);
 }
 function parseSheetsNum(v){
   if(v==null||v==='')return 0;
@@ -595,6 +615,7 @@ async function loadData(){
     const rm=await sheetsGet(`${ABA_M}!A2:N1000`);
     movs=(rm.values||[]).map((r,i)=>({rowIndex:i+2,dataHora:r[0]||'',tipo:r[1]||'',idPerfume:r[2]||'',nome:r[3]||'',ml:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),custoProp:parseSheetsNum(r[6]),lucro:parseSheetsNum(r[7]),pedido:r[8]||'',cliente:r[9]||'',telefone:r[10]||'',email:r[11]||'',canal:r[12]||'',descricao:r[13]||''}));
     renderKPIs();renderEstoque();renderCharts();renderHistorico();renderAlertas();atualizarMeta();
+    carregarClientesVenda();
   }catch(e){showToast('Erro ao carregar: '+e.message,true);}
 }
 function renderAlertas(){
@@ -772,8 +793,9 @@ function openVenda(id){
   const p=estoque.find(e=>e.id===id);if(!p)return;vendaAtual=p;
   document.getElementById('vendaPreview').innerHTML=`<span class="perfume-preview-dot" style="background:${p.cor}"></span><div><div class="perfume-preview-name">${p.nome}</div><div class="perfume-preview-info">${p.marca} · ${fmtId(p.seq)}</div></div>`;
   document.getElementById('vendaMlInfo').textContent=`Disponível: ${p.mlDisp.toFixed(1)} ml · Custo/ml: ${fmt(p.custoMl)}`;
-  ['vPedido','vCliente','vTelefone','vEmail','vMl','vDescricao'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['vPedido','vCliente','vTelefone','vEmail','vMl','vDescricao','vClienteBusca'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('vCanal').value='';
+  limparClienteVenda();
   const emb=parseFloat(document.getElementById('cEmbalagem')?.value)||0;
   const mar=parseFloat(document.getElementById('cMargem')?.value)||50;
   const ta=parseFloat(document.getElementById('cTaxaAvista')?.value)||0;
@@ -812,14 +834,19 @@ async function salvarVenda(){
 }
 async function upsertCliente(nome,telefone,email,valor){
   try{
-    const r=await sheetsGet(`${ABA_C}!A2:F1000`);const rows=r.values||[];
+    const r=await sheetsGet(`${ABA_C}!A2:O1000`);const rows=r.values||[];
     const idx=rows.findIndex(r=>normalize(r[0]||'')=== normalize(nome));
     const dataHoje=new Date().toLocaleDateString('pt-BR');
     if(idx>=0){
       const row=rows[idx];const total=parseInt(row[3]||'0')+1;const gasto=parseSheetsNum(row[4])+valor;
-      await sheetsUpdate(`${ABA_C}!A${idx+2}:F${idx+2}`,[[nome,telefone||row[1]||'',email||row[2]||'',total,gasto,dataHoje]]);
+      // Preserva colunas G-O (CPF, dataNasc, CEP, etc.) que já existem
+      await sheetsUpdate(`${ABA_C}!A${idx+2}:O${idx+2}`,[[
+        nome,telefone||row[1]||'',email||row[2]||'',total,gasto,dataHoje,
+        row[6]||'',row[7]||'',row[8]||'',row[9]||'',row[10]||'',row[11]||'',row[12]||'',row[13]||'',row[14]||''
+      ]]);
     }else{
-      await sheetsAppend(`${ABA_C}!A:F`,[[nome,telefone,email,1,valor,dataHoje]]);
+      // Novo cliente vindo da venda: colunas extras ficam em branco (pode completar depois em Clientes)
+      await sheetsAppend(`${ABA_C}!A:O`,[[nome,telefone,email,1,valor,dataHoje,'','','','','','','','','']]);
     }
   }catch(e){console.warn('upsertCliente erro:',e);}
 }
@@ -893,19 +920,21 @@ function pedirExclusaoMov(rowIndex,nome,dataHora){
 }
 async function syncClienteAposDelecao(nomeCliente, valorVenda){
   try{
-    const r=await sheetsGet(`${ABA_C}!A2:F1000`);const rows=r.values||[];
+    const r=await sheetsGet(`${ABA_C}!A2:O1000`);const rows=r.values||[];
     const idx=rows.findIndex(r=>normalize(r[0]||'')===normalize(nomeCliente));
     if(idx<0)return;
     const row=rows[idx];
     const novoTotal=Math.max(0,(parseInt(row[3]||'0')-1));
     const novoGasto=Math.max(0,parseSheetsNum(row[4])-valorVenda);
     if(novoTotal===0){
-      // Remove cliente da lista
       const sid=await getSheetId(ABA_C);
       await sheetsBatch([{deleteDimension:{range:{sheetId:sid,dimension:'ROWS',startIndex:idx+1,endIndex:idx+2}}}]);
       metaSheets=null;
     } else {
-      await sheetsUpdate(`${ABA_C}!A${idx+2}:F${idx+2}`,[[nomeCliente,row[1]||'',row[2]||'',novoTotal,novoGasto,row[5]||'']]);
+      await sheetsUpdate(`${ABA_C}!A${idx+2}:O${idx+2}`,[[
+        nomeCliente,row[1]||'',row[2]||'',novoTotal,novoGasto,row[5]||'',
+        row[6]||'',row[7]||'',row[8]||'',row[9]||'',row[10]||'',row[11]||'',row[12]||'',row[13]||'',row[14]||''
+      ]]);
     }
   }catch(e){console.warn('syncCliente erro:',e);}
 }
@@ -986,6 +1015,58 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 let toastTimer;
 function showToast(msg,isError=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(isError?' error':'');t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3500);}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// Autocomplete de clientes no modal de venda
+let clientesVenda=[];
+async function carregarClientesVenda(){
+  try{
+    const r=await sheetsGet(`${ABA_C}!A2:O1000`);
+    clientesVenda=(r.values||[]).map(row=>({
+      nome:row[0]||'',telefone:row[1]||'',email:row[2]||'',
+      totalPedidos:parseInt(row[3])||0,totalGasto:parseSheetsNum(row[4]),
+      cpf:row[6]||''
+    })).filter(c=>c.nome);
+  }catch(e){clientesVenda=[];}
+}
+function filtrarClientesVenda(q){
+  const box=document.getElementById('vClienteSugestoes');
+  if(!q.trim()){box.style.display='none';box.innerHTML='';return;}
+  const nq=normalize(q);
+  const found=clientesVenda.filter(c=>normalize(c.nome).includes(nq)||normalize(c.telefone).includes(nq)).slice(0,6);
+  if(!found.length){box.style.display='none';return;}
+  box.innerHTML=found.map(c=>`
+    <div onclick="selecionarClienteVenda('${c.nome.replace(/'/g,"\\'")}','${c.telefone}','${c.email}')"
+      style="padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(46,46,52,.6);display:flex;flex-direction:column;gap:2px"
+      onmouseover="this.style.background='rgba(200,240,77,0.08)'" onmouseout="this.style.background=''">
+      <span style="font-weight:600;font-size:13px">${c.nome}${c.totalPedidos>0?` <span style="font-family:monospace;font-size:10px;color:var(--titanium)">(${c.totalPedidos} pedidos)</span>`:''}</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium)">${[c.telefone,c.email].filter(Boolean).join(' · ')||'Sem contato'}</span>
+    </div>`).join('');
+  box.style.display='block';
+}
+function selecionarClienteVenda(nome,telefone,email){
+  document.getElementById('vCliente').value=nome;
+  document.getElementById('vTelefone').value=telefone;
+  document.getElementById('vEmail').value=email;
+  document.getElementById('vClienteBusca').value=nome;
+  document.getElementById('vClienteSugestoes').style.display='none';
+  // Mostra card
+  const card=document.getElementById('vClienteCard');
+  document.getElementById('vClienteCardNome').textContent=nome;
+  document.getElementById('vClienteCardDetalhe').textContent=[telefone,email].filter(Boolean).join(' · ')||'Sem contato adicional';
+  card.style.display='flex';
+}
+function limparClienteVenda(){
+  const card=document.getElementById('vClienteCard');
+  card.style.display='none';
+  const busca=document.getElementById('vClienteBusca');if(busca)busca.value='';
+  const box=document.getElementById('vClienteSugestoes');if(box){box.style.display='none';box.innerHTML='';}
+  // Não limpa os campos manuais para permitir preenchimento manual
+}
+// Fecha sugestões ao clicar fora
+document.addEventListener('click',e=>{
+  const box=document.getElementById('vClienteSugestoes');
+  if(box&&!box.contains(e.target)&&e.target.id!=='vClienteBusca'){box.style.display='none';}
+});
 
 // PWA Service Worker
 if('serviceWorker' in navigator){
