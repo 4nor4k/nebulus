@@ -299,9 +299,9 @@ body{font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;a
 .price-val{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#C8F04D}
 .card-esgotado{background:rgba(100,100,110,.1);border-radius:6px;padding:7px;text-align:center;font-family:'Space Mono',monospace;font-size:9px;color:#8E8E98;letter-spacing:.08em;text-transform:uppercase;margin-top:8px}
 /* WA BTN */
-.btn-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;background:#1C1C20;border:.5px solid #2E2E34;border-radius:10px;padding:17px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;color:#8E8E98;text-transform:uppercase;text-decoration:none;transition:border-color .18s,color .18s;margin:0 1rem 2rem}
-.btn-whatsapp:hover{border-color:#C8F04D;color:#F0ECE4}
-@media(min-width:640px){.btn-whatsapp{max-width:720px}}
+.btn-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:480px;background:#C8F04D;border:.5px solid #C8F04D;border-radius:10px;padding:17px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;color:#0E0E10;text-transform:uppercase;text-decoration:none;transition:opacity .18s;margin:0 1rem 2rem;font-weight:700}
+.btn-whatsapp:hover{opacity:.88}
+@media(max-width:640px){.btn-whatsapp{padding:13px;font-size:10px;letter-spacing:.10em;flex-direction:column;gap:5px;text-align:center;max-width:calc(100% - 2rem)}}
 .page-footer{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.16em;color:#2E2E34;text-transform:uppercase;text-align:center}
 </style>
 </head>
@@ -329,7 +329,7 @@ body{font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;a
 <div class="grid">${cards}</div>
 <a class="btn-whatsapp" href="https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Olá, vim pelo Instagram e quero saber mais sobre os decants')}" target="_blank">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
-  Procurando outra fragrância? Chama aqui!
+  Procurando outra fragrância?<br>Me chame aqui!
 </a>
 <div class="page-footer">nebulusclub.com.br · BH → Brasil</div>
 </body>
