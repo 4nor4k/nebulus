@@ -1,0 +1,24 @@
+{
+  "name": "NEBULUSCLUB",
+  "short_name": "Nebulus",
+  "description": "Gestão de estoque e vendas de decants",
+  "start_url": "/nebulus/nebulus-dashboard.html",
+  "scope": "/nebulus/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0E0E10",
+  "theme_color": "#0E0E10",
+  "icons": [
+    {
+      "src": "https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp",
+      "sizes": "640x640",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ]
+}
