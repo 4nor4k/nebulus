@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEBULUS. — Dashboard</title>
+<title>NEBULUSCLUB — Dashboard</title>
 <link rel="icon" href="https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -216,10 +216,6 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
   .hist-val{font-size:11px}
   .hist-item{min-width:0}
   .grid-3 .panel,.grid-2 .panel{width:100%;box-sizing:border-box}
-  .header-actions{width:100%;display:flex;gap:8px}
-  .header-actions .btn-ghost{flex:1;text-align:center;padding:10px 8px;font-size:10px}
-  header{padding-bottom:10px;flex-wrap:wrap}
-}
 }
 </style>
 </head>
@@ -301,17 +297,13 @@ tbody td{padding:11px 13px;font-size:13px;white-space:nowrap}
         </div>
       </div>
       <!-- HISTORICO -->
-      <div class="grid-2" style="margin-bottom:0">
+      <div style="margin-bottom:0">
         <div class="panel">
-          <div class="panel-title">Últimas movimentações</div>
-          <div id="histList"><div class="empty">Nenhuma movimentação ainda.</div></div>
-        </div>
-        <div class="panel">
-          <div class="panel-title">Ver histórico completo</div>
-          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
-            <p style="font-size:13px;color:var(--titanium);line-height:1.6">Acesse o histórico completo com filtros por data, perfume e canal.</p>
-            <a href="nebulus-historico.html" class="btn" style="text-decoration:none">Ver histórico →</a>
+          <div class="panel-title" style="justify-content:space-between;display:flex;align-items:center">
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--racing);display:inline-block"></span>Últimas movimentações</span>
+            <a href="nebulus-historico.html" class="btn-ghost" style="font-size:10px;padding:5px 12px;text-decoration:none">Ver histórico completo →</a>
           </div>
+          <div id="histList"><div class="empty">Nenhuma movimentação ainda.</div></div>
         </div>
       </div>
     </div>
@@ -877,12 +869,36 @@ function pedirExclusaoMov(rowIndex,nome,dataHora){
   document.getElementById('confirmItem').textContent=nome+' · '+dataHora;
   confirmCallback=async()=>{
     const mov=movs.find(m=>m.rowIndex===rowIndex);
-    if(mov&&mov.tipo==='Saída'){const p=estoque.find(p=>p.id===mov.idPerfume);if(p){const ml=Math.min(Math.round((p.mlDisp+mov.ml)*10000)/10000,p.mlTotal);await sheetsUpdate(`${ABA_E}!E${p.rowIndex}`,[[ml]]);}}
+    if(mov&&mov.tipo==='Saída'){
+      // Restaura ml no estoque
+      const p=estoque.find(p=>p.id===mov.idPerfume);
+      if(p){const ml=Math.min(Math.round((p.mlDisp+mov.ml)*10000)/10000,p.mlTotal);await sheetsUpdate(`${ABA_E}!E${p.rowIndex}`,[[ml]]);}
+      // Sincroniza cliente
+      if(mov.cliente) await syncClienteAposDelecao(mov.cliente, mov.preco);
+    }
     const sid=await getSheetId(ABA_M);
     await sheetsBatch([{deleteDimension:{range:{sheetId:sid,dimension:'ROWS',startIndex:rowIndex-1,endIndex:rowIndex}}}]);
     metaSheets=null;closeModal('overlayConfirm');showToast('✓ Registro apagado');await loadData();
   };
   document.getElementById('confirmBtn').onclick=confirmCallback;openModal('overlayConfirm');
+}
+async function syncClienteAposDelecao(nomeCliente, valorVenda){
+  try{
+    const r=await sheetsGet(`${ABA_C}!A2:F1000`);const rows=r.values||[];
+    const idx=rows.findIndex(r=>normalize(r[0]||'')===normalize(nomeCliente));
+    if(idx<0)return;
+    const row=rows[idx];
+    const novoTotal=Math.max(0,(parseInt(row[3]||'0')-1));
+    const novoGasto=Math.max(0,parseSheetsNum(row[4])-valorVenda);
+    if(novoTotal===0){
+      // Remove cliente da lista
+      const sid=await getSheetId(ABA_C);
+      await sheetsBatch([{deleteDimension:{range:{sheetId:sid,dimension:'ROWS',startIndex:idx+1,endIndex:idx+2}}}]);
+      metaSheets=null;
+    } else {
+      await sheetsUpdate(`${ABA_C}!A${idx+2}:F${idx+2}`,[[nomeCliente,row[1]||'',row[2]||'',novoTotal,novoGasto,row[5]||'']]);
+    }
+  }catch(e){console.warn('syncCliente erro:',e);}
 }
 function pedirExclusaoPerfume(id){
   const p=estoque.find(e=>e.id===id);if(!p)return;
