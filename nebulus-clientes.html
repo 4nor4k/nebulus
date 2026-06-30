@@ -174,7 +174,7 @@ let clientes=[],movs=[],sortCol='totalGasto',sortDir=-1,clienteEditando=null;
 // G=CPF H=Data Nasc I=CEP J=Logradouro K=Número L=Complemento M=Bairro N=Cidade O=UF
 
 NB.afterLogin=async function(){
-  document.getElementById('searchBar').style.display='block';
+  document.getElementById('searchBar').style.display='flex';
   document.getElementById('btnAtualizar').style.display='';
   await initClientesSheet();
   await loadData();

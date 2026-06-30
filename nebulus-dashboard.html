@@ -119,8 +119,8 @@
 
           <div style="margin-bottom:0">
             <div class="panel">
-              <div class="panel-title" style="justify-content:space-between;display:flex;align-items:center">
-                <span style="display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--racing);display:inline-block"></span>Últimas movimentações</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:10px;flex-wrap:wrap">
+                <div class="panel-title" style="margin-bottom:0">Últimas movimentações</div>
                 <a href="nebulus-historico.html" class="btn-ghost" style="font-size:10px;padding:6px 12px">Ver histórico completo →</a>
               </div>
               <div id="histList"><div class="empty">Nenhuma movimentação ainda.</div></div>
@@ -241,8 +241,11 @@
       </div>
     </div>
     <hr class="modal-divider">
+    <div class="modal-section-label" style="margin-top:0;justify-content:space-between">
+      <span style="display:flex;align-items:center;gap:10px"><span style="width:14px;height:1px;background:var(--racing);display:inline-block"></span>Cliente</span>
+      <button class="btn-icon" title="Cadastrar novo cliente" onclick="abrirCadastroClienteVenda()" style="border:1px solid var(--racing-border);width:26px;height:26px"><i class="ti ti-user-plus" aria-hidden="true" style="font-size:14px"></i></button>
+    </div>
     <div class="field" style="margin-bottom:8px">
-      <label>Buscar cliente cadastrado</label>
       <div style="position:relative">
         <input id="vClienteBusca" placeholder="Digite nome ou telefone..." oninput="filtrarClientesVenda(this.value)" autocomplete="off">
         <div id="vClienteSugestoes" style="position:absolute;top:100%;left:0;right:0;background:var(--concrete);border:1px solid var(--racing-border);border-radius:0 0 var(--radius) var(--radius);z-index:50;max-height:180px;overflow-y:auto;display:none"></div>
@@ -255,29 +258,67 @@
       </div>
       <button onclick="limparClienteVenda()" style="background:transparent;border:none;color:var(--titanium);cursor:pointer;font-size:18px;line-height:1">×</button>
     </div>
-    <hr class="modal-divider">
-    <div class="field-row" style="align-items:start;gap:24px">
-      <div>
-        <div class="modal-section-label" style="margin-top:0">Cliente</div>
-        <div id="vClienteCampos">
-          <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
-          <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
-          <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
-        </div>
-      </div>
-      <div>
-        <div class="modal-section-label" style="margin-top:0">Valores</div>
-        <div id="precosRapidos" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px"></div>
-        <div class="field-row">
-          <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5"></div>
-          <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
-        </div>
-        <div class="field" style="margin-bottom:0"><label>Descrição / Observações</label><textarea id="vDescricao" placeholder="Ex: Envio via Correios, embalagem presente..." style="min-height:54px"></textarea></div>
-      </div>
+    <div id="vClienteCampos" class="field-row-3">
+      <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
+      <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
+      <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
     </div>
+    <hr class="modal-divider">
+    <div class="modal-section-label">Valores</div>
+    <div id="precosRapidos" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
+    <div class="field-row">
+      <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5"></div>
+      <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
+    </div>
+    <div class="field" style="margin-bottom:0"><label>Descrição / Observações</label><textarea id="vDescricao" placeholder="Ex: Envio via Correios, embalagem presente..." style="min-height:54px"></textarea></div>
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal('overlayVenda')">Cancelar</button>
       <button class="btn" onclick="salvarVenda()">Confirmar venda</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlayCadastroVenda">
+  <div class="modal modal--lg">
+    <button class="modal-close" onclick="closeModal('overlayCadastroVenda')">×</button>
+    <div class="modal-title">Cadastrar cliente</div>
+    <div class="modal-sub">Dados completos</div>
+
+    <div class="modal-section-label" style="margin-top:0">Dados pessoais</div>
+    <div class="field-row-3">
+      <div class="field"><label>Nome completo *</label><input id="ncvNome" placeholder="Ex: João Silva"></div>
+      <div class="field"><label>CPF</label><input id="ncvCPF" placeholder="000.000.000-00" maxlength="14" oninput="maskCPFVenda(this)"></div>
+      <div class="field"><label>Data de nascimento</label><input id="ncvNasc" type="date"></div>
+    </div>
+
+    <div class="modal-section-label">Contato</div>
+    <div class="field-row">
+      <div class="field"><label>Telefone / WhatsApp</label><input id="ncvTelefone" placeholder="(31) 99999-9999" oninput="maskTelefoneVenda(this)"></div>
+      <div class="field"><label>E-mail</label><input id="ncvEmail" placeholder="cliente@email.com"></div>
+    </div>
+
+    <div class="modal-section-label">Endereço</div>
+    <div class="field-row-3">
+      <div class="field">
+        <label>CEP</label>
+        <div style="position:relative">
+          <input id="ncvCEP" placeholder="00000-000" maxlength="9" oninput="maskCEPVenda(this)" onblur="buscarCEPVenda()">
+          <div id="ncvCepLoading" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;display:none"></div>
+        </div>
+      </div>
+      <div class="field" style="grid-column:span 2"><label>Logradouro</label><input id="ncvLogradouro" placeholder="Rua, Avenida..."></div>
+    </div>
+    <div class="field-row-4">
+      <div class="field"><label>Número</label><input id="ncvNumero" placeholder="123"></div>
+      <div class="field"><label>Complemento</label><input id="ncvComplemento" placeholder="Apto, Bloco..."></div>
+      <div class="field"><label>Bairro</label><input id="ncvBairro" placeholder="Bairro"></div>
+      <div class="field"><label>Cidade</label><input id="ncvCidade" placeholder="Cidade"></div>
+    </div>
+    <div class="field" style="max-width:120px"><label>UF</label><input id="ncvUF" placeholder="MG" maxlength="2" style="text-transform:uppercase"></div>
+
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('overlayCadastroVenda')">Cancelar</button>
+      <button class="btn" onclick="salvarCadastroClienteVenda()">Salvar e selecionar</button>
     </div>
   </div>
 </div>
@@ -352,7 +393,7 @@ let clientesVenda=[];
 let calcConfigDirty=false;
 
 NB.afterLogin=async function(){
-  document.getElementById('searchBar').style.display='block';
+  document.getElementById('searchBar').style.display='flex';
   document.getElementById('btnAtualizar').style.display='';
   await initSheets();
   await loadData();
@@ -463,13 +504,6 @@ function renderEstoque(){
     </tr>`;
   }).join('');
 }
-function lightenHex(hex,amt){
-  const h=hex.replace('#','');
-  if(h.length!==6)return hex;
-  const r=parseInt(h.substring(0,2),16),g=parseInt(h.substring(2,4),16),b=parseInt(h.substring(4,6),16);
-  const lr=Math.round(r+(255-r)*amt),lg=Math.round(g+(255-g)*amt),lb=Math.round(b+(255-b)*amt);
-  return`#${lr.toString(16).padStart(2,'0')}${lg.toString(16).padStart(2,'0')}${lb.toString(16).padStart(2,'0')}`;
-}
 function nbDonutCenterPlugin(){
   return{
     id:'nbDonutCenter',
@@ -539,17 +573,7 @@ function renderDonut(canvasId,getC,setC,labels,data,colors,legendId,fmtFn){
   const ex=getC();const el=document.getElementById(canvasId);if(!el)return;
   if(!data.length){if(ex){ex.destroy();setC(null);}const w=el.parentElement;if(w)w.innerHTML='<div class="empty" style="padding:30px 10px">Sem dados ainda.</div>';const lg=document.getElementById(legendId);if(lg)lg.innerHTML='';return;}
   if(ex)ex.destroy();
-  const gradientBg=(ctx)=>{
-    const chart=ctx.chart;const idx=ctx.dataIndex;const base=colors[idx]||'#8E8E98';
-    if(!chart.chartArea)return base;
-    const{left,right,top,bottom}=chart.chartArea;
-    const cx=(left+right)/2,cy=(top+bottom)/2,r=Math.min(right-left,bottom-top)/2;
-    const g=chart.ctx.createRadialGradient(cx,cy,r*0.25,cx,cy,r);
-    g.addColorStop(0,lightenHex(base,.55));
-    g.addColorStop(1,base);
-    return g;
-  };
-  const chart=new Chart(el,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:gradientBg,borderColor:'#1C1C20',borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'56%',interaction:{mode:'nearest',intersect:true},plugins:{legend:{display:false},tooltip:{enabled:false}}},plugins:[nbDonutCenterPlugin()]});
+  const chart=new Chart(el,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,borderRadius:12,spacing:3,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'80%',interaction:{mode:'nearest',intersect:true},plugins:{legend:{display:false},tooltip:{enabled:false}}},plugins:[nbDonutCenterPlugin()]});
   chart._nbBaseColors=colors;
   setC(chart);
   document.getElementById(legendId).innerHTML=labels.map((l,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i]}"></span><span class="legend-name">${l}</span><span class="legend-val">${fmtFn(data[i])}</span></div>`).join('');
@@ -911,6 +935,74 @@ document.addEventListener('click',e=>{
   const box=document.getElementById('vClienteSugestoes');
   if(box&&!box.contains(e.target)&&e.target.id!=='vClienteBusca'){box.style.display='none';}
 });
+
+/* ---------- CADASTRO COMPLETO DE CLIENTE (dentro do fluxo de venda) ---------- */
+function abrirCadastroClienteVenda(){
+  ['ncvNome','ncvCPF','ncvTelefone','ncvEmail','ncvCEP','ncvLogradouro','ncvNumero','ncvComplemento','ncvBairro','ncvCidade','ncvUF'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('ncvNasc').value='';
+  openModal('overlayCadastroVenda');
+}
+function maskCPFVenda(el){
+  let v=el.value.replace(/\D/g,'').substring(0,11);
+  v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  el.value=v;
+}
+function maskTelefoneVenda(el){
+  let v=el.value.replace(/\D/g,'').substring(0,11);
+  if(v.length>10)v=v.replace(/^(\d{2})(\d{5})(\d{4}).*/,'($1) $2-$3');
+  else if(v.length>6)v=v.replace(/^(\d{2})(\d{4})(\d*)/,'($1) $2-$3');
+  else if(v.length>2)v=v.replace(/^(\d{2})(\d*)/,'($1) $2');
+  el.value=v;
+}
+function maskCEPVenda(el){
+  let v=el.value.replace(/\D/g,'').substring(0,8);
+  if(v.length>5)v=v.replace(/^(\d{5})(\d*)/,'$1-$2');
+  el.value=v;
+}
+async function buscarCEPVenda(){
+  const cep=document.getElementById('ncvCEP').value.replace(/\D/g,'');
+  if(cep.length!==8)return;
+  const loading=document.getElementById('ncvCepLoading');
+  loading.style.display='block';
+  try{
+    const r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const d=await r.json();
+    if(d.erro){showToast('CEP não encontrado',true);return;}
+    document.getElementById('ncvLogradouro').value=d.logradouro||'';
+    document.getElementById('ncvBairro').value=d.bairro||'';
+    document.getElementById('ncvCidade').value=d.localidade||'';
+    document.getElementById('ncvUF').value=d.uf||'';
+    document.getElementById('ncvNumero').focus();
+  }catch(e){showToast('Erro ao buscar CEP',true);}
+  finally{loading.style.display='none';}
+}
+async function salvarCadastroClienteVenda(){
+  const nome=document.getElementById('ncvNome').value.trim();
+  if(!nome){showToast('Nome é obrigatório',true);return;}
+  const cpf=document.getElementById('ncvCPF').value.trim();
+  const dataNasc=document.getElementById('ncvNasc').value;
+  const telefone=document.getElementById('ncvTelefone').value.trim();
+  const email=document.getElementById('ncvEmail').value.trim();
+  const cep=document.getElementById('ncvCEP').value.trim();
+  const logradouro=document.getElementById('ncvLogradouro').value.trim();
+  const numero=document.getElementById('ncvNumero').value.trim();
+  const complemento=document.getElementById('ncvComplemento').value.trim();
+  const bairro=document.getElementById('ncvBairro').value.trim();
+  const cidade=document.getElementById('ncvCidade').value.trim();
+  const uf=document.getElementById('ncvUF').value.trim().toUpperCase();
+  const existe=clientesVenda.find(c=>normalize(c.nome)===normalize(nome));
+  if(existe){showToast('Já existe um cliente cadastrado com este nome',true);return;}
+  try{
+    await sheetsAppend(`${NB.ABA_C}!A:O`,[[
+      nome,telefone,email,0,0,'',
+      cpf,dataNasc,cep,logradouro,numero,complemento,bairro,cidade,uf
+    ]]);
+    clientesVenda.push({nome,telefone,email,totalPedidos:0,totalGasto:0,cpf});
+    closeModal('overlayCadastroVenda');
+    selecionarClienteVenda(nome,telefone,email);
+    showToast('✓ Cliente cadastrado e selecionado');
+  }catch(e){showToast('Erro ao cadastrar: '+e.message,true);}
+}
 
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
