@@ -7,7 +7,8 @@
 /* ---------- RESET ---------- */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.5}
+body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.5;background-image:radial-gradient(rgba(142,142,152,.16) 1px,transparent 1px);background-size:34px 34px;animation:nbFogDrift 90s linear infinite}
+@keyframes nbFogDrift{0%{background-position:0 0}100%{background-position:170px 110px}}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 input,select,textarea{font-family:inherit}
@@ -133,10 +134,10 @@ input,select,textarea{font-family:inherit}
 .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
 .header-actions{display:flex;gap:10px;align-items:center}
 
-.search-wrap{display:flex;align-items:center;gap:10px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:10px 14px;transition:border-color .2s;max-width:320px}
+.search-wrap{display:flex;align-items:center;gap:10px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:10px 14px;transition:border-color .2s;width:100%;max-width:420px}
 .search-wrap:focus-within{border-color:var(--racing)}
 .search-icon{color:var(--racing);display:flex;align-items:center;flex-shrink:0}
-.search-input{flex:1;background:transparent;border:none;outline:none;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px}
+.search-input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .search-input::placeholder{color:var(--titanium)}
 .search-clear{background:transparent;border:none;color:var(--titanium);cursor:pointer;font-size:18px;display:none;line-height:1}
 .search-clear:hover{color:var(--ghost)}
@@ -153,8 +154,9 @@ input,select,textarea{font-family:inherit}
 .page{padding:18px 28px 64px}
 
 /* ---------- BUTTONS ---------- */
-.btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:var(--radius);padding:11px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:opacity .15s;white-space:nowrap}
-.btn:hover{opacity:.85}.btn:disabled{opacity:.4;cursor:default}
+.btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:var(--radius);padding:11px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:opacity .15s,box-shadow .2s;white-space:nowrap;box-shadow:0 0 10px rgba(200,240,77,.22)}
+.btn:hover{opacity:.88;box-shadow:0 0 16px rgba(200,240,77,.45),0 0 32px rgba(200,240,77,.18)}
+.btn:disabled{opacity:.4;cursor:default;box-shadow:none}
 
 .btn-ghost{background:transparent;color:var(--racing);border:1px solid var(--racing-border);border-radius:var(--radius);padding:9px 18px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
 .btn-ghost:hover{background:var(--racing-dim)}
@@ -193,7 +195,7 @@ input,select,textarea{font-family:inherit}
 .meta-bar-wrap{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:16px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .meta-label{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;color:var(--text-secondary);white-space:nowrap}
 .meta-bar-bg{flex:1;height:8px;background:var(--steel);border-radius:var(--radius-pill);min-width:100px}
-.meta-bar-fill{height:8px;border-radius:var(--radius-pill);background:var(--racing);transition:width .5s ease;max-width:100%}
+.meta-bar-fill{height:8px;border-radius:var(--radius-pill);background:var(--racing);transition:width .5s ease;max-width:100%;box-shadow:0 0 8px rgba(200,240,77,.6),0 0 18px rgba(200,240,77,.3)}
 .meta-pct{font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--racing);font-weight:700;white-space:nowrap}
 .meta-input{background:var(--asphalt);border:1px solid var(--steel);border-radius:var(--radius);padding:7px 11px;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:13px;outline:none;width:110px;transition:border-color .2s}
 .meta-input:focus{border-color:var(--racing)}
