@@ -8,7 +8,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.5}
-body::before{content:'';position:fixed;inset:-10%;pointer-events:none;z-index:-1;background-image:radial-gradient(rgba(142,142,152,.18) 1px,transparent 1px);background-size:16px 16px;animation:nbFogDrift 110s linear infinite}
+body::before{content:'';position:fixed;inset:-10%;pointer-events:none;z-index:-1;background-image:radial-gradient(rgba(142,142,152,.08) 1px,transparent 1px);background-size:16px 16px;animation:nbFogDrift 110s linear infinite}
 @keyframes nbFogDrift{0%{background-position:0 0}100%{background-position:130px 90px}}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}

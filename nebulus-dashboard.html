@@ -504,26 +504,6 @@ function nbDonutCenterPlugin(){
     id:'nbDonutCenter',
     afterDatasetsDraw(chart){
       const{ctx,chartArea}=chart;if(!chartArea)return;
-      const meta=chart.getDatasetMeta(0);
-      const colors=chart.data.datasets[0].backgroundColor;
-      meta.data.forEach((arc,i)=>{
-        const props=arc.getProps(['startAngle','endAngle','innerRadius','outerRadius','x','y'],true);
-        const color=Array.isArray(colors)?(chart._nbBaseColors?chart._nbBaseColors[i]:colors[i]):colors;
-        if(!color||typeof color!=='string')return;
-        const ringR=(props.innerRadius+props.outerRadius)/2;
-        const inset=ringR>0?2.4/ringR:0;
-        let a0=props.startAngle+inset,a1=props.endAngle-inset;
-        if(a1<=a0)return;
-        ctx.save();
-        ctx.shadowColor=color;ctx.shadowBlur=10;
-        ctx.strokeStyle=color;ctx.globalAlpha=.55;
-        ctx.lineCap='round';
-        ctx.lineWidth=(props.outerRadius-props.innerRadius);
-        ctx.beginPath();
-        ctx.arc(props.x,props.y,ringR,a0,a1);
-        ctx.stroke();
-        ctx.restore();
-      });
       const active=chart.getActiveElements();
       if(active&&active.length){
         const idx=active[0].index;
