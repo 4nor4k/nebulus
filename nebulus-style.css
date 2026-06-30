@@ -256,9 +256,12 @@ tbody td{padding:13px 14px;font-size:14px;white-space:nowrap}
 }
 /* size tiers — pick the one matching content density */
 .modal--sm{max-width:380px}
-.modal--md{max-width:520px}
-.modal--lg{max-width:620px}
-.modal{max-width:520px} /* default = md, override with modifier class */
+.modal--md{max-width:540px}
+.modal--lg{max-width:780px}
+.modal{max-width:540px} /* default = md, override with modifier class */
+
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.field-row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 
 .modal-title{font-family:'Archivo Black',sans-serif;font-weight:400;font-size:var(--fs-modal-title);color:var(--ghost);margin-bottom:5px}
 .modal-sub{font-family:'Bebas Neue',sans-serif;font-size:11px;color:var(--titanium);letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px}
@@ -313,6 +316,7 @@ tbody td{padding:13px 14px;font-size:14px;white-space:nowrap}
   .overlay{padding:0;align-items:stretch}
   .modal{max-width:none!important;width:100%;height:100vh;max-height:none;border-radius:0;padding:20px 18px 100px;border:none}
   .modal-footer{position:fixed;left:0;right:0;bottom:0;background:#141416;padding:14px 18px;margin-top:0;border-top:1px solid var(--steel)}
+  .field-row-3,.field-row-4{grid-template-columns:1fr}
 }
 
 /* ---------- TOAST / EMPTY / LOADING ---------- */
@@ -326,7 +330,7 @@ tbody td{padding:13px 14px;font-size:14px;white-space:nowrap}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ---------- CALCULATOR ---------- */
-.calc-wrap{max-width:780px}
+.calc-wrap{max-width:780px;margin:0 auto}
 .calc-panel{background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:22px;margin-bottom:18px}
 .calc-panel-hint{font-size:12px;color:var(--titanium);margin-bottom:18px}
 .calc-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
@@ -369,6 +373,9 @@ tbody td{padding:13px 14px;font-size:14px;white-space:nowrap}
 .calc-breakdown-row.btotal .blbl{color:var(--ghost);font-weight:600}
 .calc-breakdown-row.btotal .bval{color:var(--racing);font-size:17px;font-weight:700}
 .bval-tax{color:rgba(200,240,77,.6)}.bval-suggested{color:var(--racing);font-weight:700}
+.calc-suggested-box{margin-top:14px;background:var(--racing-dim);border:1px solid var(--racing-border);border-radius:var(--radius);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.calc-suggested-label{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--ghost);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.calc-suggested-value{font-family:'Archivo Black',sans-serif;font-size:28px;color:var(--racing);line-height:1}
 .badge-indicativo{font-family:'Bebas Neue',sans-serif;font-size:9px;background:var(--steel);border-radius:3px;padding:2px 6px;color:var(--titanium);letter-spacing:.05em;margin-left:6px;vertical-align:middle}
 
 .calc-usar-btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:var(--radius);padding:11px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.04em;cursor:pointer;transition:opacity .15s;text-transform:uppercase;display:flex;align-items:center;gap:7px}

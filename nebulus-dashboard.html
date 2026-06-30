@@ -62,7 +62,6 @@
         </div>
         <div class="header-actions">
           <button class="btn-ghost" id="btnAtualizar" onclick="recarregarDados()" style="display:none"><i class="ti ti-refresh" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"></i>Atualizar</button>
-          <button class="btn-ghost" id="btnLogin" onclick="handleLogin()">Entrar com Google</button>
           <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
         </div>
       </div>
@@ -181,11 +180,7 @@
               <p class="section-label">Preço por volume</p>
               <div class="calc-results-grid" id="calcResultsGrid"></div>
               <div class="calc-breakdown" id="calcBreakdown"></div>
-              <button class="calc-usar-btn" onclick="usarPrecoNaVenda()">
-                <i class="ti ti-check" aria-hidden="true"></i>
-                Usar este preço na próxima venda
-              </button>
-              <p class="calc-usar-hint">O preço sugerido será pré-preenchido no formulário de venda.</p>
+              <div class="calc-suggested-box" id="calcSuggestedBox"></div>
             </div>
           </div>
         </div>
@@ -201,28 +196,30 @@
     <div class="modal-title" id="entradaTitle">Adicionar perfume</div>
     <div class="modal-sub" id="entradaSub">Cadastrar no estoque</div>
     <div class="modal-section-label" style="margin-top:0">Identificação</div>
-    <div class="field"><label>Nome do perfume</label><input id="eNome" placeholder="Ex: Oud Wood"></div>
-    <div class="field"><label>Marca / Casa</label><input id="eMarca" placeholder="Ex: Tom Ford"></div>
-    <div class="field"><label>Família olfativa</label><input id="eFamilia" placeholder="Ex: Oud · Oriental · Amadeirado"></div>
+    <div class="field-row-3">
+      <div class="field"><label>Nome do perfume</label><input id="eNome" placeholder="Ex: Oud Wood"></div>
+      <div class="field"><label>Marca / Casa</label><input id="eMarca" placeholder="Ex: Tom Ford"></div>
+      <div class="field"><label>Família olfativa</label><input id="eFamilia" placeholder="Ex: Oud · Oriental"></div>
+    </div>
     <div class="modal-section-label">Estoque</div>
-    <div class="field-row">
+    <div class="field-row-4">
       <div class="field"><label>Volume total (ml)</label><input id="eMl" type="number" min="1" placeholder="100"></div>
       <div class="field"><label>Preço de compra (R$)</label><input id="ePreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
-    </div>
-    <div class="field-row">
       <div class="field"><label>Data de compra</label><input id="eData" type="date"></div>
-      <div class="field"><label>Preço sugerido de venda (R$)</label><input id="ePrecoSugerido" type="number" min="0" step="0.01" placeholder="0,00"></div>
+      <div class="field"><label>Preço sugerido (R$)</label><input id="ePrecoSugerido" type="number" min="0" step="0.01" placeholder="0,00"></div>
     </div>
     <div class="modal-section-label">Detalhes</div>
-    <div class="field"><label>Notas internas</label><textarea id="eNotas" placeholder="Fornecedor, link de compra, observações..."></textarea></div>
-    <div class="field"><label>URL da imagem</label><input id="eImagem" placeholder="https://seuservidor.com/imagens/perfume.jpg"></div>
-    <div class="field">
-      <label>Cor de identificação</label>
-      <div class="color-preview">
-        <input type="color" id="eCorPicker" value="#C8F04D" oninput="syncColor(this,'eCorHex')">
-        <input type="text" id="eCorHex" value="#C8F04D" maxlength="7" placeholder="#C8F04D" oninput="syncHex(this,'eCorPicker')">
+    <div class="field-row">
+      <div class="field"><label>URL da imagem</label><input id="eImagem" placeholder="https://seuservidor.com/imagens/perfume.jpg"></div>
+      <div class="field">
+        <label>Cor de identificação</label>
+        <div class="color-preview">
+          <input type="color" id="eCorPicker" value="#C8F04D" oninput="syncColor(this,'eCorHex')">
+          <input type="text" id="eCorHex" value="#C8F04D" maxlength="7" placeholder="#C8F04D" oninput="syncHex(this,'eCorPicker')">
+        </div>
       </div>
     </div>
+    <div class="field"><label>Notas internas</label><textarea id="eNotas" placeholder="Fornecedor, link de compra, observações..." style="min-height:54px"></textarea></div>
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal('overlayEntrada')">Cancelar</button>
       <button class="btn" id="btnSalvarEntrada" onclick="salvarEntrada()">Registrar entrada</button>
@@ -260,8 +257,8 @@
       <button onclick="limparClienteVenda()" style="background:transparent;border:none;color:var(--titanium);cursor:pointer;font-size:18px;line-height:1">×</button>
     </div>
     <div id="vClienteCampos">
-      <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
-      <div class="field-row">
+      <div class="field-row-3">
+        <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
         <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
         <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
       </div>
@@ -284,7 +281,7 @@
 <div class="overlay" id="overlayDetalhe">
   <div class="modal modal--md">
     <button class="modal-close" onclick="closeModal('overlayDetalhe')">×</button>
-    <div class="modal-title">Detalhes do pedido</div>
+    <div class="modal-title">Detalhes da compra</div>
     <div class="modal-sub" id="detalheSub"></div>
     <div id="detalheContent"></div>
     <div class="modal-footer">
@@ -305,8 +302,8 @@
     </div>
     <hr class="modal-divider">
     <div class="modal-section-label">Dados do cliente</div>
-    <div class="field"><label>Nome do cliente</label><input id="emCliente"></div>
-    <div class="field-row">
+    <div class="field-row-3">
+      <div class="field"><label>Nome do cliente</label><input id="emCliente"></div>
       <div class="field"><label>Telefone</label><input id="emTelefone"></div>
       <div class="field"><label>E-mail</label><input id="emEmail"></div>
     </div>
@@ -373,7 +370,6 @@ function switchTab(n){
   document.getElementById('tab-'+n).classList.add('active');
   document.getElementById('navEstoque').classList.toggle('active',n==='dashboard');
   document.getElementById('navCalc').classList.toggle('active',n==='calculadora');
-  document.getElementById('searchBar').style.display=(n==='dashboard'&&NB.accessToken)?'block':'none';
   if(n==='dashboard'&&estoque.length)setTimeout(()=>renderCharts(),50);
 }
 
@@ -512,20 +508,8 @@ function renderHistorico(){
     </div>
   </div>`).join('');
 }
-function handleSearch(q){
-  document.getElementById('searchClear').style.display=q?'block':'none';
-  const res=document.getElementById('searchResults');
-  if(!q.trim()){res.classList.remove('open');res.innerHTML='';return;}
-  const nq=normalize(q);
-  const found=movs.filter(m=>normalize(m.nome).includes(nq)||normalize(m.pedido).includes(nq)||normalize(m.cliente).includes(nq)||normalize(m.dataHora).includes(nq)||normalize(m.canal).includes(nq)||normalize(m.telefone).includes(nq)||normalize(m.email).includes(nq)).reverse().slice(0,20);
-  res.innerHTML=!found.length?'<div class="sr-empty">Nenhum resultado.</div>':found.map(m=>`<div class="sr-item">
-    <span class="sr-type ${m.tipo==='Entrada'?'sr-entrada':'sr-saida'}">${m.tipo}</span>
-    <div class="sr-info"><div class="sr-name">${m.nome}${m.pedido?' · #'+m.pedido:''}${m.cliente?' · '+m.cliente:''}</div><div class="sr-detail">${m.ml} ml${m.canal?' · '+m.canal:''} · ${m.dataHora}</div></div>
-    <div class="sr-right"><div class="sr-val">${fmt(m.preco)}</div>${m.tipo==='Saída'?`<button class="btn-info" onclick="openDetalhe(${m.rowIndex})">ℹ</button>`:''}</div>
-  </div>`).join('');
-  res.classList.add('open');
-}
-function clearSearch(){document.getElementById('globalSearch').value='';document.getElementById('searchClear').style.display='none';const r=document.getElementById('searchResults');r.classList.remove('open');r.innerHTML='';}
+function handleSearch(q){ runGlobalSearch(q, movs, true); }
+function clearSearch(){ clearGlobalSearch(); }
 function nextSeq(){return estoque.reduce((m,p)=>Math.max(m,p.seq||0),0)+1;}
 function fmtId(seq){return'NB-'+String(seq).padStart(3,'0');}
 
@@ -655,8 +639,8 @@ function openDetalhe(rowIndex){
     ${m.descricao?`<div class="detalhe-row"><span class="detalhe-label">Descrição</span><span class="detalhe-val" style="white-space:pre-wrap">${m.descricao}</span></div>`:''}
     <div class="detalhe-section">Cliente</div>
     <div class="detalhe-row"><span class="detalhe-label">Nome</span><span class="detalhe-val">${m.cliente||'—'}</span></div>
-    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${m.telefone?`<a href="tel:${m.telefone}" style="color:var(--racing)">${m.telefone}</a>`:'—'}</span></div>
-    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${m.email?`<a href="mailto:${m.email}" style="color:var(--racing)">${m.email}</a>`:'—'}</span></div>`;
+    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${m.telefone||'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${m.email||'—'}</span></div>`;
   openModal('overlayDetalhe');
 }
 function abrirEditarMov(){
@@ -788,22 +772,11 @@ function calcPreco(){
     <div class="calc-breakdown-row"><span>Custo total</span><span class="bval">${fmtBRL(custoTotal)}</span></div>
     <div class="calc-breakdown-row"><span>Sua margem (${cfg.margem.toFixed(0)}%)</span><span class="bval">${fmtBRL(lucroLiquido)}</span></div>
     <div class="calc-breakdown-row"><span>Seu preço (sem taxa)</span><span class="bval">${fmtBRL(precoComMargem)}</span></div>
-    <div class="calc-breakdown-row"><span>Taxa (${taxa.toFixed(2)}%)</span><span class="bval bval-tax">+${fmtBRL(valorTaxa)}</span></div>
-    <div class="calc-breakdown-row btotal"><span class="blbl">Preço final cobrado</span><span class="bval">${fmtBRL(precoFinal)}</span></div>
-    <div class="calc-breakdown-row" style="margin-top:11px;padding-top:11px;border-top:1px dashed var(--steel);border-bottom:none">
-      <span style="color:var(--ghost)">Preço sugerido<span class="badge-indicativo">indicativo</span></span>
-      <span class="bval bval-suggested">${fmtBRL(sug)}</span>
-    </div>`;
+    <div class="calc-breakdown-row btotal"><span class="blbl">Taxa (${taxa.toFixed(2)}%) + preço final</span><span class="bval">+${fmtBRL(valorTaxa)} = ${fmtBRL(precoFinal)}</span></div>`;
+  document.getElementById('calcSuggestedBox').innerHTML=`
+    <span class="calc-suggested-label">Preço sugerido<span class="badge-indicativo">indicativo</span></span>
+    <span class="calc-suggested-value">${fmtBRL(sug)}</span>`;
 }
-function usarPrecoNaVenda(){
-  const cfg=getCalcConfig();
-  const preco=parseFloat(document.getElementById('cPreco')?.value)||0;const volume=parseFloat(document.getElementById('cVolume')?.value)||1;
-  const taxa=calcTab==='avista'?cfg.taxaAvista:cfg.taxaCartao;
-  const{precoFinal}=calcPriceDetail(preco,volume,cfg.embalagem,cfg.margem,taxa,calcSelectedMl);
-  precoCalculado=precoSugerido(precoFinal);switchTab('dashboard');
-  showToast(`✓ Preço ${fmtBRL(precoCalculado)} pronto para a próxima venda`);
-}
-
 async function recarregarDados(){
   const btn=document.getElementById('btnAtualizar');
   btn.textContent='Atualizando...';btn.disabled=true;

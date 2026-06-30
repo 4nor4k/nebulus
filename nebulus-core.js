@@ -161,6 +161,34 @@ function getCalcConfig(){
 }
 function saveCalcConfig(cfg){ localStorage.setItem(NB_CONFIG_KEY, JSON.stringify(cfg)); }
 
+/* ---------- GLOBAL SEARCH (shared topbar search across pages) ---------- */
+function nbSrItemHTML(m, withDetalhe){
+  return `<div class="sr-item">
+    <span class="sr-type ${m.tipo === 'Entrada' ? 'sr-entrada' : 'sr-saida'}">${m.tipo}</span>
+    <div class="sr-info"><div class="sr-name">${m.nome}${m.pedido ? ' · #' + m.pedido : ''}${m.cliente ? ' · ' + m.cliente : ''}</div><div class="sr-detail">${m.ml} ml${m.canal ? ' · ' + m.canal : ''} · ${m.dataHora}</div></div>
+    <div class="sr-right"><div class="sr-val">${fmt(m.preco)}</div>${withDetalhe && m.tipo === 'Saída' ? `<button class="btn-info" onclick="openDetalhe(${m.rowIndex})">ℹ</button>` : ''}</div>
+  </div>`;
+}
+function runGlobalSearch(q, movsArr, withDetalhe){
+  const clearBtn = document.getElementById('searchClear');
+  if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+  const res = document.getElementById('searchResults');
+  if (!res) return;
+  if (!q.trim()) { res.classList.remove('open'); res.innerHTML = ''; return; }
+  const nq = normalize(q);
+  const found = (movsArr || []).filter(m =>
+    normalize(m.nome).includes(nq) || normalize(m.pedido).includes(nq) || normalize(m.cliente).includes(nq) ||
+    normalize(m.dataHora).includes(nq) || normalize(m.canal).includes(nq) || normalize(m.telefone).includes(nq) || normalize(m.email).includes(nq)
+  ).reverse().slice(0, 20);
+  res.innerHTML = !found.length ? '<div class="sr-empty">Nenhum resultado.</div>' : found.map(m => nbSrItemHTML(m, withDetalhe)).join('');
+  res.classList.add('open');
+}
+function clearGlobalSearch(){
+  const input = document.getElementById('globalSearch'); if (input) input.value = '';
+  const clearBtn = document.getElementById('searchClear'); if (clearBtn) clearBtn.style.display = 'none';
+  const res = document.getElementById('searchResults'); if (res) { res.classList.remove('open'); res.innerHTML = ''; }
+}
+
 /* ---------- MOBILE DRAWER ---------- */
 function nbInitDrawer(){
   const overlay = document.getElementById('nbDrawerOverlay');

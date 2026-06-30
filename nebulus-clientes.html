@@ -2,219 +2,156 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEBULUSCLUB — Clientes</title>
+<title>NEBULUS.CLUB — Clientes</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0E0E10">
 <link rel="icon" href="https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--asphalt:#0E0E10;--concrete:#1C1C20;--steel:#2E2E34;--racing:#C8F04D;--racing-dim:rgba(200,240,77,0.10);--racing-border:rgba(200,240,77,0.28);--titanium:#8E8E98;--ghost:#F0ECE4;--danger:#EB4C3C;--danger-dim:rgba(235,76,60,0.12);--green:#3DEB7A;--green-dim:rgba(61,235,122,0.12);}
-body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh}
-header{background:var(--concrete);border-bottom:1px solid var(--steel);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
-.logo-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--titanium);text-transform:uppercase;margin-left:10px}
-nav{background:var(--concrete);border-bottom:1px solid var(--steel);padding:0 32px;display:flex;overflow-x:auto}
-.nav-link{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--titanium);padding:13px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-decoration:none;white-space:nowrap}
-.nav-link:hover{color:var(--ghost)}.nav-link.active{color:var(--racing);border-bottom-color:var(--racing)}
-.btn{background:var(--racing);color:var(--asphalt);border:none;border-radius:7px;padding:9px 20px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;cursor:pointer;transition:opacity .15s;text-transform:uppercase;white-space:nowrap}
-.btn:hover{opacity:.85}
-.btn-ghost{background:transparent;color:var(--racing);border:1px solid var(--racing-border);border-radius:7px;padding:8px 16px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;text-transform:uppercase}
-.btn-ghost:hover{background:var(--racing-dim)}
-.btn-icon{background:transparent;border:1px solid var(--steel);border-radius:5px;color:var(--titanium);width:26px;height:26px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;padding:0;flex-shrink:0}
-.btn-icon:hover{border-color:var(--racing);color:var(--racing)}
-.btn-sm{background:var(--racing);color:var(--asphalt);border:none;border-radius:5px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:opacity .15s;text-transform:uppercase;letter-spacing:.06em;font-weight:700;white-space:nowrap}
-.btn-sm:hover{opacity:.85}
-#loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:22px;text-align:center;padding:32px}
-.login-desc{font-size:14px;color:var(--titanium);max-width:320px;line-height:1.7}
-#app{display:none}
-.page{padding:24px 32px 64px}
-.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:24px}
-.kpi{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:16px 18px}
-.kpi-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin-bottom:7px}
-.kpi-value{font-weight:700;font-size:22px;color:var(--ghost);line-height:1}
-.kpi-value.green{color:var(--racing)}.kpi-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--titanium);margin-top:4px}
-.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
-.section-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;display:flex;align-items:center;gap:7px}
-.section-title::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--racing)}
-.search-wrap{display:flex;align-items:center;gap:10px;background:var(--asphalt);border:1px solid var(--steel);border-radius:8px;padding:9px 14px;transition:border-color .2s;margin-bottom:16px}
-.search-wrap:focus-within{border-color:var(--racing)}
-.search-input{flex:1;background:transparent;border:none;outline:none;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px}
-.search-input::placeholder{color:var(--titanium)}
-.panel{background:var(--concrete);border:1px solid var(--steel);border-radius:10px;padding:0;overflow:hidden}
-table{width:100%;border-collapse:collapse;min-width:600px}
-thead th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--titanium);padding:10px 14px;text-align:left;background:var(--steel);white-space:nowrap;cursor:pointer}
-thead th:hover{color:var(--racing)}
-tbody tr{border-bottom:1px solid rgba(46,46,52,.8);transition:background .12s}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:rgba(255,255,255,.03)}
-tbody td{padding:12px 14px;font-size:13px}
-.td-name{font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.td-mono{font-family:'Space Mono',monospace;font-size:12px}
-.td-green{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--racing)}
-.td-ti{font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
-.td-actions{display:flex;gap:5px;align-items:center}
-.recorrente{font-family:'Space Mono',monospace;font-size:9px;color:var(--racing);background:var(--racing-dim);border:1px solid var(--racing-border);border-radius:3px;padding:1px 5px;margin-left:6px}
-.aniversario{font-family:'Space Mono',monospace;font-size:9px;color:var(--green);background:var(--green-dim);border:1px solid rgba(61,235,122,.3);border-radius:3px;padding:1px 5px;margin-left:6px}
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:400;display:none;align-items:center;justify-content:center;padding:16px}
-.overlay.open{display:flex}
-.modal{background:var(--concrete);border:1px solid var(--steel);border-radius:14px;width:100%;max-width:560px;padding:26px;position:relative;max-height:94vh;overflow-y:auto}
-.modal-title{font-weight:700;font-size:15px;letter-spacing:.06em;margin-bottom:3px;text-transform:uppercase}
-.modal-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);letter-spacing:.1em;margin-bottom:18px}
-.modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--titanium);font-size:22px;cursor:pointer;line-height:1}
-.modal-close:hover{color:var(--ghost)}
-.modal-divider{border:none;border-top:1px solid var(--steel);margin:14px 0}
-.modal-section-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin-bottom:10px;opacity:.7}
-.modal-footer{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--steel)}
-/* CAMPOS */
-.field{margin-bottom:13px}
-.field label{display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--titanium);text-transform:uppercase;margin-bottom:5px}
-.field input,.field select{width:100%;background:var(--asphalt);border:1px solid var(--steel);border-radius:7px;padding:10px 13px;color:var(--ghost);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
-.field input:focus,.field select:focus{border-color:var(--racing)}
-.field input::placeholder{color:var(--titanium)}
-.field input:disabled{opacity:.5;cursor:default}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
-.cep-wrap{position:relative}
-.cep-loading{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;display:none}
-.cep-loading.show{display:block}
-/* DETALHE */
-.detalhe-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(46,46,52,.8);font-size:13px}
-.detalhe-row:last-child{border-bottom:none}
-.detalhe-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium);text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;padding-right:12px}
-.detalhe-val{font-size:13px;color:var(--ghost);font-weight:500;text-align:right;word-break:break-word}
-.detalhe-val.accent{color:var(--racing);font-family:'Space Mono',monospace;font-weight:700}
-.detalhe-section{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--titanium);text-transform:uppercase;margin:12px 0 5px;opacity:.5}
-.hist-mini{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(46,46,52,.6);font-size:12px}
-.hist-mini:last-child{border-bottom:none}
-.hist-mini-type{font-family:'Space Mono',monospace;font-size:9px;padding:2px 5px;border-radius:3px;background:var(--green-dim);color:var(--green);flex-shrink:0}
-.hist-mini-info{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--titanium);font-family:'Space Mono',monospace;font-size:10px}
-.hist-mini-val{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--racing);flex-shrink:0}
-/* UTILS */
-.empty{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
-.loading{text-align:center;padding:36px;font-family:'Space Mono',monospace;font-size:11px;color:var(--titanium)}
-.spinner{display:inline-block;width:15px;height:15px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;margin-right:7px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:20px;right:20px;background:var(--steel);border:1px solid var(--racing-border);border-radius:8px;padding:11px 18px;font-family:'Space Mono',monospace;font-size:12px;color:var(--ghost);z-index:999;transform:translateY(80px);opacity:0;transition:all .3s ease}
-.toast.show{transform:translateY(0);opacity:1}
-/* BUSCA AUTOCOMPLETE */
-.cliente-search-wrap{position:relative;margin-bottom:0}
-.cliente-suggestions{position:absolute;top:100%;left:0;right:0;background:var(--concrete);border:1px solid var(--racing-border);border-radius:0 0 8px 8px;z-index:50;max-height:200px;overflow-y:auto;display:none}
-.cliente-suggestions.open{display:block}
-.suggestion-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(46,46,52,.6);font-size:13px;display:flex;align-items:center;gap:10px}
-.suggestion-item:last-child{border-bottom:none}
-.suggestion-item:hover{background:var(--racing-dim)}
-.suggestion-nome{font-weight:600}
-.suggestion-detalhe{font-family:'Space Mono',monospace;font-size:10px;color:var(--titanium)}
-.suggestion-novo{color:var(--racing);font-family:'Space Mono',monospace;font-size:11px;font-weight:700}
-@media(max-width:600px){header,nav,.page{padding-left:16px;padding-right:16px}.modal{padding:18px}header img{height:24px!important}.field-row,.field-row-3{grid-template-columns:1fr}}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="nebulus-style.css">
 </head>
 <body>
-<header>
-  <div style="display:flex;align-items:center">
-    <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:30px;width:auto;object-fit:contain">
-    <span class="logo-sub">Clientes</span>
-  </div>
-  <div style="display:flex;gap:10px">
-    <button class="btn-ghost" id="btnLogin" onclick="handleLogin()">Entrar com Google</button>
-    <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
-  </div>
-</header>
-<nav>
-  <a class="nav-link" href="nebulus-dashboard.html">Dashboard</a>
-  <a class="nav-link active" href="nebulus-clientes.html">Clientes</a>
-  <a class="nav-link" href="nebulus-historico.html">Histórico</a>
-  <a class="nav-link" href="nebulus-relatorio.html">Relatório PDF</a>
-</nav>
-<div id="loginScreen">
-  <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:40px;width:auto">
-  <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
-  <p class="login-desc">Conecte sua conta Google para acessar os dados.</p>
-  <button class="btn" onclick="handleLogin()" style="padding:12px 32px">Entrar com Google</button>
+
+<div class="nb-mobile-header">
+  <div class="nb-mobile-logo">NEBULUS<span style="color:var(--racing)">.</span>CLUB</div>
+  <button class="nb-burger" id="nbBurger" aria-label="Abrir menu"><i class="ti ti-menu-2" aria-hidden="true"></i></button>
 </div>
-<div id="app">
-  <div class="page">
-    <div class="kpi-row">
-      <div class="kpi"><div class="kpi-label">Total de clientes</div><div class="kpi-value" id="kClientes">—</div><div class="kpi-sub">cadastrados</div></div>
-      <div class="kpi"><div class="kpi-label">Clientes recorrentes</div><div class="kpi-value green" id="kRecorrentes">—</div><div class="kpi-sub">mais de 1 compra</div></div>
-      <div class="kpi"><div class="kpi-label">Ticket médio</div><div class="kpi-value" id="kTicket">—</div><div class="kpi-sub">por pedido</div></div>
-      <div class="kpi"><div class="kpi-label">Aniversariantes</div><div class="kpi-value green" id="kAniversario">—</div><div class="kpi-sub">este mês</div></div>
+<div class="nb-drawer-overlay" id="nbDrawerOverlay">
+  <div class="nb-drawer">
+    <div class="nb-drawer-top">
+      <div class="nb-mobile-logo">NEBULUS<span style="color:var(--racing)">.</span>CLUB</div>
+      <button class="nb-burger" id="nbDrawerClose" aria-label="Fechar menu"><i class="ti ti-x" aria-hidden="true"></i></button>
     </div>
-    <div class="section-hd">
-      <div class="section-title">Base de clientes</div>
-      <button class="btn" onclick="abrirCadastroNovo()">+ Cadastrar Cliente</button>
-    </div>
-    <div class="search-wrap">
-      <span style="color:var(--racing);display:flex"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span>
-      <input class="search-input" id="searchCliente" placeholder="Buscar por nome, telefone, CPF ou email..." oninput="renderClientes()">
-    </div>
-    <div class="panel">
-      <div style="overflow-x:auto">
-        <table>
-          <thead><tr>
-            <th onclick="sortBy('nome')">Cliente</th>
-            <th onclick="sortBy('totalPedidos')">Pedidos</th>
-            <th onclick="sortBy('totalGasto')">Total gasto</th>
-            <th onclick="sortBy('ultimaCompra')">Última compra</th>
-            <th>Contato</th>
-            <th>Ações</th>
-          </tr></thead>
-          <tbody id="clientesBody"><tr><td colspan="6"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
-        </table>
-      </div>
-    </div>
+    <a class="nb-drawer-item" href="nebulus-dashboard.html"><i class="ti ti-package" aria-hidden="true"></i>Estoque</a>
+    <a class="nb-drawer-item" href="nebulus-dashboard.html"><i class="ti ti-calculator" aria-hidden="true"></i>Calculadora</a>
+    <a class="nb-drawer-item active" href="nebulus-clientes.html"><i class="ti ti-users" aria-hidden="true"></i>Clientes</a>
+    <a class="nb-drawer-item" href="nebulus-historico.html"><i class="ti ti-history" aria-hidden="true"></i>Histórico</a>
+    <a class="nb-drawer-item" href="nebulus-relatorio.html"><i class="ti ti-report" aria-hidden="true"></i>Relatório</a>
+    <a class="nb-drawer-item" href="nebulus-catalogo.html"><i class="ti ti-book" aria-hidden="true"></i>Catálogo</a>
   </div>
 </div>
 
-<!-- MODAL DETALHE CLIENTE -->
+<div class="nb-shell">
+  <aside class="nb-sidebar">
+    <div class="nb-sidebar-top">
+      <span class="nb-symbol">N</span>
+      <span class="nb-wordmark">NEBULUS<span style="color:var(--racing)">.</span>CLUB</span>
+    </div>
+    <a class="nb-nav-item" href="nebulus-dashboard.html"><i class="ti ti-package nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Estoque</span></a>
+    <a class="nb-nav-item" href="nebulus-dashboard.html"><i class="ti ti-calculator nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Calculadora</span></a>
+    <a class="nb-nav-item active" href="nebulus-clientes.html"><i class="ti ti-users nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Clientes</span></a>
+    <a class="nb-nav-item" href="nebulus-historico.html"><i class="ti ti-history nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Histórico</span></a>
+    <a class="nb-nav-item" href="nebulus-relatorio.html"><i class="ti ti-report nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Relatório</span></a>
+    <a class="nb-nav-item" href="nebulus-catalogo.html"><i class="ti ti-book nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Catálogo</span></a>
+  </aside>
+
+  <main class="nb-main">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="search-wrap" id="searchBar" style="display:none;flex:1">
+          <span class="search-icon"><i class="ti ti-search" aria-hidden="true"></i></span>
+          <input class="search-input" id="globalSearch" placeholder="Buscar pedido, cliente, perfume ou data..." oninput="handleSearch(this.value)">
+          <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
+        </div>
+        <div class="header-actions">
+          <button class="btn-ghost" id="btnAtualizar" onclick="recarregarDados()" style="display:none"><i class="ti ti-refresh" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"></i>Atualizar</button>
+          <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
+        </div>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <div id="loginScreen">
+      <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:34px;width:auto;object-fit:contain">
+      <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
+      <p class="login-desc">Conecte sua conta Google para acessar os dados.</p>
+      <button class="btn" onclick="handleLogin()" style="padding:12px 32px;font-size:14px">Entrar com Google</button>
+    </div>
+
+    <div id="app">
+      <div class="page">
+        <div class="page-title" style="margin-bottom:18px">Clientes</div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-label">Total de clientes</div><div class="kpi-value" id="kClientes">—</div><div class="kpi-sub">cadastrados</div></div>
+          <div class="kpi"><div class="kpi-label">Clientes recorrentes</div><div class="kpi-value green" id="kRecorrentes">—</div><div class="kpi-sub">mais de 1 compra</div></div>
+          <div class="kpi"><div class="kpi-label">Ticket médio</div><div class="kpi-value" id="kTicket">—</div><div class="kpi-sub">por pedido</div></div>
+          <div class="kpi"><div class="kpi-label">Aniversariantes</div><div class="kpi-value green" id="kAniversario">—</div><div class="kpi-sub">este mês</div></div>
+        </div>
+
+        <div class="section-hd">
+          <div class="page-title" style="font-size:18px">Base de clientes</div>
+          <button class="btn" onclick="abrirCadastroNovo()"><i class="ti ti-plus" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"></i>Cadastrar Cliente</button>
+        </div>
+        <div class="search-wrap" style="margin-bottom:16px;max-width:none">
+          <span class="search-icon"><i class="ti ti-search" aria-hidden="true"></i></span>
+          <input class="search-input" id="searchCliente" placeholder="Buscar por nome, telefone, CPF ou cidade..." oninput="renderClientes()">
+        </div>
+        <div class="panel" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th onclick="sortBy('nome')" style="cursor:pointer">Cliente</th>
+                <th onclick="sortBy('totalPedidos')" style="cursor:pointer">Pedidos</th>
+                <th onclick="sortBy('totalGasto')" style="cursor:pointer">Total gasto</th>
+                <th onclick="sortBy('ultimaCompra')" style="cursor:pointer">Última compra</th>
+                <th>Contato</th>
+                <th style="text-align:right">Ações</th>
+              </tr></thead>
+              <tbody id="clientesBody"><tr><td colspan="6"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
 <div class="overlay" id="overlayCliente">
-  <div class="modal" style="max-width:520px">
+  <div class="modal modal--md">
     <button class="modal-close" onclick="closeModal('overlayCliente')">×</button>
     <div class="modal-title" id="clienteModalNome"></div>
     <div class="modal-sub" id="clienteModalSub"></div>
     <div id="clienteModalContent"></div>
     <div class="modal-footer">
-      <button class="btn-ghost" onclick="abrirEdicaoCliente()">✏ Editar</button>
+      <button class="btn-ghost" onclick="abrirEdicaoCliente()"><i class="ti ti-edit" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"></i>Editar</button>
       <button class="btn" onclick="closeModal('overlayCliente')">Fechar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL CADASTRO / EDIÇÃO CLIENTE -->
 <div class="overlay" id="overlayCadastro">
-  <div class="modal" style="max-width:560px">
+  <div class="modal modal--lg">
     <button class="modal-close" onclick="closeModal('overlayCadastro')">×</button>
-    <div class="modal-title" id="cadastroTitle">Cadastrar Cliente</div>
-    <div class="modal-sub" id="cadastroSub">DADOS COMPLETOS</div>
+    <div class="modal-title" id="cadastroTitle">Cadastrar cliente</div>
+    <div class="modal-sub" id="cadastroSub">Dados completos</div>
 
-    <div class="modal-section-label">Dados pessoais</div>
-    <div class="field"><label>Nome completo *</label><input id="cNome" placeholder="Ex: João Silva"></div>
-    <div class="field-row">
+    <div class="modal-section-label" style="margin-top:0">Dados pessoais</div>
+    <div class="field-row-3">
+      <div class="field"><label>Nome completo *</label><input id="cNome" placeholder="Ex: João Silva"></div>
       <div class="field"><label>CPF</label><input id="cCPF" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)"></div>
       <div class="field"><label>Data de nascimento</label><input id="cNasc" type="date"></div>
     </div>
 
-    <div class="modal-divider"></div>
     <div class="modal-section-label">Contato</div>
     <div class="field-row">
       <div class="field"><label>Telefone / WhatsApp</label><input id="cTelefone" placeholder="(31) 99999-9999" oninput="maskTelefone(this)"></div>
       <div class="field"><label>E-mail</label><input id="cEmail" placeholder="cliente@email.com"></div>
     </div>
 
-    <div class="modal-divider"></div>
     <div class="modal-section-label">Endereço</div>
-    <div class="field">
-      <label>CEP</label>
-      <div class="cep-wrap">
-        <input id="cCEP" placeholder="00000-000" maxlength="9" oninput="maskCEP(this)" onblur="buscarCEP()">
-        <div class="cep-loading" id="cepLoading"></div>
+    <div class="field-row-3">
+      <div class="field">
+        <label>CEP</label>
+        <div class="cep-wrap" style="position:relative">
+          <input id="cCEP" placeholder="00000-000" maxlength="9" oninput="maskCEP(this)" onblur="buscarCEP()">
+          <div class="cep-loading" id="cepLoading" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;border:2px solid var(--steel);border-top-color:var(--racing);border-radius:50%;animation:spin .7s linear infinite;display:none"></div>
+        </div>
       </div>
+      <div class="field" style="grid-column:span 2"><label>Logradouro</label><input id="cLogradouro" placeholder="Rua, Avenida..."></div>
     </div>
-    <div class="field"><label>Logradouro</label><input id="cLogradouro" placeholder="Rua, Avenida..."></div>
-    <div class="field-row">
+    <div class="field-row-4">
       <div class="field"><label>Número</label><input id="cNumero" placeholder="123"></div>
       <div class="field"><label>Complemento</label><input id="cComplemento" placeholder="Apto, Bloco..."></div>
-    </div>
-    <div class="field-row">
       <div class="field"><label>Bairro</label><input id="cBairro" placeholder="Bairro"></div>
       <div class="field"><label>Cidade</label><input id="cCidade" placeholder="Cidade"></div>
     </div>
@@ -228,51 +165,38 @@ tbody td{padding:12px 14px;font-size:13px}
 </div>
 
 <div class="toast" id="toast"></div>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
-const CLIENT_ID='822341292552-9uont9j3sik7dqafjergu0sc4e3d4v9m.apps.googleusercontent.com';
-const SHEET_ID='1TaJk_4tSKXKXZnyG1lDTOif0ZauahG6rZnXibwyMqqE';
-const SCOPES='https://www.googleapis.com/auth/spreadsheets';
-const ABA_C='Clientes',ABA_M='Movimentações';
-let accessToken=null,clientes=[],movs=[],sortCol='totalGasto',sortDir=-1,clienteEditando=null;
 
-// Mapeamento de colunas da aba Clientes:
-// A=Nome B=Telefone C=Email D=Total Pedidos E=Total Gasto F=Última Compra
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="nebulus-core.js"></script>
+<script>
+let clientes=[],movs=[],sortCol='totalGasto',sortDir=-1,clienteEditando=null;
+// Mapeamento da aba Clientes: A=Nome B=Telefone C=Email D=Total Pedidos E=Total Gasto F=Última Compra
 // G=CPF H=Data Nasc I=CEP J=Logradouro K=Número L=Complemento M=Bairro N=Cidade O=UF
 
-function handleLogin(){
-  const c=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async(r)=>{
-    if(r.error){showToast('Erro: '+r.error);return;}
-    accessToken=r.access_token;sessionStorage.setItem('nb_token',accessToken);sessionStorage.setItem('nb_token_exp',Date.now()+3500000);
-    showApp();await initClientesSheet();await loadData();
-  }});c.requestAccessToken();
-}
-function handleLogout(){accessToken=null;sessionStorage.removeItem('nb_token');sessionStorage.removeItem('nb_token_exp');document.getElementById('app').style.display='none';document.getElementById('loginScreen').style.display='flex';document.getElementById('btnLogin').style.display='';document.getElementById('btnLogout').style.display='none';}
-function showApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('app').style.display='block';document.getElementById('btnLogin').style.display='none';document.getElementById('btnLogout').style.display='';}
-window.addEventListener('load',()=>{const t=sessionStorage.getItem('nb_token'),exp=parseInt(sessionStorage.getItem('nb_token_exp')||'0');if(t&&Date.now()<exp){accessToken=t;showApp();initClientesSheet().then(()=>loadData());}});
-
-async function api(path,opts={}){const r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+path,{...opts,headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json',...(opts.headers||{})}});return r.json();}
-async function sheetsGet(range){return api('/values/'+encodeURIComponent(range));}
-async function sheetsUpdate(range,values){return api('/values/'+encodeURIComponent(range)+'?valueInputOption=USER_ENTERED',{method:'PUT',body:JSON.stringify({values})});}
-async function sheetsAppend(range,values){return api('/values/'+encodeURIComponent(range)+':append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS',{method:'POST',body:JSON.stringify({values})});}
-async function sheetsBatch(requests){return api(':batchUpdate',{method:'POST',body:JSON.stringify({requests})});}
+NB.afterLogin=async function(){
+  document.getElementById('searchBar').style.display='block';
+  document.getElementById('btnAtualizar').style.display='';
+  await initClientesSheet();
+  await loadData();
+};
+NB.afterLogout=function(){
+  document.getElementById('searchBar').style.display='none';
+  document.getElementById('btnAtualizar').style.display='none';
+};
 
 async function initClientesSheet(){
-  // Garante que o cabeçalho da aba Clientes tem todas as colunas novas
   try{
-    const hd=await sheetsGet(`${ABA_C}!A1:O1`);
+    const hd=await sheetsGet(`${NB.ABA_C}!A1:O1`);
     const vals=hd.values?hd.values[0]:[];
     if(vals.length<15){
-      await sheetsUpdate(`${ABA_C}!A1:O1`,[['Nome','Telefone','Email','Total Pedidos','Total Gasto','Última Compra','CPF','Data Nasc.','CEP','Logradouro','Número','Complemento','Bairro','Cidade','UF']]);
+      await sheetsUpdate(`${NB.ABA_C}!A1:O1`,[['Nome','Telefone','Email','Total Pedidos','Total Gasto','Última Compra','CPF','Data Nasc.','CEP','Logradouro','Número','Complemento','Bairro','Cidade','UF']]);
     }
   }catch(e){console.warn('initClientesSheet:',e);}
 }
 
-function parseSheetsNum(v){if(v==null||v==='')return 0;const s=v.toString().trim();if(s.includes(',')&&s.includes('.'))return parseFloat(s.replace(/\./g,'').replace(',','.'))||0;if(s.includes(','))return parseFloat(s.replace(',','.'))||0;return parseFloat(s)||0;}
-
 async function loadData(){
   try{
-    const rc=await sheetsGet(`${ABA_C}!A2:O1000`);
+    const rc=await sheetsGet(`${NB.ABA_C}!A2:O1000`);
     clientes=(rc.values||[]).map((r,i)=>({
       rowIndex:i+2,
       nome:r[0]||'',telefone:r[1]||'',email:r[2]||'',
@@ -281,10 +205,10 @@ async function loadData(){
       logradouro:r[9]||'',numero:r[10]||'',complemento:r[11]||'',
       bairro:r[12]||'',cidade:r[13]||'',uf:r[14]||''
     })).filter(r=>r.nome);
-    const rm=await sheetsGet(`${ABA_M}!A2:N1000`);
-    movs=(rm.values||[]).map((r,i)=>({rowIndex:i+2,dataHora:r[0]||'',tipo:r[1]||'',nome:r[3]||'',ml:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),pedido:r[8]||'',cliente:r[9]||'',canal:r[12]||''}));
+    const rm=await sheetsGet(`${NB.ABA_M}!A2:N1000`);
+    movs=(rm.values||[]).map((r,i)=>({rowIndex:i+2,dataHora:r[0]||'',tipo:r[1]||'',idPerfume:r[2]||'',nome:r[3]||'',ml:parseSheetsNum(r[4]),preco:parseSheetsNum(r[5]),pedido:r[8]||'',cliente:r[9]||'',telefone:r[10]||'',email:r[11]||'',canal:r[12]||''}));
     renderKPIs();renderClientes();
-  }catch(e){showToast('Erro: '+e.message);}
+  }catch(e){showToast('Erro: '+e.message,true);}
 }
 
 function renderKPIs(){
@@ -317,15 +241,15 @@ function renderClientes(){
   body.innerHTML=list.map(c=>{
     const isAniv=c.dataNasc&&(()=>{const p=c.dataNasc.split('-');return p.length>=2&&parseInt(p[1])===mesAtual;})();
     const wa=c.telefone?c.telefone.replace(/\D/g,''):'';
-    return`<tr onclick="openCliente('${c.nome.replace(/'/g,"\\'")}')">
-      <td class="td-name">${c.nome}${c.totalPedidos>1?'<span class="recorrente">★ recorrente</span>':''}${isAniv?'<span class="aniversario">🎂 aniv.</span>':''}</td>
+    return`<tr onclick="openCliente('${c.nome.replace(/'/g,"\\'")}')" style="cursor:pointer">
+      <td class="td-name">${c.nome}${c.totalPedidos>1?'<span class="recurring-badge">★ recorrente</span>':''}${isAniv?'<span class="alert-badge" style="color:var(--green);background:var(--green-dim);border-color:rgba(61,235,122,.3)">🎂 aniv.</span>':''}</td>
       <td class="td-mono">${c.totalPedidos}</td>
-      <td class="td-green">${fmt(c.totalGasto)}</td>
-      <td class="td-ti">${c.ultimaCompra||'—'}</td>
-      <td class="td-ti">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing);text-decoration:none" onclick="event.stopPropagation()">${c.telefone}</a>`:'—'}</td>
+      <td class="td-price-g">${fmt(c.totalGasto)}</td>
+      <td class="td-date">${c.ultimaCompra||'—'}</td>
+      <td class="td-date">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing)" onclick="event.stopPropagation()">${c.telefone}</a>`:'—'}</td>
       <td><div class="td-actions" onclick="event.stopPropagation()">
-        ${wa?`<a href="https://wa.me/55${wa}" target="_blank" class="btn-sm" style="background:transparent;border:1px solid rgba(37,211,102,.4);color:#25D366">WA</a>`:''}
-        <button class="btn-icon" title="Editar" onclick="abrirEdicaoClienteNome('${c.nome.replace(/'/g,"\\'")}')">✏</button>
+        ${wa?`<a href="https://wa.me/55${wa}" target="_blank" class="btn-icon" style="color:#25D366" title="WhatsApp"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></a>`:''}
+        <button class="btn-icon" title="Editar" onclick="abrirEdicaoClienteNome('${c.nome.replace(/'/g,"\\'")}')">${SVG_PENCIL}</button>
       </div></td>
     </tr>`;
   }).join('');
@@ -346,22 +270,22 @@ function openCliente(nome){
     <div class="detalhe-row"><span class="detalhe-label">CPF</span><span class="detalhe-val">${c.cpf||'—'}</span></div>
     <div class="detalhe-row"><span class="detalhe-label">Nascimento</span><span class="detalhe-val">${nascFormatado}</span></div>
     <div class="detalhe-section">Contato</div>
-    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing);text-decoration:none">${c.telefone}</a>`:'—'}${wa?` <a href="https://wa.me/55${wa}" target="_blank" style="color:#25D366;font-size:11px;margin-left:8px;font-family:monospace">→ WhatsApp</a>`:''}</span></div>
-    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${c.email?`<a href="mailto:${c.email}" style="color:var(--racing);text-decoration:none">${c.email}</a>`:'—'}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">Telefone</span><span class="detalhe-val">${c.telefone?`<a href="tel:${c.telefone}" style="color:var(--racing)">${c.telefone}</a>`:'—'}${wa?` <a href="https://wa.me/55${wa}" target="_blank" style="color:#25D366;font-size:11px;margin-left:8px">→ WhatsApp</a>`:''}</span></div>
+    <div class="detalhe-row"><span class="detalhe-label">E-mail</span><span class="detalhe-val">${c.email?`<a href="mailto:${c.email}" style="color:var(--racing)">${c.email}</a>`:'—'}</span></div>
     <div class="detalhe-section">Endereço</div>
     <div class="detalhe-row"><span class="detalhe-label">CEP</span><span class="detalhe-val">${c.cep||'—'}</span></div>
     <div class="detalhe-row"><span class="detalhe-label">Endereço</span><span class="detalhe-val" style="text-align:right">${endereco}</span></div>
     <div class="detalhe-section">Última compra</div>
     <div class="detalhe-row"><span class="detalhe-label">Data</span><span class="detalhe-val">${c.ultimaCompra||'—'}</span></div>
     <div class="detalhe-section">Histórico de pedidos</div>
-    ${pedidos.length?pedidos.slice().reverse().map(m=>`<div class="hist-mini"><span class="hist-mini-type">Venda</span><span class="hist-mini-info">${m.nome} · ${m.ml}ml${m.canal?' · '+m.canal:''} · ${m.dataHora}</span><span class="hist-mini-val">${fmt(m.preco)}</span></div>`).join(''):'<div class="empty" style="padding:20px">Sem pedidos registrados.</div>'}`;
+    ${pedidos.length?pedidos.slice().reverse().map(m=>`<div class="hist-item"><span class="hist-type hist-saida">Venda</span><div class="hist-info"><div class="hist-name">${m.nome} · ${m.ml}ml${m.canal?' · '+m.canal:''}</div><div class="hist-detail">${m.dataHora}</div></div><div class="hist-val pos">${fmt(m.preco)}</div></div>`).join(''):'<div class="empty" style="padding:20px">Sem pedidos registrados.</div>'}`;
   openModal('overlayCliente');
 }
 
 function abrirCadastroNovo(){
   clienteEditando=null;
-  document.getElementById('cadastroTitle').textContent='Cadastrar Cliente';
-  document.getElementById('cadastroSub').textContent='DADOS COMPLETOS';
+  document.getElementById('cadastroTitle').textContent='Cadastrar cliente';
+  document.getElementById('cadastroSub').textContent='Dados completos';
   document.getElementById('btnSalvarCadastro').textContent='Salvar cliente';
   ['cNome','cCPF','cTelefone','cEmail','cCEP','cLogradouro','cNumero','cComplemento','cBairro','cCidade','cUF'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('cNasc').value='';
@@ -376,8 +300,8 @@ function abrirEdicaoCliente(){
 function abrirEdicaoClienteNome(nome){
   const c=clientes.find(cl=>cl.nome===nome);if(!c)return;
   clienteEditando=c;
-  document.getElementById('cadastroTitle').textContent='Editar Cliente';
-  document.getElementById('cadastroSub').textContent='ATUALIZAR CADASTRO';
+  document.getElementById('cadastroTitle').textContent='Editar cliente';
+  document.getElementById('cadastroSub').textContent='Atualizar cadastro';
   document.getElementById('btnSalvarCadastro').textContent='Salvar alterações';
   document.getElementById('cNome').value=c.nome;
   document.getElementById('cCPF').value=c.cpf||'';
@@ -396,7 +320,7 @@ function abrirEdicaoClienteNome(nome){
 
 async function salvarCadastro(){
   const nome=document.getElementById('cNome').value.trim();
-  if(!nome){showToast('Nome é obrigatório');return;}
+  if(!nome){showToast('Nome é obrigatório',true);return;}
   const cpf=document.getElementById('cCPF').value.trim();
   const dataNasc=document.getElementById('cNasc').value;
   const telefone=document.getElementById('cTelefone').value.trim();
@@ -411,28 +335,25 @@ async function salvarCadastro(){
 
   try{
     if(clienteEditando){
-      // Edição: preserva totalPedidos, totalGasto, ultimaCompra
-      await sheetsUpdate(`${ABA_C}!A${clienteEditando.rowIndex}:O${clienteEditando.rowIndex}`,[[
+      await sheetsUpdate(`${NB.ABA_C}!A${clienteEditando.rowIndex}:O${clienteEditando.rowIndex}`,[[
         nome,telefone,email,
         clienteEditando.totalPedidos,clienteEditando.totalGasto,clienteEditando.ultimaCompra,
         cpf,dataNasc,cep,logradouro,numero,complemento,bairro,cidade,uf
       ]]);
       showToast('✓ Cliente atualizado');
     }else{
-      // Novo cadastro — verifica se já existe pelo nome
       const existe=clientes.find(c=>normalize(c.nome)===normalize(nome));
-      if(existe){showToast('Cliente já cadastrado com este nome');return;}
-      await sheetsAppend(`${ABA_C}!A:O`,[[
+      if(existe){showToast('Cliente já cadastrado com este nome',true);return;}
+      await sheetsAppend(`${NB.ABA_C}!A:O`,[[
         nome,telefone,email,0,0,'',
         cpf,dataNasc,cep,logradouro,numero,complemento,bairro,cidade,uf
       ]]);
       showToast('✓ Cliente cadastrado');
     }
     closeModal('overlayCadastro');await loadData();
-  }catch(e){showToast('Erro: '+e.message);}
+  }catch(e){showToast('Erro: '+e.message,true);}
 }
 
-// CEP via ViaCEP
 async function buscarCEP(){
   const cep=document.getElementById('cCEP').value.replace(/\D/g,'');
   if(cep.length!==8)return;
@@ -441,17 +362,16 @@ async function buscarCEP(){
   try{
     const r=await fetch(`https://viacep.com.br/ws/${cep}/json/`);
     const d=await r.json();
-    if(d.erro){showToast('CEP não encontrado');return;}
+    if(d.erro){showToast('CEP não encontrado',true);return;}
     document.getElementById('cLogradouro').value=d.logradouro||'';
     document.getElementById('cBairro').value=d.bairro||'';
     document.getElementById('cCidade').value=d.localidade||'';
     document.getElementById('cUF').value=d.uf||'';
     document.getElementById('cNumero').focus();
-  }catch(e){showToast('Erro ao buscar CEP');}
+  }catch(e){showToast('Erro ao buscar CEP',true);}
   finally{loading.classList.remove('show');}
 }
 
-// Máscaras
 function maskCPF(el){
   let v=el.value.replace(/\D/g,'').substring(0,11);
   v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
@@ -469,16 +389,19 @@ function maskCEP(el){
   if(v.length>5)v=v.replace(/^(\d{5})(\d*)/,'$1-$2');
   el.value=v;
 }
+function formatDateDisplay(iso){ if(!iso)return'—'; const[y,m,d]=iso.split('-'); return`${d}/${m}/${y}`; }
 
-function formatDateDisplay(iso){
-  if(!iso)return'—';const[y,m,d]=iso.split('-');return`${d}/${m}/${y}`;
+function handleSearch(q){ runGlobalSearch(q, movs, false); }
+function clearSearch(){ clearGlobalSearch(); }
+
+async function recarregarDados(){
+  const btn=document.getElementById('btnAtualizar');
+  btn.innerHTML='Atualizando...';btn.disabled=true;
+  try{await loadData();showToast('✓ Dados atualizados');}
+  catch(e){showToast('Erro ao atualizar',true);}
+  finally{btn.innerHTML='<i class="ti ti-refresh" style="vertical-align:-2px;margin-right:4px"></i>Atualizar';btn.disabled=false;}
 }
-function fmt(v){if(v==null||isNaN(v))return'—';return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function normalize(s){return(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-let toastTimer;
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
+
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 </script>
 </body>
