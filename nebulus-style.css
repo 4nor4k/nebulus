@@ -8,13 +8,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--asphalt);color:var(--ghost);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.5}
-body::before,body::after{content:'';position:fixed;inset:-12%;pointer-events:none;z-index:-1}
-body::before{background-image:radial-gradient(rgba(142,142,152,.20) 1px,transparent 1px);background-size:30px 30px;animation:nbFogDriftA 75s linear infinite,nbFogBreatheA 17s ease-in-out infinite}
-body::after{background-image:radial-gradient(rgba(200,240,77,.14) 1.2px,transparent 1.2px);background-size:52px 52px;animation:nbFogDriftB 110s linear infinite reverse,nbFogBreatheB 23s ease-in-out infinite .6s}
-@keyframes nbFogDriftA{0%{background-position:0 0}100%{background-position:140px 95px}}
-@keyframes nbFogDriftB{0%{background-position:0 0}100%{background-position:-120px 80px}}
-@keyframes nbFogBreatheA{0%,100%{opacity:.3}35%{opacity:.85}70%{opacity:.45}}
-@keyframes nbFogBreatheB{0%,100%{opacity:.7}40%{opacity:.2}75%{opacity:.55}}
+body::before{content:'';position:fixed;inset:-10%;pointer-events:none;z-index:-1;background-image:radial-gradient(rgba(142,142,152,.18) 1px,transparent 1px);background-size:16px 16px;animation:nbFogDrift 110s linear infinite}
+@keyframes nbFogDrift{0%{background-position:0 0}100%{background-position:130px 90px}}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 input,select,textarea{font-family:inherit}

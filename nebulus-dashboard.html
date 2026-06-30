@@ -243,7 +243,7 @@
     <hr class="modal-divider">
     <div class="modal-section-label" style="margin-top:0">Cliente</div>
     <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
-      <div style="position:relative;flex:1">
+      <div class="field" style="position:relative;flex:1;margin-bottom:0">
         <input id="vClienteBusca" placeholder="Buscar cliente por nome ou telefone..." oninput="filtrarClientesVenda(this.value)" autocomplete="off">
         <div id="vClienteSugestoes" style="position:absolute;top:100%;left:0;right:0;background:var(--concrete);border:1px solid var(--racing-border);border-radius:0 0 var(--radius) var(--radius);z-index:50;max-height:180px;overflow-y:auto;display:none"></div>
       </div>
@@ -261,9 +261,9 @@
     <div class="modal-section-label">Valores</div>
     <div id="precosRapidos" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
     <input type="hidden" id="vMl"><input type="hidden" id="vPreco">
-    <div id="vendaResumo" style="display:none;background:var(--racing-dim);border:1px solid var(--racing-border);border-radius:var(--radius);padding:11px 14px;margin-bottom:14px;align-items:center;justify-content:space-between">
-      <span style="font-size:13px;color:var(--ghost)">Vendendo <strong id="vendaResumoMl" style="color:var(--racing)"></strong></span>
-      <span id="vendaResumoPreco" style="font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--racing)"></span>
+    <div id="vendaResumo" style="display:none;padding:2px 2px 12px;align-items:center;justify-content:space-between">
+      <span style="font-size:12px;color:var(--titanium)">Vendendo <span id="vendaResumoMl" style="color:var(--ghost)"></span></span>
+      <span id="vendaResumoPreco" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--racing)"></span>
     </div>
     <div class="field" style="margin-bottom:0"><label>Descrição / Observações</label><textarea id="vDescricao" placeholder="Ex: Envio via Correios, embalagem presente..." style="min-height:54px"></textarea></div>
     <div class="modal-footer">
@@ -511,13 +511,12 @@ function nbDonutCenterPlugin(){
         const color=Array.isArray(colors)?(chart._nbBaseColors?chart._nbBaseColors[i]:colors[i]):colors;
         if(!color||typeof color!=='string')return;
         const ringR=(props.innerRadius+props.outerRadius)/2;
-        const inset=ringR>0?1.6/ringR:0;
+        const inset=ringR>0?2.4/ringR:0;
         let a0=props.startAngle+inset,a1=props.endAngle-inset;
         if(a1<=a0)return;
         ctx.save();
-        ctx.globalCompositeOperation='lighter';
-        ctx.shadowColor=color;ctx.shadowBlur=14;
-        ctx.strokeStyle=color;ctx.globalAlpha=.4;
+        ctx.shadowColor=color;ctx.shadowBlur=10;
+        ctx.strokeStyle=color;ctx.globalAlpha=.55;
         ctx.lineCap='round';
         ctx.lineWidth=(props.outerRadius-props.innerRadius);
         ctx.beginPath();
@@ -573,7 +572,7 @@ function renderDonut(canvasId,getC,setC,labels,data,colors,legendId,fmtFn){
   const ex=getC();const el=document.getElementById(canvasId);if(!el)return;
   if(!data.length){if(ex){ex.destroy();setC(null);}const w=el.parentElement;if(w)w.innerHTML='<div class="empty" style="padding:30px 10px">Sem dados ainda.</div>';const lg=document.getElementById(legendId);if(lg)lg.innerHTML='';return;}
   if(ex)ex.destroy();
-  const chart=new Chart(el,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,borderRadius:12,spacing:3,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'80%',interaction:{mode:'nearest',intersect:true},plugins:{legend:{display:false},tooltip:{enabled:false}}},plugins:[nbDonutCenterPlugin()]});
+  const chart=new Chart(el,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,borderRadius:12,spacing:3,hoverOffset:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'80%',interaction:{mode:'nearest',intersect:true},plugins:{legend:{display:false},tooltip:{enabled:false}}},plugins:[nbDonutCenterPlugin()]});
   chart._nbBaseColors=colors;
   setC(chart);
   document.getElementById(legendId).innerHTML=labels.map((l,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${colors[i]}"></span><span class="legend-name">${l}</span><span class="legend-val">${fmtFn(data[i])}</span></div>`).join('');
