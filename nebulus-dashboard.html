@@ -241,7 +241,6 @@
       </div>
     </div>
     <hr class="modal-divider">
-    <div class="modal-section-label">Cliente</div>
     <div class="field" style="margin-bottom:8px">
       <label>Buscar cliente cadastrado</label>
       <div style="position:relative">
@@ -256,21 +255,26 @@
       </div>
       <button onclick="limparClienteVenda()" style="background:transparent;border:none;color:var(--titanium);cursor:pointer;font-size:18px;line-height:1">×</button>
     </div>
-    <div id="vClienteCampos">
-      <div class="field-row-3">
-        <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
-        <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
-        <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
+    <hr class="modal-divider">
+    <div class="field-row" style="align-items:start;gap:24px">
+      <div>
+        <div class="modal-section-label" style="margin-top:0">Cliente</div>
+        <div id="vClienteCampos">
+          <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
+          <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
+          <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
+        </div>
+      </div>
+      <div>
+        <div class="modal-section-label" style="margin-top:0">Valores</div>
+        <div id="precosRapidos" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px"></div>
+        <div class="field-row">
+          <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5"></div>
+          <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
+        </div>
+        <div class="field" style="margin-bottom:0"><label>Descrição / Observações</label><textarea id="vDescricao" placeholder="Ex: Envio via Correios, embalagem presente..." style="min-height:54px"></textarea></div>
       </div>
     </div>
-    <hr class="modal-divider">
-    <div class="modal-section-label">Valores</div>
-    <div id="precosRapidos" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
-    <div class="field-row">
-      <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5"></div>
-      <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
-    </div>
-    <div class="field"><label>Descrição / Observações</label><textarea id="vDescricao" placeholder="Ex: Envio via Correios, embalagem presente..."></textarea></div>
     <div class="modal-footer">
       <button class="btn-ghost" onclick="closeModal('overlayVenda')">Cancelar</button>
       <button class="btn" onclick="salvarVenda()">Confirmar venda</button>
