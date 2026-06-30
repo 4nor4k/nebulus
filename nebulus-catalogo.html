@@ -208,6 +208,11 @@ function toggleAtivo(id,val){ const e=getEstadoPerfume(id); e.ativo=val; salvarE
 function toggleMl(id,ml,val){ const e=getEstadoPerfume(id); e.mls[ml]=val; salvarEstadoPerfume(id,e); renderPreview(); }
 
 function gerarHTMLEstatico(){
+  const FRETE_TEXTO='Frete grátis em pedidos acima de R$ 250,00';
+  const freteUnidade=`<span>${FRETE_TEXTO}</span><span>✦</span>`;
+  const freteSet=Array(14).fill(freteUnidade).join('');
+  const freteTrackHTML=freteSet+freteSet;
+
   const cards=estoque.map(p=>{
     const estado=getEstadoPerfume(p.id);
     if(!estado.ativo)return'';
@@ -246,9 +251,9 @@ function gerarHTMLEstatico(){
 html,body{background:#0E0E10;min-height:100%;-webkit-font-smoothing:antialiased}
 body{font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;align-items:center;padding:0 0 3rem}
 .frete-banner{width:100%;background:#C8F04D;overflow:hidden;padding:8px 0}
-.frete-track{display:flex;white-space:nowrap}
-.frete-group{display:flex}
+.frete-track{display:flex;white-space:nowrap;animation:nbMarquee 38s linear infinite}
 .frete-track span{display:inline-block;padding:0 40px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#0E0E10}
+@keyframes nbMarquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .site-header{display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 1rem;text-align:center}
 .slogo{font-family:'Archivo Black',sans-serif;font-size:clamp(19px,5vw,22px);color:#E8E4DC}
 .slogo .dot{color:#C8F04D}
@@ -283,11 +288,7 @@ body{font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;a
 </head>
 <body>
 <div class="frete-banner">
-  <div class="frete-track" id="freteTrack">
-    <span class="frete-group" id="freteGroup">
-      <span>Frete grátis em pedidos acima de R$ 250,00</span><span>✦</span>
-    </span>
-  </div>
+  <div class="frete-track">${freteTrackHTML}</div>
 </div>
 <div class="site-header">
   <div class="slogo">NEBULUS<span class="dot">.</span>CLUB</div>
@@ -302,22 +303,6 @@ body{font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;a
   Procurando outra fragrância? Chama aqui
 </a>
 <div class="page-footer">nebulusclub.com.br · BH → Brasil</div>
-<script>
-(function(){
-  var track=document.getElementById('freteTrack');
-  var group=document.getElementById('freteGroup');
-  var unitWidth=Math.max(window.innerWidth,1920);
-  while(track.scrollWidth<unitWidth){
-    track.appendChild(group.cloneNode(true));
-  }
-  var setWidth=track.scrollWidth;
-  var children=Array.prototype.slice.call(track.children);
-  children.forEach(function(node){track.appendChild(node.cloneNode(true));});
-  var style=document.createElement('style');
-  style.textContent='@keyframes nbMarquee{0%{transform:translateX(0)}100%{transform:translateX(-'+setWidth+'px)}}.frete-track{animation:nbMarquee '+(setWidth/55)+'s linear infinite}';
-  document.head.appendChild(style);
-})();
-<\/script>
 </body>
 </html>`;
 }
