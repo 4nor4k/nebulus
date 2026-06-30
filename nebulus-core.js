@@ -164,7 +164,7 @@ function saveCalcConfig(cfg){ localStorage.setItem(NB_CONFIG_KEY, JSON.stringify
 /* ---------- GLOBAL SEARCH (shared topbar search across pages) ---------- */
 function nbSrItemHTML(m, withDetalhe){
   return `<div class="sr-item">
-    <span class="sr-type ${m.tipo === 'Entrada' ? 'sr-entrada' : 'sr-saida'}">${m.tipo}</span>
+    <span class="sr-type ${m.tipo === 'Entrada' ? 'sr-entrada' : 'sr-saida'}">${m.tipo === 'Entrada' ? 'Entrada' : 'Venda'}</span>
     <div class="sr-info"><div class="sr-name">${m.nome}${m.pedido ? ' · #' + m.pedido : ''}${m.cliente ? ' · ' + m.cliente : ''}</div><div class="sr-detail">${m.ml} ml${m.canal ? ' · ' + m.canal : ''} · ${m.dataHora}</div></div>
     <div class="sr-right"><div class="sr-val">${fmt(m.preco)}</div>${withDetalhe && m.tipo === 'Saída' ? `<button class="btn-info" onclick="openDetalhe(${m.rowIndex})">ℹ</button>` : ''}</div>
   </div>`;

@@ -241,34 +241,29 @@
       </div>
     </div>
     <hr class="modal-divider">
-    <div class="modal-section-label" style="margin-top:0;justify-content:space-between">
-      <span style="display:flex;align-items:center;gap:10px"><span style="width:14px;height:1px;background:var(--racing);display:inline-block"></span>Cliente</span>
-      <button class="btn-icon" title="Cadastrar novo cliente" onclick="abrirCadastroClienteVenda()" style="border:1px solid var(--racing-border);width:26px;height:26px"><i class="ti ti-user-plus" aria-hidden="true" style="font-size:14px"></i></button>
-    </div>
-    <div class="field" style="margin-bottom:8px">
-      <div style="position:relative">
-        <input id="vClienteBusca" placeholder="Digite nome ou telefone..." oninput="filtrarClientesVenda(this.value)" autocomplete="off">
+    <div class="modal-section-label" style="margin-top:0">Cliente</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
+      <div style="position:relative;flex:1">
+        <input id="vClienteBusca" placeholder="Buscar cliente por nome ou telefone..." oninput="filtrarClientesVenda(this.value)" autocomplete="off">
         <div id="vClienteSugestoes" style="position:absolute;top:100%;left:0;right:0;background:var(--concrete);border:1px solid var(--racing-border);border-radius:0 0 var(--radius) var(--radius);z-index:50;max-height:180px;overflow-y:auto;display:none"></div>
       </div>
+      <button class="btn-icon" title="Cadastrar novo cliente" onclick="abrirCadastroClienteVenda()" style="border:1px solid var(--racing-border);width:42px;height:42px;flex-shrink:0"><i class="ti ti-user-plus" aria-hidden="true" style="font-size:16px"></i></button>
     </div>
-    <div id="vClienteCard" style="display:none;background:var(--asphalt);border:1px solid var(--racing-border);border-radius:var(--radius);padding:10px 14px;margin-bottom:10px;align-items:center;justify-content:space-between">
+    <div id="vClienteCard" style="display:none;background:var(--asphalt);border:1px solid var(--racing-border);border-radius:var(--radius);padding:10px 14px;margin-bottom:0;align-items:center;justify-content:space-between">
       <div>
         <div id="vClienteCardNome" style="font-weight:700;font-size:14px"></div>
         <div id="vClienteCardDetalhe" style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--titanium);margin-top:2px"></div>
       </div>
       <button onclick="limparClienteVenda()" style="background:transparent;border:none;color:var(--titanium);cursor:pointer;font-size:18px;line-height:1">×</button>
     </div>
-    <div id="vClienteCampos" class="field-row-3">
-      <div class="field"><label>Nome do cliente</label><input id="vCliente" placeholder="Ex: João Silva"></div>
-      <div class="field"><label>Telefone</label><input id="vTelefone" placeholder="(31) 99999-9999"></div>
-      <div class="field"><label>E-mail</label><input id="vEmail" placeholder="cliente@email.com"></div>
-    </div>
+    <input type="hidden" id="vCliente"><input type="hidden" id="vTelefone"><input type="hidden" id="vEmail">
     <hr class="modal-divider">
     <div class="modal-section-label">Valores</div>
     <div id="precosRapidos" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
-    <div class="field-row">
-      <div class="field"><label>Ml vendidos</label><input id="vMl" type="number" min="1" placeholder="5"></div>
-      <div class="field"><label>Preço de venda (R$)</label><input id="vPreco" type="number" min="0" step="0.01" placeholder="0,00"></div>
+    <input type="hidden" id="vMl"><input type="hidden" id="vPreco">
+    <div id="vendaResumo" style="display:none;background:var(--racing-dim);border:1px solid var(--racing-border);border-radius:var(--radius);padding:11px 14px;margin-bottom:14px;align-items:center;justify-content:space-between">
+      <span style="font-size:13px;color:var(--ghost)">Vendendo <strong id="vendaResumoMl" style="color:var(--racing)"></strong></span>
+      <span id="vendaResumoPreco" style="font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--racing)"></span>
     </div>
     <div class="field" style="margin-bottom:0"><label>Descrição / Observações</label><textarea id="vDescricao" placeholder="Ex: Envio via Correios, embalagem presente..." style="min-height:54px"></textarea></div>
     <div class="modal-footer">
@@ -388,7 +383,7 @@
 const CANAL_COLORS={'Instagram':'#E1306C','WhatsApp':'#25D366','Site':'#C8F04D'};
 let estoque=[],movs=[],vendaAtual=null,editando=null,metaSheets=null;
 let chartPerfume=null,chartCanal=null,chartMensal=null;
-let calcTab='avista',calcSelectedMl=5,precoCalculado=null,confirmCallback=null,detalheAtual=null,detalheAtualRow=null;
+let calcTab='avista',calcSelectedMl=5,confirmCallback=null,detalheAtual=null,detalheAtualRow=null;
 let clientesVenda=[];
 let calcConfigDirty=false;
 
@@ -515,13 +510,18 @@ function nbDonutCenterPlugin(){
         const props=arc.getProps(['startAngle','endAngle','innerRadius','outerRadius','x','y'],true);
         const color=Array.isArray(colors)?(chart._nbBaseColors?chart._nbBaseColors[i]:colors[i]):colors;
         if(!color||typeof color!=='string')return;
+        const ringR=(props.innerRadius+props.outerRadius)/2;
+        const inset=ringR>0?1.6/ringR:0;
+        let a0=props.startAngle+inset,a1=props.endAngle-inset;
+        if(a1<=a0)return;
         ctx.save();
         ctx.globalCompositeOperation='lighter';
-        ctx.shadowColor=color;ctx.shadowBlur=16;
-        ctx.strokeStyle=color;ctx.globalAlpha=.5;
-        ctx.lineWidth=(props.outerRadius-props.innerRadius)*.85;
+        ctx.shadowColor=color;ctx.shadowBlur=14;
+        ctx.strokeStyle=color;ctx.globalAlpha=.4;
+        ctx.lineCap='round';
+        ctx.lineWidth=(props.outerRadius-props.innerRadius);
         ctx.beginPath();
-        ctx.arc(props.x,props.y,(props.innerRadius+props.outerRadius)/2,props.startAngle,props.endAngle);
+        ctx.arc(props.x,props.y,ringR,a0,a1);
         ctx.stroke();
         ctx.restore();
       });
@@ -596,7 +596,7 @@ function renderHistorico(){
   const ultimos=[...movs].reverse().slice(0,10);
   if(!ultimos.length){list.innerHTML='<div class="empty">Nenhuma movimentação ainda.</div>';return;}
   list.innerHTML=ultimos.map(m=>`<div class="hist-item">
-    <span class="hist-type ${m.tipo==='Entrada'?'hist-entrada':'hist-saida'}">${m.tipo}</span>
+    <span class="hist-type ${m.tipo==='Entrada'?'hist-entrada':'hist-saida'}">${m.tipo==='Entrada'?'Entrada':'Venda'}</span>
     <div class="hist-info">
       <div class="hist-name">${m.nome}${m.pedido?' · #'+m.pedido:''}${m.cliente?' · '+m.cliente:''}</div>
       <div class="hist-detail">${m.ml} ml${m.canal?' · '+m.canal:''} · ${m.dataHora}</div>
@@ -666,25 +666,27 @@ function openVenda(id){
   const p=estoque.find(e=>e.id===id);if(!p)return;vendaAtual=p;
   document.getElementById('vendaPreview').innerHTML=`<span class="perfume-preview-dot" style="background:${p.cor}"></span><div><div class="perfume-preview-name">${p.nome}</div><div class="perfume-preview-info">${p.marca} · ${fmtId(p.seq)}</div></div>`;
   document.getElementById('vendaMlInfo').textContent=`Disponível: ${p.mlDisp.toFixed(1)} ml · Custo/ml: ${fmt(p.custoMl)}`;
-  ['vPedido','vCliente','vTelefone','vEmail','vMl','vDescricao','vClienteBusca'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['vPedido','vCliente','vTelefone','vEmail','vMl','vPreco','vDescricao','vClienteBusca'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('vCanal').value='';
+  document.getElementById('vendaResumo').style.display='none';
   limparClienteVenda();
   const cfg=getCalcConfig();
   const taxa=calcTab==='avista'?cfg.taxaAvista:cfg.taxaCartao;
   const container=document.getElementById('precosRapidos');
   container.innerHTML=[3,5,8,10].map(ml=>{
-    if(ml>p.mlDisp)return`<div class="preco-rapido-btn" style="opacity:.3;cursor:default"><span class="preco-rapido-ml">${ml} ml</span><span class="preco-rapido-val">—</span><span class="preco-rapido-lucro">sem estoque</span></div>`;
-    const{precoFinal,lucroLiquido}=calcPriceDetail(p.preco,p.mlTotal,cfg.embalagem,cfg.margem,taxa,ml);
+    if(ml>p.mlDisp)return`<div class="preco-rapido-btn" style="opacity:.3;cursor:default"><span class="preco-rapido-ml">${ml} ml</span><span class="preco-rapido-val">—</span></div>`;
+    const{precoFinal}=calcPriceDetail(p.preco,p.mlTotal,cfg.embalagem,cfg.margem,taxa,ml);
     const sug=precoSugerido(precoFinal);
-    return`<div class="preco-rapido-btn" onclick="selecionarPrecoRapido(this,${ml},${sug})"><span class="preco-rapido-ml">${ml} ml</span><span class="preco-rapido-val">${fmtBRL(sug)}</span><span class="preco-rapido-lucro">+${fmtBRL(lucroLiquido)}</span></div>`;
+    return`<div class="preco-rapido-btn" onclick="selecionarPrecoRapido(this,${ml},${sug})"><span class="preco-rapido-ml">${ml} ml</span><span class="preco-rapido-val">${fmtBRL(sug)}</span></div>`;
   }).join('');
-  if(precoCalculado){document.getElementById('vPreco').value=precoCalculado.toFixed(2);precoCalculado=null;}
-  else document.getElementById('vPreco').value='';
   openModal('overlayVenda');
 }
 function selecionarPrecoRapido(el,ml,preco){
   document.querySelectorAll('.preco-rapido-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');document.getElementById('vMl').value=ml;document.getElementById('vPreco').value=preco.toFixed(2);
+  document.getElementById('vendaResumoMl').textContent=ml+' ml';
+  document.getElementById('vendaResumoPreco').textContent=fmtBRL(preco);
+  document.getElementById('vendaResumo').style.display='flex';
 }
 async function salvarVenda(){
   const mlVend=parseFloat(document.getElementById('vMl').value);const preco=parseFloat(document.getElementById('vPreco').value);

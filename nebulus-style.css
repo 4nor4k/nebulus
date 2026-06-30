@@ -149,7 +149,7 @@ input,select,textarea{font-family:inherit}
 .search-clear:hover{color:var(--ghost)}
 .search-results{margin-top:8px;display:none}.search-results.open{display:block}
 .sr-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius);background:var(--concrete);margin-bottom:5px;font-size:13px}
-.sr-type{font-family:'Bebas Neue',sans-serif;font-size:10px;padding:3px 8px;border-radius:var(--radius-pill);text-transform:uppercase;flex-shrink:0;letter-spacing:.06em}
+.sr-type{font-family:'Bebas Neue',sans-serif;font-size:12px;padding:4px 9px;border-radius:var(--radius-pill);text-transform:uppercase;flex-shrink:0;letter-spacing:.06em}
 .sr-entrada{background:var(--racing-dim);color:var(--racing)}.sr-saida{background:var(--green-dim);color:var(--green)}
 .sr-info{flex:1;min-width:0}.sr-name{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sr-detail{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--titanium);margin-top:1px}
@@ -244,7 +244,7 @@ tbody td{padding:13px 14px;font-size:14px;white-space:nowrap}
 
 .hist-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(46,46,52,.8)}
 .hist-item:last-child{border-bottom:none}
-.hist-type{font-family:'Bebas Neue',sans-serif;font-size:9px;padding:3px 8px;border-radius:var(--radius-pill);text-transform:uppercase;flex-shrink:0}
+.hist-type{font-family:'Bebas Neue',sans-serif;font-size:12px;padding:4px 9px;border-radius:var(--radius-pill);text-transform:uppercase;flex-shrink:0}
 .hist-entrada{background:var(--racing-dim);color:var(--racing)}.hist-saida{background:var(--green-dim);color:var(--green)}
 .hist-info{flex:1;min-width:0}
 .hist-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -302,11 +302,10 @@ tbody td{padding:13px 14px;font-size:14px;white-space:nowrap}
 
 .ml-disponivel{background:var(--racing-dim);border:1px solid var(--racing-border);border-radius:var(--radius);padding:9px 14px;margin-bottom:14px;font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--racing)}
 
-.preco-rapido-btn{background:var(--asphalt);border:1px solid var(--steel);border-radius:var(--radius);padding:9px 6px;cursor:pointer;transition:all .15s;text-align:center;display:flex;flex-direction:column;gap:3px}
+.preco-rapido-btn{background:var(--asphalt);border:1px solid var(--steel);border-radius:var(--radius);padding:8px 6px;cursor:pointer;transition:all .15s;text-align:center;display:flex;flex-direction:column;gap:2px}
 .preco-rapido-btn:hover,.preco-rapido-btn.active{border-color:var(--racing);background:var(--racing-dim)}
 .preco-rapido-ml{font-family:'Bebas Neue',sans-serif;font-size:10px;color:var(--titanium);text-transform:uppercase;letter-spacing:.06em}
 .preco-rapido-val{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--racing)}
-.preco-rapido-lucro{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--success)}
 
 .detalhe-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(46,46,52,.8);font-size:13px}
 .detalhe-row:last-child{border-bottom:none}
