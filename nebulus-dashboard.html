@@ -890,8 +890,6 @@ async function recarregarDados(){
 function syncColor(picker,hexId){document.getElementById(hexId).value=picker.value.toUpperCase();}
 function syncHex(input,pickerId){const v=input.value.trim();if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById(pickerId).value=v;}
 
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-
 async function carregarClientesVenda(){
   try{
     const r=await sheetsGet(`${NB.ABA_C}!A2:O1000`);

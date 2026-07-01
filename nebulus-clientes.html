@@ -401,8 +401,6 @@ async function recarregarDados(){
   catch(e){showToast('Erro ao atualizar',true);}
   finally{btn.innerHTML='<i class="ti ti-refresh" style="vertical-align:-2px;margin-right:4px"></i>Atualizar';btn.disabled=false;}
 }
-
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 </script>
 </body>
 </html>
