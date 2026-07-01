@@ -61,6 +61,7 @@
           <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
         </div>
         <div class="header-actions">
+          <span id="demoBadge" style="display:none;align-items:center;gap:8px;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--warn);background:var(--warn-dim);border:1px solid rgba(240,160,48,.3);border-radius:var(--radius-pill);padding:5px 12px;text-transform:uppercase">Modo demonstração<a href="javascript:void(0)" onclick="sairDemonstracao()" style="color:var(--warn);text-decoration:underline;text-transform:none;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:0">Sair</a></span>
           <button class="btn-ghost" id="btnAtualizar" onclick="recarregarDados()" style="display:none"><i class="ti ti-refresh" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"></i>Atualizar</button>
           <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
         </div>
@@ -73,6 +74,7 @@
       <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
       <p class="login-desc">Conecte sua conta Google para sincronizar o estoque em tempo real.</p>
       <button class="btn" onclick="handleLogin()" style="padding:12px 32px;font-size:14px">Entrar com Google</button>
+      <a href="javascript:void(0)" onclick="iniciarDemonstracao()" style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--titanium)">Demonstração</a>
     </div>
 
     <div id="app">
@@ -381,7 +383,7 @@
 <script src="nebulus-core.js"></script>
 <script>
 const CANAL_COLORS={'Instagram':'#E1306C','WhatsApp':'#25D366','Site':'#C8F04D'};
-let estoque=[],movs=[],vendaAtual=null,editando=null,metaSheets=null;
+let estoque=[],movs=[],vendaAtual=null,editando=null,metaSheets=null,demoMode=false;
 let chartPerfume=null,chartCanal=null,chartMensal=null;
 let calcTab='avista',calcSelectedMl=5,confirmCallback=null,detalheAtual=null,detalheAtualRow=null;
 let clientesVenda=[];
@@ -593,6 +595,7 @@ function nextSeq(){return estoque.reduce((m,p)=>Math.max(m,p.seq||0),0)+1;}
 function fmtId(seq){return'NB-'+String(seq).padStart(3,'0');}
 
 function openEntrada(){
+  if(demoMode){showToast('Indisponível no modo demonstração',true);return;}
   editando=null;
   document.getElementById('entradaTitle').textContent='Adicionar perfume';
   document.getElementById('entradaSub').textContent='Cadastrar no estoque';
@@ -604,6 +607,7 @@ function openEntrada(){
   openModal('overlayEntrada');
 }
 function openEditar(id){
+  if(demoMode){showToast('Indisponível no modo demonstração',true);return;}
   const p=estoque.find(e=>e.id===id);if(!p)return;editando=p;
   document.getElementById('entradaTitle').textContent='Editar perfume';
   document.getElementById('entradaSub').textContent='Atualizar cadastro';
@@ -642,6 +646,7 @@ async function salvarEntrada(){
   await loadData();
 }
 function openVenda(id){
+  if(demoMode){showToast('Indisponível no modo demonstração',true);return;}
   const p=estoque.find(e=>e.id===id);if(!p)return;vendaAtual=p;
   document.getElementById('vendaPreview').innerHTML=`<span class="perfume-preview-dot" style="background:${p.cor}"></span><div><div class="perfume-preview-name">${p.nome}</div><div class="perfume-preview-info">${p.marca} · ${fmtId(p.seq)}</div></div>`;
   document.getElementById('vendaMlInfo').textContent=`Disponível: ${p.mlDisp.toFixed(1)} ml · Custo/ml: ${fmt(p.custoMl)}`;
@@ -725,6 +730,7 @@ function openDetalhe(rowIndex){
   openModal('overlayDetalhe');
 }
 function abrirEditarMov(){
+  if(demoMode){showToast('Indisponível no modo demonstração',true);return;}
   if(!detalheAtual)return;const m=detalheAtual;
   document.getElementById('emPedido').value=m.pedido||'';document.getElementById('emCanal').value=m.canal||'';
   document.getElementById('emCliente').value=m.cliente||'';document.getElementById('emTelefone').value=m.telefone||'';
@@ -753,6 +759,7 @@ async function salvarEdicaoMov(){
   closeModal('overlayEditarMov');showToast('✓ Movimentação atualizada');await loadData();
 }
 function pedirExclusaoMov(rowIndex,nome,dataHora){
+  if(demoMode){showToast('Indisponível no modo demonstração',true);return;}
   document.getElementById('confirmTitle').textContent='Apagar movimentação';
   document.getElementById('confirmMsg').textContent='Tem certeza que deseja apagar:';
   document.getElementById('confirmItem').textContent=nome+' · '+dataHora;
@@ -790,6 +797,7 @@ async function syncClienteAposDelecao(nomeCliente, valorVenda){
   }catch(e){console.warn('syncCliente erro:',e);}
 }
 function pedirExclusaoPerfume(id){
+  if(demoMode){showToast('Indisponível no modo demonstração',true);return;}
   const p=estoque.find(e=>e.id===id);if(!p)return;
   document.getElementById('confirmTitle').textContent='Excluir perfume';
   document.getElementById('confirmMsg').textContent='Tem certeza que deseja remover:';
@@ -859,6 +867,7 @@ function calcPreco(){
     <span class="calc-suggested-value">${fmtBRL(sug)}</span>`;
 }
 async function recarregarDados(){
+  if(demoMode){showToast('Indisponível no modo demonstração',true);return;}
   const btn=document.getElementById('btnAtualizar');
   btn.textContent='Atualizando...';btn.disabled=true;
   try{await loadData();showToast('✓ Dados atualizados');}
@@ -919,6 +928,7 @@ document.addEventListener('click',e=>{
 
 /* ---------- CADASTRO COMPLETO DE CLIENTE (dentro do fluxo de venda) ---------- */
 function abrirCadastroClienteVenda(){
+  if(demoMode){showToast('Indisponível no modo demonstração',true);return;}
   ['ncvNome','ncvCPF','ncvTelefone','ncvEmail','ncvCEP','ncvLogradouro','ncvNumero','ncvComplemento','ncvBairro','ncvCidade','ncvUF'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('ncvNasc').value='';
   openModal('overlayCadastroVenda');
@@ -983,6 +993,66 @@ async function salvarCadastroClienteVenda(){
     selecionarClienteVenda(nome,telefone,email);
     showToast('✓ Cliente cadastrado e selecionado');
   }catch(e){showToast('Erro ao cadastrar: '+e.message,true);}
+}
+
+/* ---------- MODO DEMONSTRAÇÃO (somente visual — nenhuma escrita real) ---------- */
+function fabricarDadosDemo(){
+  const perfumes=[
+    {nome:'Sauvage',marca:'Dior',mlTotal:100,familia:'Amadeirado fresco',cor:'#8E8E98',preco:280,mlDisp:38},
+    {nome:'Bleu de Chanel',marca:'Chanel',mlTotal:100,familia:'Amadeirado aromático',cor:'#3DEB7A',preco:310,mlDisp:72},
+    {nome:'Layton',marca:'Parfums de Marly',mlTotal:125,familia:'Amadeirado especiado',cor:'#C8F04D',preco:420,mlDisp:0},
+    {nome:'Oud Wood',marca:'Tom Ford',mlTotal:50,familia:'Oriental amadeirado',cor:'#EB4C3C',preco:650,mlDisp:15},
+    {nome:'Khamrah',marca:'Lattafa',mlTotal:100,familia:'Especiado gourmand',cor:'#F0A030',preco:180,mlDisp:55},
+    {nome:'Club de Nuit Intense',marca:'Armaf',mlTotal:105,familia:'Amadeirado frutado',cor:'#8E8E98',preco:150,mlDisp:90},
+    {nome:'Aventus',marca:'Creed',mlTotal:100,familia:'Frutado amadeirado',cor:'#3DEB7A',preco:900,mlDisp:12},
+    {nome:'Ombre Leather',marca:'Tom Ford',mlTotal:50,familia:'Couro especiado',cor:'#C8F04D',preco:600,mlDisp:0},
+    {nome:'Asad',marca:'Lattafa',mlTotal:100,familia:'Oriental doce',cor:'#EB4C3C',preco:140,mlDisp:60},
+    {nome:'Erba Pura',marca:'Xerjoff',mlTotal:100,familia:'Cítrico floral',cor:'#F0A030',preco:320,mlDisp:45}
+  ];
+  const hoje=new Date();
+  estoque=perfumes.map((p,i)=>{
+    const custoMl=Math.round((p.preco/p.mlTotal)*10000)/10000;
+    const dataCompra=new Date(hoje.getFullYear(),hoje.getMonth()-((i%4)+1),10+i);
+    return{rowIndex:i+2,id:fmtId(i+1),nome:p.nome,marca:p.marca,mlTotal:p.mlTotal,mlDisp:p.mlDisp,preco:p.preco,dataCompra:formatDate(dataCompra.toISOString().split('T')[0]),cor:p.cor,custoMl,seq:i+1,precoSugerido:Math.round(custoMl*3.2*100)/100,notas:'',imagem:'',familia:p.familia};
+  });
+  const canais=['Instagram','WhatsApp','Site'];
+  const clientesDemo=['Rafael Souza','Bianca Lima','Thiago Alves','Camila Rocha','Eduardo Nunes','Larissa Mota','Bruno Cardoso','Fernanda Diaz'];
+  movs=[];let seqPedido=38;
+  for(let i=0;i<26;i++){
+    const disponiveis=estoque.filter(p=>p.mlDisp>0);
+    const p=disponiveis[Math.floor(Math.random()*disponiveis.length)];
+    const mlOpts=[3,5,8,10];
+    const ml=mlOpts[Math.floor(Math.random()*mlOpts.length)];
+    const custoProp=Math.round((p.custoMl*ml+8)*100)/100;
+    const margemAlvo=1.6+Math.random()*0.5;
+    const preco=Math.round(custoProp*margemAlvo*100)/100;
+    const lucro=Math.round((preco-custoProp)*100)/100;
+    const diasAtras=Math.floor(Math.random()*120);
+    const data=new Date(hoje.getTime()-diasAtras*86400000);
+    movs.push({rowIndex:100+i,dataHora:data.toLocaleString('pt-BR'),tipo:'Saída',idPerfume:p.id,nome:p.nome,ml,preco,custoProp,lucro,pedido:String(seqPedido++).padStart(4,'0'),cliente:clientesDemo[Math.floor(Math.random()*clientesDemo.length)],telefone:'(31) 9'+Math.floor(1000+Math.random()*9000)+'-'+Math.floor(1000+Math.random()*9000),email:'',canal:canais[Math.floor(Math.random()*canais.length)],descricao:''});
+  }
+  movs.sort((a,b)=>{
+    const pa=a.dataHora.split(' ')[0].split('/'),pb=b.dataHora.split(' ')[0].split('/');
+    return new Date(`${pa[2]}-${pa[1]}-${pa[0]}`)-new Date(`${pb[2]}-${pb[1]}-${pb[0]}`);
+  });
+}
+function iniciarDemonstracao(){
+  demoMode=true;
+  fabricarDadosDemo();
+  showApp();
+  document.getElementById('demoBadge').style.display='inline-flex';
+  document.getElementById('searchBar').style.display='flex';
+  document.getElementById('btnAtualizar').style.display='none';
+  document.getElementById('metaInput').value='';
+  renderKPIs();renderEstoque();renderCharts();renderHistorico();renderAlertas();atualizarMeta();
+  showToast('Modo demonstração — dados fictícios, ações de gravação desativadas');
+}
+function sairDemonstracao(){
+  demoMode=false;estoque=[];movs=[];
+  document.getElementById('demoBadge').style.display='none';
+  document.getElementById('searchBar').style.display='none';
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
 }
 
 if('serviceWorker' in navigator){
