@@ -248,9 +248,9 @@ function gerarHTMLEstatico(){
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#0E0E10;min-height:100%;-webkit-font-smoothing:antialiased}
-body{font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;align-items:center;padding:0 0 3rem}
-.nb-fog{position:fixed;inset:-15%;pointer-events:none;z-index:-1;background:#9A9AA2;mask:radial-gradient(circle at 50% 50%, white 0.6px, transparent 1px) 0 0 / 12px 12px,url("https://assets.codepen.io/605876/noise-mask.png") 0 0 / 260px 260px;-webkit-mask:radial-gradient(circle at 50% 50%, white 0.6px, transparent 1px) 0 0 / 12px 12px,url("https://assets.codepen.io/605876/noise-mask.png") 0 0 / 260px 260px;mask-composite:intersect;-webkit-mask-composite:source-in;opacity:.4;animation:nbFogDrift 40s linear infinite}
+html{min-height:100%}
+body{background:#0E0E10;min-height:100vh;font-family:'Space Grotesk',sans-serif;display:flex;flex-direction:column;align-items:center;padding:0 0 3rem;position:relative;-webkit-font-smoothing:antialiased}
+.nb-fog{position:fixed;top:-15%;left:-15%;width:130%;height:130%;pointer-events:none;z-index:-1;background:#9A9AA2;mask:radial-gradient(circle at 50% 50%, white 0.6px, transparent 1px) 0 0 / 12px 12px,url("https://assets.codepen.io/605876/noise-mask.png") 0 0 / 260px 260px;-webkit-mask:radial-gradient(circle at 50% 50%, white 0.6px, transparent 1px) 0 0 / 12px 12px,url("https://assets.codepen.io/605876/noise-mask.png") 0 0 / 260px 260px;mask-composite:intersect;-webkit-mask-composite:source-in;opacity:.4;animation:nbFogDrift 40s linear infinite}
 @keyframes nbFogDrift{0%{mask-position:0 0, 0 0;-webkit-mask-position:0 0, 0 0}100%{mask-position:0 0, 260px 180px;-webkit-mask-position:0 0, 260px 180px}}
 .frete-banner{width:100%;background:#C8F04D;overflow:hidden;padding:8px 0}
 .frete-track{display:flex;white-space:nowrap;animation:nbMarquee 38s linear infinite}
