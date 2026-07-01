@@ -138,8 +138,10 @@ const SVG_TRASH = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12
 
 /* ---------- PRICING (shared by Calculadora + Catálogo + Venda) ---------- */
 function precoSugerido(val){ const i = Math.floor(val); const c = i + 0.90; return c >= val ? c : i + 1.90; }
+const PERDA_DECANTACAO_PCT = 3; // % do frasco perdido no processo de decantação, embutido no custo/ml
 function calcPriceDetail(preco, volume, embalagem, margem, taxa, ml){
-  const precoMl = preco / volume;
+  const volumeEfetivo = volume * (1 - PERDA_DECANTACAO_PCT / 100);
+  const precoMl = preco / volumeEfetivo;
   const custoPerfume = precoMl * ml;
   const custoTotal = custoPerfume + embalagem;
   const precoComMargem = custoTotal / (1 - margem / 100);
