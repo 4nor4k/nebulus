@@ -158,9 +158,14 @@
               <p class="calc-panel-hint">Valem pra todas as consultas até você mudar e clicar em salvar de novo.</p>
               <div class="calc-grid-4">
                 <div class="calc-field"><label>Custo da embalagem</label><div class="calc-input-wrap"><span class="calc-pfx">R$</span><input type="number" id="cfgEmbalagem" min="0" step="0.10" oninput="onConfigChange()"></div></div>
-                <div class="calc-field"><label>Margem de lucro</label><div class="calc-input-wrap"><input type="number" id="cfgMargem" min="0" max="99" step="1" style="padding-left:12px" oninput="onConfigChange()"><span class="calc-sfx">%</span></div></div>
                 <div class="calc-field"><label>Taxa Pix / à vista</label><div class="calc-input-wrap"><input type="number" id="cfgTaxaAvista" min="0" max="20" step="0.01" style="padding-left:12px" oninput="onConfigChange()"><span class="calc-sfx">%</span></div></div>
                 <div class="calc-field"><label>Taxa cartão / parcelado</label><div class="calc-input-wrap"><input type="number" id="cfgTaxaCartao" min="0" max="20" step="0.01" style="padding-left:12px" oninput="onConfigChange()"><span class="calc-sfx">%</span></div></div>
+              </div>
+              <div class="calc-grid-4">
+                <div class="calc-field"><label>Margem 3 ml</label><div class="calc-input-wrap"><input type="number" id="cfgMargem3" min="0" max="99" step="1" style="padding-left:12px" oninput="onConfigChange()"><span class="calc-sfx">%</span></div></div>
+                <div class="calc-field"><label>Margem 5 ml</label><div class="calc-input-wrap"><input type="number" id="cfgMargem5" min="0" max="99" step="1" style="padding-left:12px" oninput="onConfigChange()"><span class="calc-sfx">%</span></div></div>
+                <div class="calc-field"><label>Margem 8 ml</label><div class="calc-input-wrap"><input type="number" id="cfgMargem8" min="0" max="99" step="1" style="padding-left:12px" oninput="onConfigChange()"><span class="calc-sfx">%</span></div></div>
+                <div class="calc-field"><label>Margem 10 ml</label><div class="calc-input-wrap"><input type="number" id="cfgMargem10" min="0" max="99" step="1" style="padding-left:12px" oninput="onConfigChange()"><span class="calc-sfx">%</span></div></div>
               </div>
               <div class="calc-save-row">
                 <span class="calc-unsaved" id="cfgUnsaved" style="display:none">Alterações não salvas</span>
@@ -659,7 +664,7 @@ function openVenda(id){
   const container=document.getElementById('precosRapidos');
   container.innerHTML=[3,5,8,10].map(ml=>{
     if(ml>p.mlDisp)return`<div class="preco-rapido-btn" style="opacity:.3;cursor:default"><span class="preco-rapido-ml">${ml} ml</span><span class="preco-rapido-val">—</span></div>`;
-    const{precoFinal}=calcPriceDetail(p.preco,p.mlTotal,cfg.embalagem,cfg.margem,taxa,ml);
+    const{precoFinal}=calcPriceDetail(p.preco,p.mlTotal,cfg.embalagem,cfg.margens[ml],taxa,ml);
     const sug=precoSugerido(precoFinal);
     return`<div class="preco-rapido-btn" onclick="selecionarPrecoRapido(this,${ml},${sug})"><span class="preco-rapido-ml">${ml} ml</span><span class="preco-rapido-val">${fmtBRL(sug)}</span></div>`;
   }).join('');
@@ -814,29 +819,37 @@ function pedirExclusaoPerfume(id){
 function loadCalcConfigIntoForm(){
   const cfg=getCalcConfig();
   document.getElementById('cfgEmbalagem').value=cfg.embalagem;
-  document.getElementById('cfgMargem').value=cfg.margem;
+  document.getElementById('cfgMargem3').value=cfg.margens[3];
+  document.getElementById('cfgMargem5').value=cfg.margens[5];
+  document.getElementById('cfgMargem8').value=cfg.margens[8];
+  document.getElementById('cfgMargem10').value=cfg.margens[10];
   document.getElementById('cfgTaxaAvista').value=cfg.taxaAvista;
   document.getElementById('cfgTaxaCartao').value=cfg.taxaCartao;
   calcConfigDirty=false;
   document.getElementById('cfgUnsaved').style.display='none';
-  ['cfgEmbalagem','cfgMargem','cfgTaxaAvista','cfgTaxaCartao'].forEach(id=>document.getElementById(id).classList.remove('changed'));
+  ['cfgEmbalagem','cfgMargem3','cfgMargem5','cfgMargem8','cfgMargem10','cfgTaxaAvista','cfgTaxaCartao'].forEach(id=>document.getElementById(id).classList.remove('changed'));
 }
 function onConfigChange(){
   calcConfigDirty=true;
   document.getElementById('cfgUnsaved').style.display='flex';
-  ['cfgEmbalagem','cfgMargem','cfgTaxaAvista','cfgTaxaCartao'].forEach(id=>document.getElementById(id).classList.add('changed'));
+  ['cfgEmbalagem','cfgMargem3','cfgMargem5','cfgMargem8','cfgMargem10','cfgTaxaAvista','cfgTaxaCartao'].forEach(id=>document.getElementById(id).classList.add('changed'));
 }
 function salvarCalcConfig(){
   const cfg={
     embalagem:parseFloat(document.getElementById('cfgEmbalagem').value)||0,
-    margem:parseFloat(document.getElementById('cfgMargem').value)||0,
+    margens:{
+      3:parseFloat(document.getElementById('cfgMargem3').value)||0,
+      5:parseFloat(document.getElementById('cfgMargem5').value)||0,
+      8:parseFloat(document.getElementById('cfgMargem8').value)||0,
+      10:parseFloat(document.getElementById('cfgMargem10').value)||0
+    },
     taxaAvista:parseFloat(document.getElementById('cfgTaxaAvista').value)||0,
     taxaCartao:parseFloat(document.getElementById('cfgTaxaCartao').value)||0
   };
   saveCalcConfig(cfg);
   calcConfigDirty=false;
   document.getElementById('cfgUnsaved').style.display='none';
-  ['cfgEmbalagem','cfgMargem','cfgTaxaAvista','cfgTaxaCartao'].forEach(id=>document.getElementById(id).classList.remove('changed'));
+  ['cfgEmbalagem','cfgMargem3','cfgMargem5','cfgMargem8','cfgMargem10','cfgTaxaAvista','cfgTaxaCartao'].forEach(id=>document.getElementById(id).classList.remove('changed'));
   showToast('✓ Configurações salvas');
   calcPreco();
 }
@@ -847,19 +860,19 @@ function calcPreco(){
   const taxa=calcTab==='avista'?cfg.taxaAvista:cfg.taxaCartao;
   const grid=document.getElementById('calcResultsGrid');if(!grid)return;
   grid.innerHTML='';[3,5,8,10].forEach(ml=>{
-    const{precoFinal,lucroLiquido}=calcPriceDetail(preco,volume,cfg.embalagem,cfg.margem,taxa,ml);
+    const{precoFinal,lucroLiquido}=calcPriceDetail(preco,volume,cfg.embalagem,cfg.margens[ml],taxa,ml);
     const card=document.createElement('div');card.className='calc-result-card'+(ml===calcSelectedMl?' selected':'');
     card.innerHTML=`<span class="calc-result-ml">${ml} ml</span><span class="calc-result-price">${fmtBRL(precoFinal)}</span><span class="calc-result-lucro">+${fmtBRL(lucroLiquido)}</span>`;
     card.addEventListener('click',()=>{calcSelectedMl=ml;calcPreco();});grid.appendChild(card);
   });
-  const{custoPerfume,custoTotal,precoComMargem,valorTaxa,precoFinal,lucroLiquido}=calcPriceDetail(preco,volume,cfg.embalagem,cfg.margem,taxa,calcSelectedMl);
+  const{custoPerfume,custoTotal,precoComMargem,valorTaxa,precoFinal,lucroLiquido}=calcPriceDetail(preco,volume,cfg.embalagem,cfg.margens[calcSelectedMl],taxa,calcSelectedMl);
   const sug=precoSugerido(precoFinal);
   document.getElementById('calcBreakdown').innerHTML=`
     <p class="calc-breakdown-title">— detalhamento · ${calcSelectedMl} ml</p>
     <div class="calc-breakdown-row"><span>Custo do perfume</span><span class="bval">${fmtBRL(custoPerfume)}</span></div>
     <div class="calc-breakdown-row"><span>Custo da embalagem</span><span class="bval">${fmtBRL(cfg.embalagem)}</span></div>
     <div class="calc-breakdown-row"><span>Custo total</span><span class="bval">${fmtBRL(custoTotal)}</span></div>
-    <div class="calc-breakdown-row"><span>Sua margem (${cfg.margem.toFixed(0)}%)</span><span class="bval">${fmtBRL(lucroLiquido)}</span></div>
+    <div class="calc-breakdown-row"><span>Sua margem (${cfg.margens[calcSelectedMl].toFixed(0)}%)</span><span class="bval">${fmtBRL(lucroLiquido)}</span></div>
     <div class="calc-breakdown-row"><span>Seu preço (sem taxa)</span><span class="bval">${fmtBRL(precoComMargem)}</span></div>
     <div class="calc-breakdown-row btotal"><span class="blbl">Taxa (${taxa.toFixed(2)}%) + preço final</span><span class="bval">+${fmtBRL(valorTaxa)} = ${fmtBRL(precoFinal)}</span></div>`;
   document.getElementById('calcSuggestedBox').innerHTML=`

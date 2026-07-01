@@ -151,13 +151,21 @@ function calcPriceDetail(preco, volume, embalagem, margem, taxa, ml){
 
 /* ---------- CALCULATOR CONFIG (persisted, requires explicit save) ---------- */
 const NB_CONFIG_KEY = 'nb_calc_config';
-const NB_CONFIG_DEFAULTS = { embalagem: 8, margem: 50, taxaAvista: 0.99, taxaCartao: 11.3 };
+const NB_CONFIG_DEFAULTS = { embalagem: 8, margens: { 3: 50, 5: 50, 8: 50, 10: 50 }, taxaAvista: 0.99, taxaCartao: 11.3 };
 function getCalcConfig(){
   try {
     const raw = localStorage.getItem(NB_CONFIG_KEY);
-    if (!raw) return { ...NB_CONFIG_DEFAULTS };
-    return { ...NB_CONFIG_DEFAULTS, ...JSON.parse(raw) };
-  } catch (e) { return { ...NB_CONFIG_DEFAULTS }; }
+    if (!raw) return { ...NB_CONFIG_DEFAULTS, margens: { ...NB_CONFIG_DEFAULTS.margens } };
+    const parsed = JSON.parse(raw);
+    const cfg = { ...NB_CONFIG_DEFAULTS, ...parsed };
+    if (!parsed.margens && typeof parsed.margem === 'number') {
+      cfg.margens = { 3: parsed.margem, 5: parsed.margem, 8: parsed.margem, 10: parsed.margem };
+    } else {
+      cfg.margens = { ...NB_CONFIG_DEFAULTS.margens, ...(parsed.margens || {}) };
+    }
+    delete cfg.margem;
+    return cfg;
+  } catch (e) { return { ...NB_CONFIG_DEFAULTS, margens: { ...NB_CONFIG_DEFAULTS.margens } }; }
 }
 function saveCalcConfig(cfg){ localStorage.setItem(NB_CONFIG_KEY, JSON.stringify(cfg)); }
 

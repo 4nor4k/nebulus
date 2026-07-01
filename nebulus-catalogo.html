@@ -150,7 +150,7 @@ function calcPrecos(p){
   const sizes=[3,5,8,10];
   return sizes.map(ml=>{
     if(ml>p.mlTotal)return null;
-    const{precoFinal}=calcPriceDetail(p.preco,p.mlTotal,cfg.embalagem,cfg.margem,cfg.taxaAvista,ml);
+    const{precoFinal}=calcPriceDetail(p.preco,p.mlTotal,cfg.embalagem,cfg.margens[ml],cfg.taxaAvista,ml);
     return{ml,preco:precoSugerido(precoFinal)};
   }).filter(Boolean);
 }
