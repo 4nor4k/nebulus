@@ -157,7 +157,7 @@ function calcPrecos(p){
 
 function getEstadoPerfume(id){
   const s=localStorage.getItem('nb_cat_'+id);
-  return s?JSON.parse(s):{ativo:true,mls:{3:true,5:true,8:true,10:true}};
+  return s?JSON.parse(s):{ativo:true,emBreve:false,mls:{3:true,5:true,8:true,10:true}};
 }
 function salvarEstadoPerfume(id,estado){localStorage.setItem('nb_cat_'+id,JSON.stringify(estado));}
 
@@ -168,17 +168,20 @@ function renderPreview(){
     const precos=calcPrecos(p);
     const esgotado=p.mlDisp<=0;
     const estado=getEstadoPerfume(p.id);
+    const emBreve=!!estado.emBreve;
     return`<div class="preview-card">
       <div class="preview-card-img">
         ${p.imagem?`<img src="${p.imagem}" alt="${p.nome}" onerror="this.parentElement.innerHTML='<div class=\\'no-img\\'>Sem imagem</div>'">`:'<div class="no-img">Sem URL<br>de imagem</div>'}
-        ${esgotado?'<div class="esgotado-overlay"><span class="esgotado-tag">Esgotado</span></div>':''}
+        ${emBreve?'<div class="esgotado-overlay"><span class="esgotado-tag" style="color:var(--racing);border-color:var(--racing)">Em breve</span></div>':esgotado?'<div class="esgotado-overlay"><span class="esgotado-tag">Esgotado</span></div>':''}
         ${!estado.ativo?'<div class="esgotado-overlay"><span class="esgotado-tag" style="color:var(--danger);border-color:var(--danger)">Oculto</span></div>':''}
       </div>
       <div class="preview-card-body">
         <div class="preview-card-brand">${p.marca}</div>
         <div class="preview-card-name">${p.nome}</div>
         ${p.familia?`<div class="preview-card-family">${p.familia}</div>`:''}
-        ${esgotado
+        ${emBreve
+          ?'<div class="preview-card-esgotado">Disponível em breve</div>'
+          :esgotado
           ?'<div class="preview-card-esgotado">Produto esgotado</div>'
           :`<div class="preview-card-prices">${precos.map(pc=>`
             <div class="price-btn-preview" style="${!estado.mls[pc.ml]?'opacity:.4':''}">
@@ -194,7 +197,14 @@ function renderPreview(){
           <span class="check-slider"></span>
         </label>
       </div>
-      ${!esgotado?`<div class="ml-checks">
+      <div class="check-row">
+        <span class="check-label">Disponível em breve</span>
+        <label class="check-toggle">
+          <input type="checkbox" ${emBreve?'checked':''} onchange="toggleEmBreve('${p.id}',this.checked)">
+          <span class="check-slider"></span>
+        </label>
+      </div>
+      ${!esgotado&&!emBreve?`<div class="ml-checks">
         ${precos.map(pc=>`<div class="ml-check-item">
           <span class="ml-check-label">${pc.ml}ml</span>
           <input type="checkbox" ${estado.mls[pc.ml]!==false?'checked':''} onchange="toggleMl('${p.id}',${pc.ml},this.checked)">
@@ -205,6 +215,7 @@ function renderPreview(){
 }
 
 function toggleAtivo(id,val){ const e=getEstadoPerfume(id); e.ativo=val; salvarEstadoPerfume(id,e); renderPreview(); }
+function toggleEmBreve(id,val){ const e=getEstadoPerfume(id); e.emBreve=val; salvarEstadoPerfume(id,e); renderPreview(); }
 function toggleMl(id,ml,val){ const e=getEstadoPerfume(id); e.mls[ml]=val; salvarEstadoPerfume(id,e); renderPreview(); }
 
 function gerarHTMLEstatico(){
@@ -216,24 +227,27 @@ function gerarHTMLEstatico(){
   const cards=estoque.map(p=>{
     const estado=getEstadoPerfume(p.id);
     if(!estado.ativo)return'';
+    const emBreve=!!estado.emBreve;
     const todosPrecos=calcPrecos(p);
     const precosAtivos=todosPrecos.filter(pc=>estado.mls[pc.ml]!==false);
-    if(!precosAtivos.length&&!p.mlDisp<=0)return'';
-    const esgotado=p.mlDisp<=0;
+    if(!precosAtivos.length&&!p.mlDisp<=0&&!emBreve)return'';
+    const esgotado=!emBreve&&p.mlDisp<=0;
     const menorItem=precosAtivos.length?precosAtivos.reduce((a,b)=>a.preco<b.preco?a:b):null;
-    const waMsg=encodeURIComponent(`Olá, vim pelo catálogo e quero saber mais sobre o decant ${p.nome}`);
+    const waMsg=encodeURIComponent(emBreve
+      ?`Olá! Vi o decant ${p.nome} no catálogo e queria ser avisado(a) quando estiver disponível.`
+      :`Olá, vim pelo catálogo e quero saber mais sobre o decant ${p.nome}`);
     const waHref=esgotado?'javascript:void(0)':`https://wa.me/${WA_NUMBER}?text=${waMsg}`;
     return`
     <a class="card${esgotado?' card-out':''}" href="${waHref}" target="${esgotado?'_self':'_blank'}" aria-label="${p.nome} — ${p.marca}">
       <div class="card-img">
         ${p.imagem?`<img src="${p.imagem}" alt="${p.nome}" loading="lazy">`:'<div class="no-img"></div>'}
         <div class="img-overlay"></div>
-        ${esgotado?'<div class="out-tag"><span>Esgotado</span></div>':''}
+        ${emBreve?'<div class="out-tag"><span style="color:#C8F04D;border-color:#C8F04D">Em breve</span></div>':esgotado?'<div class="out-tag"><span>Esgotado</span></div>':''}
         <div class="img-info">
           <div class="card-brand">${p.marca}</div>
           <div class="card-name">${p.nome}</div>
-          ${p.familia&&!esgotado?`<div class="card-family">${p.familia}</div>`:''}
-          ${esgotado||!menorItem?'':`<div class="card-from">A partir de <strong>${fmtBRL(menorItem.preco)}</strong> · ${menorItem.ml}ml</div>`}
+          ${p.familia&&!esgotado&&!emBreve?`<div class="card-family">${p.familia}</div>`:''}
+          ${emBreve?'<div class="card-from">Disponível em breve</div>':esgotado||!menorItem?'':`<div class="card-from">A partir de <strong>${fmtBRL(menorItem.preco)}</strong> · ${menorItem.ml}ml</div>`}
         </div>
       </div>
     </a>`;
