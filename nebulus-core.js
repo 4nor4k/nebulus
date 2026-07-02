@@ -128,6 +128,18 @@ function showToast(msg, isError = false){
   NB.toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
 }
 
+/* ---------- CLIPBOARD ---------- */
+async function copyToClipboard(text, label){
+  try{
+    await navigator.clipboard.writeText(text);
+    showToast('✓ ' + (label ? label + ' copiado' : 'Copiado') + ' para a área de transferência');
+    return true;
+  }catch(e){
+    showToast('Não foi possível copiar: ' + e.message, true);
+    return false;
+  }
+}
+
 /* ---------- MISC HELPERS (shared across pages) ---------- */
 function normalize(s){ return (s || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim(); }
 function today(){ return new Date().toISOString().split('T')[0]; }

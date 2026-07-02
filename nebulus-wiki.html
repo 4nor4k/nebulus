@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBULUS.CLUB — Wiki</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0E0E10">
+<link rel="icon" href="https://d1a9qnv764bsoo.cloudfront.net/stores/007/822/591/themes/common/logo-7803308843723140839-1782405456-ebc942b3eb5fcf671e4450d196ff8e0a1782405456.ico">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="nebulus-style.css">
+</head>
+<body>
+
+<div class="nb-mobile-header">
+  <div class="nb-mobile-logo">NEBULUS<span style="color:var(--racing)">.</span>CLUB</div>
+  <button class="nb-burger" id="nbBurger" aria-label="Abrir menu"><i class="ti ti-menu-2" aria-hidden="true"></i></button>
+</div>
+<div class="nb-drawer-overlay" id="nbDrawerOverlay">
+  <div class="nb-drawer">
+    <div class="nb-drawer-top">
+      <div class="nb-mobile-logo">NEBULUS<span style="color:var(--racing)">.</span>CLUB</div>
+      <button class="nb-burger" id="nbDrawerClose" aria-label="Fechar menu"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <a class="nb-drawer-item" href="nebulus-dashboard.html"><i class="ti ti-package" aria-hidden="true"></i>Estoque</a>
+    <a class="nb-drawer-item" href="nebulus-dashboard.html"><i class="ti ti-calculator" aria-hidden="true"></i>Calculadora</a>
+    <a class="nb-drawer-item" href="nebulus-clientes.html"><i class="ti ti-users" aria-hidden="true"></i>Clientes</a>
+    <a class="nb-drawer-item" href="nebulus-historico.html"><i class="ti ti-history" aria-hidden="true"></i>Histórico</a>
+    <a class="nb-drawer-item" href="nebulus-relatorio.html"><i class="ti ti-report" aria-hidden="true"></i>Relatório</a>
+    <a class="nb-drawer-item" href="nebulus-catalogo.html"><i class="ti ti-book" aria-hidden="true"></i>Catálogo</a>
+    <a class="nb-drawer-item active" href="nebulus-wiki.html"><i class="ti ti-notebook" aria-hidden="true"></i>Wiki</a>
+  </div>
+</div>
+
+<div class="nb-shell">
+  <aside class="nb-sidebar">
+    <div class="nb-sidebar-top">
+      <span class="nb-symbol">N</span>
+      <span class="nb-wordmark">NEBULUS<span style="color:var(--racing)">.</span>CLUB</span>
+    </div>
+    <a class="nb-nav-item" href="nebulus-dashboard.html"><i class="ti ti-package nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Estoque</span></a>
+    <a class="nb-nav-item" href="nebulus-dashboard.html"><i class="ti ti-calculator nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Calculadora</span></a>
+    <a class="nb-nav-item" href="nebulus-clientes.html"><i class="ti ti-users nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Clientes</span></a>
+    <a class="nb-nav-item" href="nebulus-historico.html"><i class="ti ti-history nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Histórico</span></a>
+    <a class="nb-nav-item" href="nebulus-relatorio.html"><i class="ti ti-report nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Relatório</span></a>
+    <a class="nb-nav-item" href="nebulus-catalogo.html"><i class="ti ti-book nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Catálogo</span></a>
+    <a class="nb-nav-item active" href="nebulus-wiki.html"><i class="ti ti-notebook nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Wiki</span></a>
+  </aside>
+
+  <main class="nb-main">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div style="flex:1"></div>
+        <div class="header-actions">
+          <button class="btn-ghost" id="btnLogout" onclick="handleLogout()" style="display:none">Sair</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loginScreen">
+      <img src="https://dcdn-us.mitiendanube.com/stores/007/822/591/themes/common/logo-3799943995269881204-1782417977-64a4412e4b157cb7044b4323866dfa971782417977-640-0.webp" alt="Nebulus" style="height:34px;width:auto;object-fit:contain">
+      <div style="width:36px;height:2px;background:var(--racing);margin:0 auto"></div>
+      <p class="login-desc">Entre com sua conta Google para ver a wiki dos perfumes.</p>
+      <button class="btn" onclick="handleLogin()" style="padding:12px 32px;font-size:14px">Entrar com Google</button>
+    </div>
+
+    <div id="app">
+      <div class="page">
+        <div class="page-title" style="margin-bottom:6px">Wiki</div>
+        <p style="color:var(--titanium);font-size:13px;margin-bottom:18px">Ficha de referência olfativa de cada perfume — preencha pra ter tudo à mão na hora de responder no WhatsApp.</p>
+        <div class="search-wrap" style="max-width:420px;margin-bottom:18px">
+          <span class="search-icon"><i class="ti ti-search" aria-hidden="true"></i></span>
+          <input class="search-input" id="wikiBusca" placeholder="Buscar por nome ou marca..." oninput="renderLista()">
+        </div>
+        <div class="panel" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th></th><th>Perfume</th><th>Marca</th><th>Família</th><th>Preenchido</th><th style="text-align:right">Ações</th></tr></thead>
+              <tbody id="wikiBody"><tr><td colspan="6"><div class="loading"><span class="spinner"></span>Carregando...</div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlayFicha">
+  <div class="modal modal--lg">
+    <button class="modal-close" onclick="closeModal('overlayFicha')">×</button>
+    <div class="modal-title" id="fichaTitle">Ficha do perfume</div>
+    <div class="modal-sub" id="fichaSub"></div>
+    <div class="field"><label>Família olfativa</label><input id="fFamilia" placeholder="Ex: Oud · Oriental"></div>
+    <div class="modal-section-label">Pirâmide olfativa</div>
+    <div class="field"><label>Notas de topo</label><textarea id="fTopo" placeholder="Bergamota, limão, pimenta rosa..." style="min-height:48px"></textarea></div>
+    <div class="field"><label>Notas de coração</label><textarea id="fCoracao" placeholder="Jasmim, rosa, íris..." style="min-height:48px"></textarea></div>
+    <div class="field"><label>Notas de fundo</label><textarea id="fFundo" placeholder="Âmbar, almíscar, madeira..." style="min-height:48px"></textarea></div>
+    <div class="modal-section-label">Contexto de venda</div>
+    <div class="field-row">
+      <div class="field"><label>Inspirado em (opcional)</label><input id="fInspirado" placeholder="Deixe vazio se for original"></div>
+      <div class="field"><label>Dia ou noite</label>
+        <select id="fDiaNoite">
+          <option value="">Selecione...</option>
+          <option>Dia</option><option>Noite</option><option>Dia e Noite</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Ocasião</label><input id="fOcasiao" placeholder="Ex: Trabalho, encontros casuais, dia a dia"></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="copiarFichaWhatsApp(fichaAtual&&fichaAtual.id)"><i class="ti ti-brand-whatsapp" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"></i>Copiar p/ WhatsApp</button>
+      <button class="btn-ghost" onclick="closeModal('overlayFicha')">Cancelar</button>
+      <button class="btn" onclick="salvarFicha()">Salvar ficha</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="nebulus-core.js"></script>
+<script>
+let estoque=[];
+
+NB.afterLogin=async function(){
+  await loadData();
+};
+NB.afterLogout=function(){};
+
+async function loadData(){
+  try{
+    const r=await sheetsGet(`${NB.ABA_E}!A2:T1000`);
+    estoque=(r.values||[]).map((row,i)=>({
+      rowIndex:i+2, id:row[0]||'', nome:row[1]||'', marca:row[2]||'', cor:row[7]||'#C8F04D',
+      familia:row[13]||'', notasTopo:row[14]||'', notasCoracao:row[15]||'', notasFundo:row[16]||'',
+      inspiradoEm:row[17]||'', diaNoite:row[18]||'', ocasiao:row[19]||''
+    })).filter(row=>row.nome);
+    renderLista();
+  }catch(e){showToast('Erro ao carregar: '+e.message,true);}
+}
+
+function renderLista(){
+  const q=normalize(document.getElementById('wikiBusca').value);
+  const list=estoque.filter(p=>!q||normalize(p.nome).includes(q)||normalize(p.marca).includes(q));
+  const body=document.getElementById('wikiBody');
+  if(!list.length){body.innerHTML='<tr><td colspan="6"><div class="empty">Nenhum perfume encontrado.</div></td></tr>';return;}
+  body.innerHTML=list.map(p=>{
+    const preenchido=p.notasTopo||p.notasCoracao||p.notasFundo||p.inspiradoEm||p.diaNoite||p.ocasiao;
+    return`<tr>
+      <td><span class="color-dot" style="background:${p.cor}"></span></td>
+      <td class="td-name">${p.nome}</td>
+      <td class="td-brand">${p.marca}</td>
+      <td class="td-date">${p.familia||'—'}</td>
+      <td>${preenchido?'<span class="ml-badge ml-ok">Sim</span>':'<span class="ml-badge ml-low">Não</span>'}</td>
+      <td><div class="td-actions">
+        <button class="btn-icon" title="Editar ficha" onclick="openFicha('${p.id}')">${SVG_PENCIL}</button>
+        <button class="btn-info" title="Copiar p/ WhatsApp" onclick="copiarFichaWhatsApp('${p.id}')"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+let fichaAtual=null;
+function openFicha(id){
+  const p=estoque.find(e=>e.id===id);if(!p)return;fichaAtual=p;
+  document.getElementById('fichaTitle').textContent=p.nome;
+  document.getElementById('fichaSub').textContent=p.marca;
+  document.getElementById('fFamilia').value=p.familia;
+  document.getElementById('fTopo').value=p.notasTopo;
+  document.getElementById('fCoracao').value=p.notasCoracao;
+  document.getElementById('fFundo').value=p.notasFundo;
+  document.getElementById('fInspirado').value=p.inspiradoEm;
+  document.getElementById('fDiaNoite').value=p.diaNoite;
+  document.getElementById('fOcasiao').value=p.ocasiao;
+  openModal('overlayFicha');
+}
+
+async function salvarFicha(){
+  if(!fichaAtual)return;
+  const familia=document.getElementById('fFamilia').value.trim();
+  const topo=document.getElementById('fTopo').value.trim();
+  const coracao=document.getElementById('fCoracao').value.trim();
+  const fundo=document.getElementById('fFundo').value.trim();
+  const inspirado=document.getElementById('fInspirado').value.trim();
+  const diaNoite=document.getElementById('fDiaNoite').value;
+  const ocasiao=document.getElementById('fOcasiao').value.trim();
+  try{
+    // Range parcial N:T (7 colunas contíguas) — nunca toca A:M, então não conflita
+    // com o modal de Adicionar/Editar perfume do Estoque, que só escreve A:N.
+    await sheetsUpdate(
+      `${NB.ABA_E}!N${fichaAtual.rowIndex}:T${fichaAtual.rowIndex}`,
+      [[familia, topo, coracao, fundo, inspirado, diaNoite, ocasiao]]
+    );
+    closeModal('overlayFicha');
+    showToast('✓ Ficha de '+fichaAtual.nome+' salva');
+    await loadData();
+  }catch(e){showToast('Erro ao salvar: '+e.message,true);}
+}
+
+async function copiarFichaWhatsApp(id){
+  const p=estoque.find(e=>e.id===id);if(!p)return;
+  const linhas=[`*${p.nome}* — ${p.marca}`];
+  if(p.familia) linhas.push(`_${p.familia}_`);
+  linhas.push('');
+  if(p.notasTopo) linhas.push(`Topo: ${p.notasTopo}`);
+  if(p.notasCoracao) linhas.push(`Coração: ${p.notasCoracao}`);
+  if(p.notasFundo) linhas.push(`Fundo: ${p.notasFundo}`);
+  if(p.inspiradoEm){ linhas.push(''); linhas.push(`Inspirado em: ${p.inspiradoEm}`); }
+  if(p.diaNoite) linhas.push(`Uso: ${p.diaNoite}`);
+  if(p.ocasiao) linhas.push(`Ocasião: ${p.ocasiao}`);
+  await copyToClipboard(linhas.join('\n'), p.nome);
+}
+</script>
+</body>
+</html>

@@ -1,10 +1,11 @@
-const CACHE = 'nebulus-v1';
+const CACHE = 'nebulus-v2';
 const ASSETS = [
   '/nebulus/nebulus-dashboard.html',
   '/nebulus/nebulus-clientes.html',
   '/nebulus/nebulus-historico.html',
   '/nebulus/nebulus-relatorio.html',
   '/nebulus/nebulus-catalogo.html',
+  '/nebulus/nebulus-wiki.html',
 ];
 
 self.addEventListener('install', e => {

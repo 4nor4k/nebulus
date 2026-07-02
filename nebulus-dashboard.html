@@ -34,6 +34,7 @@
     <a class="nb-drawer-item" href="nebulus-historico.html"><i class="ti ti-history" aria-hidden="true"></i>Histórico</a>
     <a class="nb-drawer-item" href="nebulus-relatorio.html"><i class="ti ti-report" aria-hidden="true"></i>Relatório</a>
     <a class="nb-drawer-item" href="nebulus-catalogo.html"><i class="ti ti-book" aria-hidden="true"></i>Catálogo</a>
+    <a class="nb-drawer-item" href="nebulus-wiki.html"><i class="ti ti-notebook" aria-hidden="true"></i>Wiki</a>
   </div>
 </div>
 
@@ -50,6 +51,7 @@
     <a class="nb-nav-item" href="nebulus-historico.html"><i class="ti ti-history nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Histórico</span></a>
     <a class="nb-nav-item" href="nebulus-relatorio.html"><i class="ti ti-report nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Relatório</span></a>
     <a class="nb-nav-item" href="nebulus-catalogo.html"><i class="ti ti-book nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Catálogo</span></a>
+    <a class="nb-nav-item" href="nebulus-wiki.html"><i class="ti ti-notebook nb-nav-icon" aria-hidden="true"></i><span class="nb-nav-label">Wiki</span></a>
   </aside>
 
   <main class="nb-main">
@@ -433,9 +435,9 @@ async function initSheets(){
   if(!names.includes(NB.ABA_M))toCreate.push({addSheet:{properties:{title:NB.ABA_M}}});
   if(!names.includes(NB.ABA_C))toCreate.push({addSheet:{properties:{title:NB.ABA_C}}});
   if(toCreate.length){await sheetsBatch(toCreate);metaSheets=null;}
-  const hdE=await sheetsGet(`${NB.ABA_E}!A1:N1`);
+  const hdE=await sheetsGet(`${NB.ABA_E}!A1:T1`);
   const hdEVals=hdE.values?hdE.values[0]:[];
-  if(hdEVals.length<5)await sheetsUpdate(`${NB.ABA_E}!A1:N1`,[['ID','Nome','Marca','Ml Total','Ml Disponível','Preço Compra','Data Compra','Cor HEX','Custo/ml','Seq','Preço Sugerido','Notas','Imagem URL','Família Olfativa']]);
+  if(hdEVals.length<14)await sheetsUpdate(`${NB.ABA_E}!A1:T1`,[['ID','Nome','Marca','Ml Total','Ml Disponível','Preço Compra','Data Compra','Cor HEX','Custo/ml','Seq','Preço Sugerido','Notas','Imagem URL','Família Olfativa','Notas de Topo','Notas de Coração','Notas de Fundo','Inspirado em','Dia ou Noite','Ocasião']]);
   const hdM=await sheetsGet(`${NB.ABA_M}!A1:N1`);
   const hdMVals=hdM.values?hdM.values[0]:[];
   if(hdMVals.length<5)await sheetsUpdate(`${NB.ABA_M}!A1:N1`,[['Data/Hora','Tipo','ID Perfume','Nome','Ml','Preço','Custo Proporcional','Lucro','Nº Pedido','Cliente','Telefone','Email','Canal','Descrição']]);
